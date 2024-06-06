@@ -315,10 +315,14 @@ class PhonePeController extends Controller
 
         // Retrieve payer details
         $payer_information = json_decode($data->payer_information);
-        // $payer_details = $payer_information->type === 'plan'
-        //     ? Vendor::where("id", $data->payer_id)->first()
-        //     : User::where("id", $data->payer_id)->first();
-        $payer_details =  User::where("id", $data->payer_id)->first();
+        if (isset($payer_information->type)) {
+            $payer_details = Vendor::where("id", $data->payer_id)->first();
+        } else {
+            $payer_details = User::where("id", $data->payer_id)->first();
+        }
+        // print_r($payer_details);
+        // exit();
+        // $payer_details =  User::where("id", $data->payer_id)->first();
 
         $phone_number = $payer_details->phone ?? '';
 
@@ -348,9 +352,9 @@ class PhonePeController extends Controller
 
         $saltKey = $system_config->salt_key;
 
-        $salt_index= $system_config->salt_index;
+        $salt_index = $system_config->salt_index;
         // Generate checksum
-        $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey). "###" . $salt_index;
+        $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey) . "###" . $salt_index;
 
 
 
