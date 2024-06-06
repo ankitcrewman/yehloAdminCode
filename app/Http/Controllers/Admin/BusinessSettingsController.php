@@ -2551,7 +2551,11 @@ class BusinessSettingsController extends Controller
             return view('admin-views.business-settings.landing-page-settings.admin-landing-testimonial');
         } else if ($tab == 'contact-us') {
             return view('admin-views.business-settings.landing-page-settings.admin-landing-contact');
-        } else if ($tab == 'background-color') {
+        }
+        else if ($tab == 'delivery-man-setting') {
+            return view('admin-views.business-settings.landing-page-settings.admin-delivery-man-setting');
+        }
+        else if ($tab == 'background-color') {
             return view('admin-views.business-settings.landing-page-settings.admin-landing-background-color');
         }
     }

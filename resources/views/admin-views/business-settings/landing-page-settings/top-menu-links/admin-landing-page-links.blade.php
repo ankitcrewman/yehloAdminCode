@@ -26,6 +26,11 @@
                 <a class="nav-link {{ Request::is('admin/business-settings/pages/admin-landing-page-settings/download-apps') ? 'active' : '' }}"
                 href="{{ route('admin.business-settings.admin-landing-page-settings', 'download-apps') }}">{{translate('messages.download_apps')}}</a>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/business-settings/pages/admin-landing-page-settings/delivery-man-setting') ? 'active' : '' }}"
+                href="{{ route('admin.business-settings.admin-landing-page-settings', 'delivery-man-setting') }}">Delivery Landing Setting</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('admin/business-settings/pages/admin-landing-page-settings/testimonials*') ? 'active' : '' }}"
                 href="{{ route('admin.business-settings.admin-landing-page-settings', 'testimonials') }}">{{translate('messages.testimonials')}}</a>
