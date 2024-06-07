@@ -238,7 +238,7 @@
                                 <input type="hidden" name="lang[]" value="default">
                                 @foreach (json_decode($language) as $lang)
                                     <?php
-                                    if (isset($earning_title->translations) && count($earning_title->translations)) {
+                                     if (isset($earning_title->translations) && count($earning_title->translations)) {
                                         $earning_title_translate = [];
                                         foreach ($earning_title->translations as $t) {
                                             if ($t->locale == $lang && $t->key == 'earning_title') {

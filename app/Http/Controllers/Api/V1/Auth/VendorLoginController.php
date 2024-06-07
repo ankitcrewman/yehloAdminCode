@@ -296,13 +296,38 @@ class VendorLoginController extends Controller
                     'image' => asset('storage/app/public/plan/' . $plans->first()->image),
                     'plan_duration' => implode(',', array_keys($prices)),
                 ];
-
             });
 
         $jsonResponse = $groupedPlans->toJson();
 
         return $jsonResponse;
     }
+
+
+    // public function getplandetails()
+    // {
+    //     $groupedPlans = Plan::select('name', 'type', 'price', 'product_limit', 'plan_duration', 'description', 'image')
+    //         ->orderBy('plan_duration')
+    //         ->get()
+    //         ->groupBy('plan_duration')
+    //         ->map(function ($plans) {
+    //             return $plans->map(function ($plan) {
+    //                 return [
+    //                     'title' => $plan->name,
+    //                     'type' => $plan->type,
+    //                     'price' => $plan->price,
+    //                     'product_limit' => $plan->product_limit,
+    //                     'description' => $plan->description,
+    //                     'image' => asset('storage/app/public/plan/' . $plan->image),
+    //                 ];
+    //             });
+    //         });
+
+    //     $jsonResponse = $groupedPlans->toJson();
+
+    //     return $jsonResponse;
+    // }
+
 
 
 
