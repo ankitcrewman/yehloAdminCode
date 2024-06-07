@@ -17,7 +17,7 @@
                 </h1>
                 <div class="text--primary-2 py-1 d-flex flex-wrap align-items-center" type="button" data-toggle="modal"
                     data-target="#how-it-works">
-                    {{-- <strong class="mr-2">{{ translate('See_how_it_works!') }}</strong> --}}
+                    x {{-- <strong class="mr-2">{{ translate('See_how_it_works!') }}</strong> --}}
                     <div>
                         <i class="tio-info-outined"></i>
                     </div>
@@ -35,12 +35,10 @@
         @php($earning_delivery_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'earning_delivery_image')->first())
         {{--  --}}
 
-        @php($home_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'home_title')->first())
-        @php($home_sub_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'home_sub_title')->first())
-        @php($home_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'home_heading')->first())
+        @php($delivery_man_header_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_man_header_title')->first())
+        @php($delivery_man_sub_header_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_man_sub_header_title')->first())
 
-        @php($home_sub_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'home_sub_heading')->first())
-        @php($home_seller_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'home_seller_image')->first())
+        @php($home_delivery_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'home_delivery_image')->first())
 
 
         @php($seller_footer_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_footer_title')->first())
@@ -74,12 +72,139 @@
         @endif
         <div class="tab-content">
             <div class="tab-pane fade show active">
+
+                {{-- Home Header --}}
+
+
+                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'deliveryman-header') }}"
+                    method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <h5 class="card-title mb-3">
+                        <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
+                        <span>Home Section</span>
+                    </h5>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            @if ($language)
+                                <div class="row g-3 lang_form" id="default-form">
+                                    <div class="col-sm-6">
+                                        <label for="home_tile" class="form-label">{{ translate('Title') }}
+                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
+                                                data-toggle="tooltip" data-placement="right"
+                                                data-original-title="{{ translate('Write_the_title_within_40_characters') }}">
+                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                    alt="">
+                                            </span></label>
+                                        <input id="home_tile" type="text"  name="delivery_man_header_title[]"
+                                            class="form-control" value="{{ $delivery_man_header_title?->getRawOriginal('value') }}"
+                                            placeholder="{{ translate('messages.title_here...') }}">
+                                        <br>
+                                        <label for="home_sub_title" class="form-label">{{ translate('Sub Title') }}
+                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
+                                                data-toggle="tooltip" data-placement="right"
+                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                    alt="">
+                                            </span></label>
+                                        <input id="home_sub_title" type="text"  name="delivery_man_sub_header_title[]"
+                                            class="form-control" value="{{ $delivery_man_sub_header_title?->getRawOriginal('value') }}"
+                                            placeholder="{{ translate('messages.sub_title_here...') }}">
+                                        <br>
+                                        {{-- <label for="home-heading" class="form-label">
+                                            Home Heading
+                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
+                                                data-toggle="tooltip" data-placement="right"
+                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                    alt="">
+                                            </span></label>
+                                        <input id="home-heading" type="text" maxlength="80" name="home_heading[]"
+                                            class="form-control" value="{{ $home_heading?->getRawOriginal('value') }}"
+                                            placeholder="{{ translate('messages.sub_title_here...') }}"> --}}
+                                        <br>
+                                        {{-- <label for="home-sub-heading" class="form-label">Home Sub Heading
+                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
+                                                data-toggle="tooltip" data-placement="right"
+                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                    alt="">
+                                            </span></label>
+                                        <input id="home-sub-heading" type="text" maxlength="80" name="home_sub_heading[]"
+                                            class="form-control" value="{{ $home_sub_heading?->getRawOriginal('value') }}"
+                                            placeholder="{{ translate('messages.sub_title_here...') }}"> --}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="form-label d-block mb-2">
+                                            {{ translate('Banner') }} <span
+                                                class="text--primary">{{ translate('(size: 1:1)') }}</span>
+                                        </label>
+                                        <label class="upload-img-3 m-0 d-block">
+                                            <div class="position-relative">
+                                                <div class="img">
+                                                    <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
+                                                        $home_delivery_image['value'] ?? '',
+                                                        asset('storage/app/public/earning') . '/' . $home_delivery_image['value'] ?? '',
+                                                        asset('/public/assets/admin/img/upload-4.png'),
+                                                        'earning/',
+                                                    ) }}"
+                                                        data-onerror-image="{{ asset('/public/assets/admin/img/upload-4.png') }}"
+                                                        class="vertical-img mw-100 vertical onerror-image" alt="">
+
+                                                </div>
+                                                <input type="file" name="home_delivery_image" hidden>
+                                                @if (isset($home_delivery_image['value']))
+                                                    <span id="home_delivery_image" class="remove_image_button remove-image"
+                                                        data-id="home_delivery_image"
+                                                        data-title="{{ translate('Warning!') }}"
+                                                        data-text="<p>{{ translate('Are_you_sure_you_want_to_remove_this_image_?') }}</p>">
+                                                        <i class="tio-clear"></i></span>
+                                                @endif
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="lang[]" value="default">
+                                @foreach (json_decode($language) as $lang)
+                                    <?php
+                                    if (isset($earning_title->translations) && count($earning_title->translations)) {
+                                        $earning_title_translate = [];
+                                        foreach ($earning_title->translations as $t) {
+                                            if ($t->locale == $lang && $t->key == 'earning_title') {
+                                                $earning_title_translate[$lang]['value'] = $t->value;
+                                            }
+                                        }
+                                    }
+                                    if (isset($earning_sub_title->translations) && count($earning_sub_title->translations)) {
+                                        $earning_sub_title_translate = [];
+                                        foreach ($earning_sub_title->translations as $t) {
+                                            if ($t->locale == $lang && $t->key == 'earning_sub_title') {
+                                                $earning_sub_title_translate[$lang]['value'] = $t->value;
+                                            }
+                                        }
+                                    }
+                                    ?>
+
+                                    <input type="hidden" name="lang[]" value="{{ $lang }}">
+                                @endforeach
+                            @else
+                                <input type="hidden" name="lang[]" value="default">
+                            @endif
+                            <div class="btn--container justify-content-end mt-3">
+                                <button type="reset" class="btn btn--reset">{{ translate('Reset') }}</button>
+                                <button type="submit" class="btn btn--primary mb-2">{{ translate('Save') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {{-- Home Header --}}
+
+
                 <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-title') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     <h5 class="card-title mb-3">
                         <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
-                        <span>{{ translate('Download User App Section Content ') }}</span>
+                        <span></span>
                     </h5>
                     <div class="card mb-3">
                         <div class="card-body">
@@ -106,7 +231,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="sub-text" type="text" maxlength="80" name="earning_sub_title[]"
-                                            class="form-control" value="{{ $earning_sub_title?->getRawOriginal('value') }}"
+                                            class="form-control"
+                                            value="{{ $earning_sub_title?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                     </div>
                                 </div>
@@ -140,8 +266,8 @@
                                                     <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
                                                         alt="">
                                                 </span></label>
-                                            <input id="earning_title" type="text" maxlength="40" name="earning_title[]"
-                                                class="form-control"
+                                            <input id="earning_title" type="text" maxlength="40"
+                                                name="earning_title[]" class="form-control"
                                                 value="{{ $earning_title_translate[$lang]['value'] ?? '' }}"
                                                 placeholder="{{ translate('messages.title_here...') }}">
                                         </div>
@@ -225,13 +351,12 @@
                                     <div class="col-sm-6">
                                         <label for="seller-description" class="form-label">Seller Description
                                             ({{ translate('messages.default') }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
+                                                data-toggle="tooltip" data-placement="right" <img
+                                                src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                alt="">
                                             </span></label>
-                                        <input id="seller-description" type="text"
-                                            name="seller_description[]" class="form-control"
+                                        <input id="seller-description" type="text" name="seller_description[]"
+                                            class="form-control"
                                             value="{{ $seller_description?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                     </div>
@@ -325,131 +450,7 @@
 
                 {{-- yehlo purchase --}}
 
-                {{-- Home Header --}}
 
-
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-vendor') }}"
-                    method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <h5 class="card-title mb-3">
-                        <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
-                        <span>Home Section</span>
-                    </h5>
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            @if ($language)
-                                <div class="row g-3 lang_form" id="default-form">
-                                    <div class="col-sm-6">
-                                        <label for="home_tile" class="form-label">{{ translate('Title') }}
-                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_40_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="home_tile" type="text" maxlength="40" name="home_title[]"
-                                            class="form-control" value="{{ $home_title?->getRawOriginal('value') }}"
-                                            placeholder="{{ translate('messages.title_here...') }}">
-                                        <br>
-                                        <label for="home_sub_title" class="form-label">{{ translate('Sub Title') }}
-                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="home_sub_title" type="text" maxlength="80" name="home_sub_title[]"
-                                            class="form-control" value="{{ $home_sub_title?->getRawOriginal('value') }}"
-                                            placeholder="{{ translate('messages.sub_title_here...') }}">
-                                        <br>
-                                        <label for="home-heading" class="form-label">
-                                            Home Heading
-                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="home-heading" type="text" maxlength="80" name="home_heading[]"
-                                            class="form-control" value="{{ $home_heading?->getRawOriginal('value') }}"
-                                            placeholder="{{ translate('messages.sub_title_here...') }}">
-                                        <br>
-                                        <label for="home-sub-heading" class="form-label">Home Sub Heading
-                                            ({{ translate('messages.default') }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="home-sub-heading" type="text" maxlength="80"
-                                            name="home_sub_heading[]" class="form-control"
-                                            value="{{ $home_sub_heading?->getRawOriginal('value') }}"
-                                            placeholder="{{ translate('messages.sub_title_here...') }}">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label d-block mb-2">
-                                            {{ translate('Banner') }} <span
-                                                class="text--primary">{{ translate('(size: 1:1)') }}</span>
-                                        </label>
-                                        <label class="upload-img-3 m-0 d-block">
-                                            <div class="position-relative">
-                                                <div class="img">
-                                                    <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
-                                                        $home_seller_image['value'] ?? '',
-                                                        asset('storage/app/public/earning') . '/' . $home_seller_image['value'] ?? '',
-                                                        asset('/public/assets/admin/img/upload-4.png'),
-                                                        'earning/',
-                                                    ) }}"
-                                                        data-onerror-image="{{ asset('/public/assets/admin/img/upload-4.png') }}"
-                                                        class="vertical-img mw-100 vertical onerror-image" alt="">
-
-                                                </div>
-                                                <input type="file" name="home_seller_image" hidden>
-                                                @if (isset($home_seller_image['value']))
-                                                    <span id="home_seller_image" class="remove_image_button remove-image"
-                                                        data-id="home_seller_image"
-                                                        data-title="{{ translate('Warning!') }}"
-                                                        data-text="<p>{{ translate('Are_you_sure_you_want_to_remove_this_image_?') }}</p>">
-                                                        <i class="tio-clear"></i></span>
-                                                @endif
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="lang[]" value="default">
-                                @foreach (json_decode($language) as $lang)
-                                    <?php
-                                    if (isset($earning_title->translations) && count($earning_title->translations)) {
-                                        $earning_title_translate = [];
-                                        foreach ($earning_title->translations as $t) {
-                                            if ($t->locale == $lang && $t->key == 'earning_title') {
-                                                $earning_title_translate[$lang]['value'] = $t->value;
-                                            }
-                                        }
-                                    }
-                                    if (isset($earning_sub_title->translations) && count($earning_sub_title->translations)) {
-                                        $earning_sub_title_translate = [];
-                                        foreach ($earning_sub_title->translations as $t) {
-                                            if ($t->locale == $lang && $t->key == 'earning_sub_title') {
-                                                $earning_sub_title_translate[$lang]['value'] = $t->value;
-                                            }
-                                        }
-                                    }
-                                    ?>
-
-                                    <input type="hidden" name="lang[]" value="{{ $lang }}">
-                                @endforeach
-                            @else
-                                <input type="hidden" name="lang[]" value="default">
-                            @endif
-                            <div class="btn--container justify-content-end mt-3">
-                                <button type="reset" class="btn btn--reset">{{ translate('Reset') }}</button>
-                                <button type="submit" class="btn btn--primary mb-2">{{ translate('Save') }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                {{-- Home Header --}}
 
 
 
@@ -876,5 +877,5 @@
     @include('admin-views.business-settings.landing-page-settings.partial.how-it-work')
 @endsection
 @push('script_2')
-    <script src="{{asset('public/assets/admin/ckeditor/ckeditor.js')}}"></script>
+    <script src="{{ asset('public/assets/admin/ckeditor/ckeditor.js') }}"></script>
 @endpush

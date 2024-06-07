@@ -39,7 +39,6 @@ trait Payment
         // dd($payment);
         $payment->save();
 
-// dd($payment->payment_method)
 
         $routes = [
             'ssl_commerz' => 'payment/sslcommerz/pay',

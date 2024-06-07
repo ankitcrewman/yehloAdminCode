@@ -3472,6 +3472,49 @@ class BusinessSettingsController extends Controller
             Toastr::success("Footer Setting update");
         }
 
+
+
+        elseif ($tab == 'deliveryman-header') {
+
+            //  dd($request);
+
+            $delivery_man_header_title = DataSetting::where('type', 'admin_landing_page')->where('key', 'delivery_man_header_title')->first();
+            if ($delivery_man_header_title == null) {
+                $delivery_man_header_title = new DataSetting();
+            }
+
+            $delivery_man_header_title->key = 'delivery_man_header_title';
+            $delivery_man_header_title->type = 'delivery_landing_page';
+            $delivery_man_header_title->value = $request->delivery_man_header_title[array_search('default', $request->lang)];
+            $delivery_man_header_title->save();
+
+
+
+
+
+            $delivery_man_sub_header_title = DataSetting::where('type', 'admin_landing_page')->where('key', 'delivery_man_sub_header_title')->first();
+            if ($delivery_man_sub_header_title == null) {
+                $delivery_man_sub_header_title = new DataSetting();
+            }
+
+            $delivery_man_sub_header_title->key = 'delivery_man_sub_header_title';
+            $delivery_man_sub_header_title->type = 'delivery_landing_page';
+            $delivery_man_sub_header_title->value = $request->delivery_man_sub_header_title[array_search('default', $request->lang)];
+            $delivery_man_sub_header_title->save();
+
+
+
+            $home_delivery_image = DataSetting::where('type', 'admin_landing_page')->where('key', 'home_delivery_image')->first();
+            if ($home_delivery_image == null) {
+                $home_delivery_image = new DataSetting();
+            }
+            $home_delivery_image->key = 'home_delivery_image';
+            $home_delivery_image->type = 'delivery_landing_page';
+            $home_delivery_image->value = $request->has('home_delivery_image') ? Helpers::update('earning/', $home_delivery_image->value, 'png', $request->file('home_delivery_image')) : $home_delivery_image->value;
+            $home_delivery_image->save();
+
+            Toastr::success("Delivery Home Setting update");
+        }
         elseif ($tab == 'earning-seller-link') {
             $earning_seller_image = DataSetting::where('type', 'admin_landing_page')->where('key', 'earning_seller_image')->first();
             if ($earning_seller_image == null) {
