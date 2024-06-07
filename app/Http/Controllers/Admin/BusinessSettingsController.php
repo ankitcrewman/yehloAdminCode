@@ -3478,7 +3478,7 @@ class BusinessSettingsController extends Controller
 
             //  dd($request);
 
-            $delivery_man_header_title = DataSetting::where('type', 'admin_landing_page')->where('key', 'delivery_man_header_title')->first();
+            $delivery_man_header_title = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_man_header_title')->first();
             if ($delivery_man_header_title == null) {
                 $delivery_man_header_title = new DataSetting();
             }
@@ -3492,7 +3492,7 @@ class BusinessSettingsController extends Controller
 
 
 
-            $delivery_man_sub_header_title = DataSetting::where('type', 'admin_landing_page')->where('key', 'delivery_man_sub_header_title')->first();
+            $delivery_man_sub_header_title = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_man_sub_header_title')->first();
             if ($delivery_man_sub_header_title == null) {
                 $delivery_man_sub_header_title = new DataSetting();
             }
@@ -3504,7 +3504,7 @@ class BusinessSettingsController extends Controller
 
 
 
-            $home_delivery_image = DataSetting::where('type', 'admin_landing_page')->where('key', 'home_delivery_image')->first();
+            $home_delivery_image = DataSetting::where('type', 'delivery_landing_page')->where('key', 'home_delivery_image')->first();
             if ($home_delivery_image == null) {
                 $home_delivery_image = new DataSetting();
             }
@@ -3514,6 +3514,70 @@ class BusinessSettingsController extends Controller
             $home_delivery_image->save();
 
             Toastr::success("Delivery Home Setting update");
+        }
+
+        elseif ($tab == 'delivery-footer') {
+
+            // dd($request);
+
+            $delivery_footer_title = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_title')->first();
+            if ($delivery_footer_title == null) {
+                $delivery_footer_title = new DataSetting();
+            }
+
+            $delivery_footer_title->key = 'delivery_footer_title';
+            $delivery_footer_title->type = 'delivery_landing_page';
+            $delivery_footer_title->value = $request->delivery_footer_title[array_search('default', $request->lang)];
+            $delivery_footer_title->save();
+
+            /////
+
+            $delivery_footer_sub_title = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_sub_title')->first();
+            if ($delivery_footer_sub_title == null) {
+                $delivery_footer_sub_title = new DataSetting();
+            }
+
+            $delivery_footer_sub_title->key = 'delivery_footer_sub_title';
+            $delivery_footer_sub_title->type = 'delivery_landing_page';
+            $delivery_footer_sub_title->value = $request->delivery_footer_sub_title[array_search('default', $request->lang)];
+            $delivery_footer_sub_title->save();
+            ////////
+
+            $delivery_footer_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_heading')->first();
+            if ($delivery_footer_heading == null) {
+                $delivery_footer_heading = new DataSetting();
+            }
+
+            $delivery_footer_heading->key = 'delivery_footer_heading';
+            $delivery_footer_heading->type = 'delivery_landing_page';
+            $delivery_footer_heading->value = $request->delivery_footer_heading[array_search('default', $request->lang)];
+            $delivery_footer_heading->save();
+            ////////////
+
+
+            $delivery_footer_sub_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_sub_heading')->first();
+            if ($delivery_footer_sub_heading == null) {
+                $delivery_footer_sub_heading = new DataSetting();
+            }
+
+            $delivery_footer_sub_heading->key = 'delivery_footer_sub_heading';
+            $delivery_footer_sub_heading->type = 'delivery_landing_page';
+            $delivery_footer_sub_heading->value = $request->delivery_footer_sub_heading[array_search('default', $request->lang)];
+            $delivery_footer_sub_heading->save();
+
+            // dd($request);
+
+
+            $footer_delivery_image = DataSetting::where('type', 'delivery_landing_page')->where('key', 'footer_delivery_image')->first();
+            if ($footer_delivery_image == null) {
+                $footer_delivery_image = new DataSetting();
+            }
+            $footer_delivery_image->key = 'footer_delivery_image';
+            $footer_delivery_image->type = 'delivery_landing_page';
+            $footer_delivery_image->value = $request->has('footer_delivery_image') ? Helpers::update('earning/', $footer_delivery_image->value, 'png', $request->file('footer_delivery_image')) : $footer_delivery_image->value;
+            $footer_delivery_image->save();
+
+            Toastr::success("Home Setting update");
         }
         elseif ($tab == 'earning-seller-link') {
             $earning_seller_image = DataSetting::where('type', 'admin_landing_page')->where('key', 'earning_seller_image')->first();

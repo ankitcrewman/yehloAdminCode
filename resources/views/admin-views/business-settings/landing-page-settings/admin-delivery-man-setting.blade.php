@@ -41,12 +41,12 @@
         @php($home_delivery_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'home_delivery_image')->first())
 
 
-        @php($seller_footer_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_footer_title')->first())
-        @php($seller_footer_sub_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_footer_sub_title')->first())
-        @php($seller_footer_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_footer_heading')->first())
+        @php($delivery_footer_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_title')->first())
+        @php($delivery_footer_sub_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_sub_title')->first())
+        @php($delivery_footer_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_heading')->first())
 
-        @php($seller_footer_sub_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_footer_sub_heading')->first())
-        @php($footer_seller_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'footer_seller_image')->first())
+        @php($delivery_footer_sub_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_sub_heading')->first())
+        @php($footer_delivery_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'footer_delivery_image')->first())
 
         @php($seller_description = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_description')->first())
         @php($seller_purchase = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'seller_purchase')->first())
@@ -199,7 +199,7 @@
                 {{-- Home Header --}}
 
 
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-title') }}"
+                {{-- <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-title') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     <h5 class="card-title mb-3">
@@ -320,11 +320,11 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> --}}
 
                 {{-- yehlo purchase --}}
 
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-purchase') }}"
+                 {{-- <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-purchase') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     <h5 class="card-title mb-3">
@@ -381,62 +381,11 @@
                                         }
                                     }
                                     ?>
-                                    {{-- <div class="row g-3 d-none lang_form" id="{{ $lang }}-form">
-                                    <div class="col-sm-6">
-                                        <label for="earning_title" class="form-label">{{ translate('Title') }}
-                                            ({{ strtoupper($lang) }})
-                                            <span class="form-label-secondary" data-toggle="tooltip"
-                                                data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_40_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="earning_title" type="text" maxlength="40" name="earning_title[]"
-                                            class="form-control"
-                                            value="{{ $earning_title_translate[$lang]['value'] ?? '' }}"
-                                            placeholder="{{ translate('messages.title_here...') }}">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label for="sub-title" class="form-label">{{ translate('Sub Title') }}
-                                            ({{ strtoupper($lang) }})<span class="form-label-secondary"
-                                                data-toggle="tooltip" data-placement="right"
-                                                data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
-                                                <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                    alt="">
-                                            </span></label>
-                                        <input id="sub-title" type="text" maxlength="80"
-                                            name="earning_sub_title[]" class="form-control"
-                                            value="{{ $earning_sub_title_translate[$lang]['value'] ?? '' }}"
-                                            placeholder="{{ translate('messages.sub_title_here...') }}">
-                                    </div>
-                                </div> --}}
+
                                     <input type="hidden" name="lang[]" value="{{ $lang }}">
                                 @endforeach
                             @else
-                                {{-- <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label for="earning-title" class="form-label">{{ translate('Title') }}<span
-                                            class="form-label-secondary" data-toggle="tooltip" data-placement="right"
-                                            data-original-title="{{ translate('Write_the_title_within_40_characters') }}">
-                                            <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                alt="">
-                                        </span></label>
-                                    <input id="earning-title" type="text" maxlength="40" name="earning_title[]"
-                                        class="form-control" placeholder="{{ translate('messages.title_here...') }}">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label for="earning-sub-title"
-                                        class="form-label">{{ translate('Sub Title') }}<span
-                                            class="form-label-secondary" data-toggle="tooltip" data-placement="right"
-                                            data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
-                                            <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
-                                                alt="">
-                                        </span></label>
-                                    <input id="earning-sub-title" type="text" maxlength="80"
-                                        name="earning_sub_title[]" class="form-control"
-                                        placeholder="{{ translate('messages.sub_title_here...') }}">
-                                </div>
-                            </div> --}}
+
                                 <input type="hidden" name="lang[]" value="default">
                             @endif
                             <div class="btn--container justify-content-end mt-3">
@@ -445,7 +394,7 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form>  --}}
 
 
                 {{-- yehlo purchase --}}
@@ -458,12 +407,12 @@
 
                 {{-- Home Footer --}}
 
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-vendor-footer') }}"
+                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'delivery-footer') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     <h5 class="card-title mb-3">
                         <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
-                        <span>Footer Section</span>
+                        <span>Delivery Footer Section</span>
                     </h5>
                     <div class="card mb-3">
                         <div class="card-body">
@@ -478,8 +427,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="Footer_tile" type="text" maxlength="40"
-                                            name="seller_footer_title[]" class="form-control"
-                                            value="{{ $seller_footer_title?->getRawOriginal('value') }}"
+                                            name="delivery_footer_title[]" class="form-control"
+                                            value="{{ $delivery_footer_title?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.title_here...') }}">
                                         <br>
                                         <label for="footer_sub_title" class="form-label">{{ translate('Sub Title') }}
@@ -490,8 +439,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="footer_sub_title" type="text" maxlength="80"
-                                            name="seller_footer_sub_title[]" class="form-control"
-                                            value="{{ $seller_footer_sub_title?->getRawOriginal('value') }}"
+                                            name="delivery_footer_sub_title[]" class="form-control"
+                                            value="{{ $delivery_footer_sub_title?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                         <br>
                                         <label for="footer-heading" class="form-label">
@@ -503,8 +452,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="footer-heading" type="text" maxlength="80"
-                                            name="seller_footer_heading[]" class="form-control"
-                                            value="{{ $seller_footer_heading?->getRawOriginal('value') }}"
+                                            name="delivery_footer_heading[]" class="form-control"
+                                            value="{{ $delivery_footer_heading?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                         <br>
                                         <label for="footer-sub-heading" class="form-label">Footer Sub Heading
@@ -515,8 +464,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="footer-sub-heading" type="text" maxlength="80"
-                                            name="seller_footer_sub_heading[]" class="form-control"
-                                            value="{{ $seller_footer_sub_heading?->getRawOriginal('value') }}"
+                                            name="delivery_footer_sub_heading[]" class="form-control"
+                                            value="{{ $delivery_footer_sub_heading?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                     </div>
                                     <div class="col-sm-6">
@@ -528,8 +477,8 @@
                                             <div class="position-relative">
                                                 <div class="img">
                                                     <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
-                                                        $footer_seller_image['value'] ?? '',
-                                                        asset('storage/app/public/earning') . '/' . $footer_seller_image['value'] ?? '',
+                                                        $footer_delivery_image['value'] ?? '',
+                                                        asset('storage/app/public/earning') . '/' . $footer_delivery_image['value'] ?? '',
                                                         asset('/public/assets/admin/img/upload-4.png'),
                                                         'earning/',
                                                     ) }}"
@@ -537,11 +486,11 @@
                                                         class="vertical-img mw-100 vertical onerror-image" alt="">
 
                                                 </div>
-                                                <input type="file" name="footer_seller_image" hidden>
-                                                @if (isset($footer_seller_image['value']))
-                                                    <span id="footer_seller_image"
+                                                <input type="file" name="footer_delivery_image" hidden>
+                                                @if (isset($footer_delivery_image['value']))
+                                                    <span id="footer_delivery_image"
                                                         class="remove_image_button remove-image"
-                                                        data-id="footer_seller_image"
+                                                        data-id="footer_delivery_image"
                                                         data-title="{{ translate('Warning!') }}"
                                                         data-text="<p>{{ translate('Are_you_sure_you_want_to_remove_this_image_?') }}</p>">
                                                         <i class="tio-clear"></i></span>
