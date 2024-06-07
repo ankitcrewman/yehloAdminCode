@@ -334,9 +334,10 @@ class PhonePeController extends Controller
         // Prepare payload for PhonePe API
         $payload = [
             "merchantId" => $system_config->merchant_id,
-            "merchantTransactionId" => "YEHLO" . rand(1000, 99999999999),
+            "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
-            "amount" => $data->payment_amount * 100,
+            // "amount" => $data->payment_amount * 100,
+            "amount" => 1,
             "redirectUrl" => $system_config->redirect_url,
             "redirectMode" => "REDIRECT",
             "callbackUrl" => $system_config->callbackUrl,
@@ -357,48 +358,40 @@ class PhonePeController extends Controller
         $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey) . "###" . $salt_index;
 
 
-
-        // Check if checksum exists
         if ($checksum) {
-            // Set request headers
+
             $headers = [
                 'Content-Type: application/json',
                 'X-VERIFY: ' . $checksum,
             ];
 
-            // Initialize cURL session
+
             $ch = curl_init();
 
-            // Set cURL options
+
             curl_setopt($ch, CURLOPT_URL, $this->base_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-            // Execute cURL request
             $response = curl_exec($ch);
 
-            // Check for cURL errors
             if ($curlError = curl_error($ch)) {
                 curl_close($ch);
                 return response()->json(['error' => $curlError], 500);
             }
-
-            // Close cURL session
             curl_close($ch);
 
-            // Decode JSON response
             $response = json_decode($response);
 
-            // print_r($encodedPayload);
-            // exit();
-
             if ($response->success == 1 && $response->code == 'PAYMENT_INITIATED') {
+
                 $paymentUrl = $response->data->instrumentResponse->redirectInfo->url;
+
                 return Redirect::away($paymentUrl);
             } else {
-                // Payment initiation failed
+
                 return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400), 400);
             }
         } else {
