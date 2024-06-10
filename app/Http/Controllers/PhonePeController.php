@@ -46,247 +46,6 @@ class PhonePeController extends Controller
 
 
 
-    // public function payment(Request $request)
-    // {
-    //     // Validate the request parameters
-    //     $validator = Validator::make($request->all(), [
-    //         'payment_id' => 'required|uuid'
-    //     ]);
-
-    //     // Check if validation fails
-    //     if ($validator->fails()) {
-    //         return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400, null, $this->error_processor($validator)), 400);
-    //     }
-
-    //     // Retrieve payment data based on the provided payment_id
-    //     $data = $this->payment::where(['id' => $request->input('payment_id'), 'is_paid' => 0])->first();
-
-    //     // Check if payment data exists
-    //     if (!$data) {
-    //         return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
-    //     }
-
-    //     // Extract business name from additional data or set a default value
-    //     $business_name = $data->additional_data ? json_decode($data->additional_data)->business_name ?? "my_business" : "my_business";
-
-    //     // Get system configuration values
-    //     $system_config = $this->config_values;
-
-    //     if(isset(json_decode($data->payer_information)->type)){
-
-    //         if (isset($data->payer_information) && json_decode($data->payer_information)->type === 'plan') {
-    //             $payer_details = Vendor::where("id", $data->payer_id)->first();
-    //         }
-    //     }
-    //     {
-    //         $payer_details = User::where("id", $data->payer_id)->first();
-
-    //     }
-    //     $phone_number = $payer_details ? $payer_details->phone : '';
-
-
-    //     // Remove leading '+91' from phone number if present
-    //     if (substr($phone_number, 0, 3) === '+91') {
-    //         $phone_number = substr($phone_number, 3);
-    //     }
-
-    //     // Prepare payload for PhonePe API
-    //     $payload = [
-    //         "merchantId" => $system_config->merchant_id,
-    //         "merchantTransactionId" => "YEHLO" . substr(md5($data->id), 0, 15),
-    //         "merchantUserId" => $data->payer_id,
-    //         "amount" => $data->payment_amount * 100,
-    //         "redirectUrl" => $system_config->redirect_url,
-    //         "redirectMode" => "REDIRECT",
-    //         "callbackUrl" => $system_config->callbackUrl,
-    //         "mobileNumber" => $phone_number,
-    //         "paymentInstrument" => [
-    //             "type" => "PAY_PAGE",
-    //         ],
-    //     ];
-
-    //     // Encode payload to base64
-    //     $encodedPayload = base64_encode(json_encode($payload));
-    //     $jsonData = json_encode(["request" => $encodedPayload]);
-
-    //     // Generate checksum
-    //     $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $system_config->salt_key) . "###" . $system_config->salt_index;
-
-    //     // Check if checksum exists
-    //     if ($checksum) {
-    //         // Set request headers
-    //         $headers = [
-    //             'Content-Type: application/json',
-    //             'Accept: application/json',
-    //             'X-VERIFY: ' . $checksum,
-    //         ];
-
-    //         // Initialize cURL session
-    //         $ch = curl_init();
-
-    //         // Set cURL options
-    //         curl_setopt($ch, CURLOPT_URL, $this->base_url);
-    //         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //         curl_setopt($ch, CURLOPT_POST, 1);
-    //         curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-    //         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-    //         // Execute cURL request
-    //         $response = curl_exec($ch);
-
-    //         // Check for cURL errors
-    //         if (curl_error($ch)) {
-    //             echo 'Error:' . curl_error($ch);
-    //         }
-
-    //         // Close cURL session
-    //         curl_close($ch);
-
-    //         // Decode JSON response
-    //         $response = json_decode($response);
-
-
-    //         // Check if payment initiated successfully
-    //         if ($response->success == 1 && $response->code == 'PAYMENT_INITIATED') {
-    //             $paymentUrl = $response->data->instrumentResponse->redirectInfo->url;
-    //             return Redirect::away($paymentUrl);
-    //            // Check transaction status
-    //             // $transactionStatus = $this->checkTransactionStatus($system_config->merchant_id, $payload['merchantTransactionId']);
-
-    //             // // Handle transaction status
-    //             // if ($transactionStatus == 'PAYMENT_SUCCESS') {
-
-
-    //             // } else {
-
-    //             //     return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400), 400);
-    //             // }
-    //         } else {
-    //             // Payment initiation failed
-    //             return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400), 400);
-    //         }
-    //     } else {
-    //         return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
-    //     }
-    // }
-
-    public function payment1(Request $request)
-    {
-        // Validate the request parameters
-        $validator = Validator::make($request->all(), [
-            'payment_id' => 'required|uuid'
-        ]);
-
-
-        // Check if validation fails
-        if ($validator->fails()) {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400, null, $this->error_processor($validator)), 400);
-        }
-
-        // Retrieve payment data based on the provided payment_id
-        $data = $this->payment::where(['id' => $request->input('payment_id'), 'is_paid' => 0])->first();
-
-        // Check if payment data exists
-        if (!$data) {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
-        }
-
-        // Extract business name from additional data or set a default value
-        $business_name = $data->additional_data ? json_decode($data->additional_data)->business_name ?? "my_business" : "my_business";
-
-        // Get system configuration values
-        $system_config = $this->config_values;
-
-        // Retrieve payer details
-        $payer_information = json_decode($data->payer_information);
-        $payer_details = null;
-
-        if (isset($payer_information->type) && $payer_information->type === 'plan') {
-            $payer_details = Vendor::where("id", $data->payer_id)->first();
-        } else {
-            $payer_details = User::where("id", $data->payer_id)->first();
-        }
-
-        $phone_number = $payer_details ? $payer_details->phone : '';
-
-
-        // Remove leading '+91' from phone number if present
-        if (substr($phone_number, 0, 3) === '+91') {
-            $phone_number = substr($phone_number, 3);
-        }
-
-        // Prepare payload for PhonePe API
-        $payload = [
-            "merchantId" => $system_config->merchant_id,
-            "merchantTransactionId" => "YEHLO" . substr(md5($data->id), 0, 15),
-            "merchantUserId" => $data->payer_id,
-            "amount" => $data->payment_amount * 100,
-            "redirectUrl" => $system_config->redirect_url,
-            "redirectMode" => "REDIRECT",
-            "callbackUrl" => $system_config->callbackUrl,
-            "mobileNumber" => $phone_number,
-            "paymentInstrument" => [
-                "type" => "PAY_PAGE",
-            ],
-        ];
-
-
-
-
-        // Encode payload to base64
-        $encodedPayload = base64_encode(json_encode($payload));
-        $jsonData = json_encode(["request" => $encodedPayload]);
-        // Generate checksum
-        $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $system_config->salt_key) . "###" . $system_config->salt_index;
-
-
-        // Check if checksum exists
-        if ($checksum) {
-            // Set request headers
-            $headers = [
-                'Content-Type: application/json',
-                'Accept: application/json',
-                'X-VERIFY: ' . $checksum,
-            ];
-
-            // Initialize cURL session
-            $ch = curl_init();
-
-            // Set cURL options
-            curl_setopt($ch, CURLOPT_URL, $this->base_url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-            // Execute cURL request
-            $response = curl_exec($ch);
-
-            // Check for cURL errors
-            if ($curlError = curl_error($ch)) {
-                curl_close($ch);
-                return response()->json(['error' => $curlError], 500);
-            }
-
-            // Close cURL session
-            curl_close($ch);
-
-            // Decode JSON response
-            $response = json_decode($response);
-            print_r($system_config);
-            exit();
-            if ($response->success == 1 && $response->code == 'PAYMENT_INITIATED') {
-                $paymentUrl = $response->data->instrumentResponse->redirectInfo->url;
-                return Redirect::away($paymentUrl);
-            } else {
-                // Payment initiation failed
-                return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400), 400);
-            }
-        } else {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
-        }
-    }
-
     public function payment(Request $request)
     {
         // Validate the request parameters
@@ -359,6 +118,7 @@ class PhonePeController extends Controller
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
+            'merchantOrderId' => "orderID879878",
             "mobileNumber" => $phone_number,
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
@@ -491,47 +251,11 @@ class PhonePeController extends Controller
 
 
 
-    // public function success(Request $request)
-    // {
-
-    //     // dd($request);
-
-    //     if ($request->code == 'PAYMENT_SUCCESS') {
-    //         $transactionId = $request->transactionId;
-    //         $merchantId = $request->merchantId;
-    //         $providerReferenceId = $request->providerReferenceId;
-    //         $merchantOrderId = $request->merchantOrderId;
-    //         $checksum = $request->checksum;
-    //         $status = $request->code;
-
-    //         //Transaction completed, You can add transaction details into database
-
-
-    //         $data = [
-    //             'providerReferenceId' => $providerReferenceId,
-    //             'checksum' => $checksum,
-
-    //         ];
-    //         if ($merchantOrderId != '') {
-    //             $data['merchantOrderId'] = $merchantOrderId;
-    //         }
-
-
-
-    //         return view('phonepe-success', compact('providerReferenceId', 'transactionId'));
-    //     } else {
-
-    //         //HANDLE YOUR ERROR MESSAGE HERE
-    //         dd('ERROR : ' . $request->code . ', Please Try Again Later.');
-    //     }
-
-    //     // return view('phonepe-success');
-    // }
 
     public function success(Request $request)
     {
         // Check the content of the request for debugging
-         dd($request->all());
+        // dd($request->all());
 
         if ($request->code == 'PAYMENT_SUCCESS') {
             $transactionId = $request->transactionId ?? 'N/A';
@@ -541,6 +265,8 @@ class PhonePeController extends Controller
             $checksum = $request->checksum ?? 'N/A';
             $status = $request->code;
 
+
+            dd($merchantOrderId);
             //Transaction completed, You can add transaction details into the database
 
             $data = [
