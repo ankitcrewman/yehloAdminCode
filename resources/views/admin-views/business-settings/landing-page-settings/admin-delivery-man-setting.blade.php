@@ -95,8 +95,9 @@
                                                 <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
                                                     alt="">
                                             </span></label>
-                                        <input id="home_tile" type="text"  name="delivery_man_header_title[]"
-                                            class="form-control" value="{{ $delivery_man_header_title?->getRawOriginal('value') }}"
+                                        <input id="home_tile" type="text" name="delivery_man_header_title[]"
+                                            class="form-control"
+                                            value="{{ $delivery_man_header_title?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.title_here...') }}">
                                         <br>
                                         <label for="home_sub_title" class="form-label">{{ translate('Sub Title') }}
@@ -106,8 +107,9 @@
                                                 <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
                                                     alt="">
                                             </span></label>
-                                        <input id="home_sub_title" type="text"  name="delivery_man_sub_header_title[]"
-                                            class="form-control" value="{{ $delivery_man_sub_header_title?->getRawOriginal('value') }}"
+                                        <input id="home_sub_title" type="text" name="delivery_man_sub_header_title[]"
+                                            class="form-control"
+                                            value="{{ $delivery_man_sub_header_title?->getRawOriginal('value') }}"
                                             placeholder="{{ translate('messages.sub_title_here...') }}">
                                         <br>
                                         {{-- <label for="home-heading" class="form-label">
@@ -324,7 +326,7 @@
 
                 {{-- yehlo purchase --}}
 
-                 {{-- <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-purchase') }}"
+                {{-- <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'seller-purchase') }}"
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     <h5 class="card-title mb-3">
@@ -534,7 +536,99 @@
                 </form>
 
                 {{-- Home Footer --}}
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-seller-link') }}"
+
+
+                {{-- delivery-partner-list --}}
+
+                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'deliveryman-list') }}"
+                    method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <h5 class="card-title mb-3">
+                        <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
+                        <span>Delivery List</span>
+                    </h5>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row g-4">
+                                @if ($language)
+                                    <div class="col-md-6 lang_form default-form">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="title" class="form-label">{{ translate('Title') }}
+                                                    ({{ translate('messages.default') }})<span
+                                                        class="form-label-secondary" data-toggle="tooltip"
+                                                        data-placement="right"
+                                                        data-original-title="{{ translate('Write_the_title_within_20_characters') }}">
+                                                        <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                            alt="">
+                                                    </span></label>
+                                                <input id="title" type="text" maxlength="20" name="title[]"
+                                                    class="form-control" placeholder="{{ translate('Ex_:_Shopping') }}">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="sub_title" class="form-label">{{ translate('Sub Title') }}
+                                                    ({{ translate('messages.default') }})<span
+                                                        class="form-label-secondary" data-toggle="tooltip"
+                                                        data-placement="right"
+                                                        data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                        <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                            alt="">
+                                                    </span></label>
+                                                <input id="sub_title" type="text" maxlength="80" name="sub_title[]"
+                                                    class="form-control"
+                                                    placeholder="{{ translate('Ex_:_Best_shopping_experience') }}">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 lang_form default-form">
+                                        <div class="row g-3">
+                                            <div class="col-12">
+                                                <label for="sub_title" class="form-label">Sub Title 2
+                                                    ({{ translate('messages.default') }})<span
+                                                        class="form-label-secondary" data-toggle="tooltip"
+                                                        data-placement="right"
+                                                        data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                        <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                            alt="">
+                                                    </span></label>
+                                                <input id="sub_title" type="text" maxlength="80" name="sub_title2[]"
+                                                    class="form-control"
+                                                    placeholder="{{ translate('Ex_:_Best_shopping_experience') }}">
+                                            </div>
+                                            <div class="col-12">
+                                                <label for="sub_title" class="form-label">Sub Title 3
+                                                    ({{ translate('messages.default') }})<span
+                                                        class="form-label-secondary" data-toggle="tooltip"
+                                                        data-placement="right"
+                                                        data-original-title="{{ translate('Write_the_title_within_80_characters') }}">
+                                                        <img src="{{ asset('public/assets/admin/img/info-circle.svg') }}"
+                                                            alt="">
+                                                    </span></label>
+                                                <input id="sub_title" type="text" maxlength="80" name="sub_title3[]"
+                                                    class="form-control"
+                                                    placeholder="{{ translate('Ex_:_Best_shopping_experience') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="lang[]" value="default">
+                                @else
+                                @endif
+
+                            </div>
+                            <div class="btn--container justify-content-end mt-3">
+                                <button type="reset" class="btn btn--reset">{{ translate('Reset') }}</button>
+                                <button type="submit" class="btn btn--primary mb-2">{{ translate('Add') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {{-- delivery-partner-list --}}
+
+
+
+                {{-- <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-seller-link') }}"
                     method="POST" enctype="multipart/form-data">
                     @php($seller_app_links = \App\Models\DataSetting::where(['key' => 'seller_app_earning_links', 'type' => 'admin_landing_page'])->first())
                     @php($seller_app_links = isset($seller_app_links->value) ? json_decode($seller_app_links->value, true) : null)
@@ -667,7 +761,8 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                </form> --}}
+
                 <form id="earning_seller_img_form" action="{{ route('admin.remove_image') }}" method="post">
                     @csrf
                     <input type="hidden" name="id" value="{{ $earning_seller_image?->id }}">
@@ -676,148 +771,7 @@
                     <input type="hidden" name="image_path" value="earning">
                     <input type="hidden" name="field_name" value="value">
                 </form>
-                <form action="{{ route('admin.business-settings.admin-landing-page-settings', 'earning-dm-link') }}"
-                    method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @php($dm_app_links = \App\Models\DataSetting::where(['key' => 'dm_app_earning_links', 'type' => 'admin_landing_page'])->first())
-                    @php($dm_app_links = isset($dm_app_links->value) ? json_decode($dm_app_links->value, true) : null)
 
-                    <h5 class="card-title mt-3 mb-3">
-                        <span class="card-header-icon mr-2"><i class="tio-settings-outlined"></i></span>
-                        <span>{{ translate('Download_Deliveryman_App_Section') }}</span>
-                    </h5>
-                    <div class="card">
-                        <div class="card-body">
-
-                            <div class="row g-3">
-                                <div class="col-md-7">
-                                    <label class="form-label d-block mb-2">
-                                        {{ translate('Banner') }} <span
-                                            class="text--primary">{{ translate('(size: 3:1)') }}</span>
-                                    </label>
-                                    <label class="upload-img-3 m-0 d-block">
-                                        <div class="position-relative">
-                                            <div class="img">
-
-                                                <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
-                                                    $earning_delivery_image['value'] ?? '',
-                                                    asset('storage/app/public/earning/') . '/' . $earning_delivery_image['value'],
-                                                    asset('/public/assets/admin/img/upload-4.png'),
-                                                    'earning/',
-                                                ) }}"
-                                                    data-onerror-image="{{ asset('/public/assets/admin/img/upload-4.png') }}"
-                                                    class="vertical-img mw-100 vertical onerror-image" alt="">
-                                            </div>
-                                            <input type="file" name="earning_delivery_image" hidden>
-                                            @if (isset($earning_delivery_image['value']))
-                                                <span id="earning_delivery_img" class="remove_image_button  remove-image"
-                                                    data-id="earning_delivery_img"
-                                                    data-title="{{ translate('Warning!') }}"
-                                                    data-text="<p>{{ translate('Are_you_sure_you_want_to_remove_this_image_?') }}</p>">
-                                                    <i class="tio-clear"></i></span>
-                                            @endif
-                                        </div>
-                                    </label>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5 class="card-title mb-2">
-                                        <img src="{{ asset('public/assets/admin/img/playstore.png') }}" class="mr-2"
-                                            alt="">
-                                        {{ translate('Playstore Button') }}
-                                    </h5>
-                                    <div class="__bg-F8F9FC-card">
-                                        <div class="form-group mb-md-0">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <label for="playstore_url_dm" class="form-label text-capitalize m-0">
-                                                    {{ translate('Download Link') }}
-                                                    <span class="input-label-secondary text--title" data-toggle="tooltip"
-                                                        data-placement="right"
-                                                        data-original-title="{{ translate('When_disabled,_the_Play_Store_download_button_will_be_hidden_from_the_landing_page') }}">
-                                                        <i class="tio-info-outined"></i>
-                                                    </span>
-                                                </label>
-                                                <label class="toggle-switch toggle-switch-sm m-0">
-                                                    <input type="checkbox" name="playstore_url_status"
-                                                        data-id="play-store-dm-status" data-type="toggle"
-                                                        data-image-on="{{ asset('/public/assets/admin/img/modal/play-store-on.png') }}"
-                                                        data-image-off="{{ asset('/public/assets/admin/img/modal/play-store-off.png') }}"
-                                                        data-title-on="{{ translate('Want_to_enable_the_Play_Store_button_for_Deliveryman_App?') }}"
-                                                        data-title-off="{{ translate('Want_to_disable_the_Play_Store_button_for_Deliveryman_App?') }}"
-                                                        data-text-on="<p>{{ translate('If_enabled,_the_Deliveryman_app_download_button_will_be_visible_on_the_Landing_page.') }}</p>"
-                                                        data-text-off="<p>{{ translate('If_disabled,_this_button_will_be_hidden_from_the_landing_page.') }}</p>"
-                                                        id="play-store-dm-status"
-                                                        class="status toggle-switch-input dynamic-checkbox-toggle"
-                                                        value="1"
-                                                        {{ isset($dm_app_links) && $dm_app_links['playstore_url_status'] ? 'checked' : '' }}>
-                                                    <span class="toggle-switch-label text mb-0">
-                                                        <span class="toggle-switch-indicator"></span>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            <input id="playstore_url_dm" type="text"
-                                                placeholder="{{ translate('Ex: https://play.google.com/store/apps') }}"
-                                                class="form-control h--45px" name="playstore_url"
-                                                value="{{ $dm_app_links['playstore_url'] ?? '' }}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h5 class="card-title mb-2">
-                                        <img src="{{ asset('public/assets/admin/img/ios.png') }}" class="mr-2"
-                                            alt="">
-                                        {{ translate('App Store Button') }}
-                                    </h5>
-                                    <div class="__bg-F8F9FC-card">
-                                        <div class="form-group mb-md-0">
-                                            <div class="d-flex justify-content-between align-items-center mb-2">
-                                                <label for="apple_store_url_dm" class="form-label text-capitalize m-0">
-                                                    {{ translate('Download Link') }}
-                                                    <span class="input-label-secondary text--title" data-toggle="tooltip"
-                                                        data-placement="right"
-                                                        data-original-title="{{ translate('When_disabled,_the_App_Store_download_button_will_be_hidden_from_the_landing_page') }}">
-                                                        <i class="tio-info-outined"></i>
-                                                    </span>
-                                                </label>
-                                                <label class="toggle-switch toggle-switch-sm m-0">
-                                                    <input type="checkbox" name="apple_store_url_status"
-                                                        data-id="apple-dm-status" data-type="toggle"
-                                                        data-image-on="{{ asset('/public/assets/admin/img/modal/apple-on.png') }}"
-                                                        data-image-off="{{ asset('/public/assets/admin/img/modal/apple-off.png') }}"
-                                                        data-title-on="{{ translate('Want_to_enable_the_App_Store_button_for_Deliveryman_App?') }}"
-                                                        data-title-off="{{ translate('Want_to_disable_the_App_Store_button_for_Deliveryman_App?') }}"
-                                                        data-text-on="<p>{{ translate('If_enabled,_the_Deliveryman_app_download_button_will_be_visible_on_the_Landing_page.') }}</p>"
-                                                        data-text-off="<p>{{ translate('If_disabled,_this_button_will_be_hidden_from_the_landing_page.') }}</p>"
-                                                        id="apple-dm-status"
-                                                        class="status toggle-switch-input dynamic-checkbox-toggle"
-                                                        value="1"
-                                                        {{ isset($dm_app_links) && $dm_app_links['apple_store_url_status'] ? 'checked' : '' }}>
-                                                    <span class="toggle-switch-label text mb-0">
-                                                        <span class="toggle-switch-indicator"></span>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            <input id="apple_store_url_dm" type="text"
-                                                placeholder="{{ translate('Ex: https://www.apple.com/app-store/') }}"
-                                                class="form-control h--45px" name="apple_store_url"
-                                                value="{{ $dm_app_links['apple_store_url'] ?? '' }}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="btn--container justify-content-end mt-3">
-                                <button type="reset" class="btn btn--reset">{{ translate('Reset') }}</button>
-                                <button type="submit" class="btn btn--primary mb-2">{{ translate('Save') }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <form id="earning_delivery_img_form" action="{{ route('admin.remove_image') }}" method="post">
-                    @csrf
-                    <input type="hidden" name="id" value="{{ $earning_delivery_image?->id }}">
-                    <input type="hidden" name="model_name" value="DataSetting">
-                    <input type="hidden" name="image_path" value="earning">
-                    <input type="hidden" name="field_name" value="value">
-                </form>
 
             </div>
         </div>

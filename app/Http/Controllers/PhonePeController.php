@@ -38,7 +38,7 @@ class PhonePeController extends Controller
         }
 
         if ($config) {
-            $this->base_url = ($config->mode == 'test') ? 'https://api.phonepe.com/apis/hermes/pg/v1/pay' : 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
+            $this->base_url = ($config->mode == 'test') ? 'https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay' : 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
         }
 
         $this->payment = $payment;
@@ -331,27 +331,46 @@ class PhonePeController extends Controller
             $phone_number = substr($phone_number, 3);
         }
 
+        $redirect_url = route("phonepe.confirm");
+
         // Prepare payload for PhonePe API
+        // $payload = [
+        //     "merchantId" => $system_config->merchant_id,
+        //     "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
+        //     "merchantUserId" => $payer_details->id,
+        //     // "amount" => $data->payment_amount * 100,
+        //     "amount" => 1,
+        //     "redirectUrl" => $system_config->redirect_url,
+        //     "redirectMode" => "REDIRECT",
+        //     "callbackUrl" => $system_config->callbackUrl,
+        //     "mobileNumber" => $phone_number,
+        //     "paymentInstrument" => ["type" => "PAY_PAGE"],
+        // ];
+
+
+
+
         $payload = [
-            "merchantId" => $system_config->merchant_id,
+            "merchantId" => "PGTESTPAYUAT86",
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
             "amount" => 1,
-            "redirectUrl" => $system_config->redirect_url,
-            "redirectMode" => "REDIRECT",
-            "callbackUrl" => $system_config->callbackUrl,
+            "redirectUrl" => $redirect_url,
+            "redirectMode" => "POST",
+            "callbackUrl" => $redirect_url,
             "mobileNumber" => $phone_number,
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
-        // print_r($payload);
-        // exit();
+        // dd($payload);
+
 
         // Encode payload to base64
         $encodedPayload = base64_encode(json_encode($payload));
         $jsonData = json_encode(["request" => $encodedPayload]);
 
-        $saltKey = $system_config->salt_key;
+        // $saltKey = $system_config->salt_key;
+        $saltKey = "96434309-7796-489d-8924-ab56988a6076";
 
         $salt_index = $system_config->salt_index;
         // Generate checksum
@@ -371,6 +390,8 @@ class PhonePeController extends Controller
 
             curl_setopt($ch, CURLOPT_URL, $this->base_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_ENCODING, 1);
+
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -470,10 +491,76 @@ class PhonePeController extends Controller
 
 
 
+    // public function success(Request $request)
+    // {
+
+    //     // dd($request);
+
+    //     if ($request->code == 'PAYMENT_SUCCESS') {
+    //         $transactionId = $request->transactionId;
+    //         $merchantId = $request->merchantId;
+    //         $providerReferenceId = $request->providerReferenceId;
+    //         $merchantOrderId = $request->merchantOrderId;
+    //         $checksum = $request->checksum;
+    //         $status = $request->code;
+
+    //         //Transaction completed, You can add transaction details into database
+
+
+    //         $data = [
+    //             'providerReferenceId' => $providerReferenceId,
+    //             'checksum' => $checksum,
+
+    //         ];
+    //         if ($merchantOrderId != '') {
+    //             $data['merchantOrderId'] = $merchantOrderId;
+    //         }
+
+
+
+    //         return view('phonepe-success', compact('providerReferenceId', 'transactionId'));
+    //     } else {
+
+    //         //HANDLE YOUR ERROR MESSAGE HERE
+    //         dd('ERROR : ' . $request->code . ', Please Try Again Later.');
+    //     }
+
+    //     // return view('phonepe-success');
+    // }
+
     public function success(Request $request)
     {
-        dd("sucess");
+        // Check the content of the request for debugging
+         dd($request->all());
+
+        if ($request->code == 'PAYMENT_SUCCESS') {
+            $transactionId = $request->transactionId ?? 'N/A';
+            $merchantId = $request->merchantId ?? 'N/A';
+            $providerReferenceId = $request->providerReferenceId ?? 'N/A';
+            $merchantOrderId = $request->has('merchantOrderId') ? $request->merchantOrderId : 'N/A';
+            $checksum = $request->checksum ?? 'N/A';
+            $status = $request->code;
+
+            //Transaction completed, You can add transaction details into the database
+
+            $data = [
+                'providerReferenceId' => $providerReferenceId,
+                'checksum' => $checksum,
+            ];
+
+            if ($merchantOrderId != 'N/A') {
+                $data['merchantOrderId'] = $merchantOrderId;
+            }
+
+            // Save $data to the database here if needed
+
+            return view('phonepe-success', compact('providerReferenceId', 'transactionId', 'merchantOrderId'));
+        } else {
+            // HANDLE YOUR ERROR MESSAGE HERE
+            return "cdkvjdkF";
+        }
     }
+
 
 
     public function cancel(Request $request)

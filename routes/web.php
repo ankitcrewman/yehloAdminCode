@@ -127,8 +127,9 @@ if (!$is_published) {
         Route::group(['prefix' => 'phonepe', 'as' => 'phonepe.'], function () {
             Route::get('payment', [PhonePeController::class, 'payment'])->name('payment');
 
-            Route::any('success', [PhonePeController::class, 'success'])->name('success')
-            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
+            Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
+
+         ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
         Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
             ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
 

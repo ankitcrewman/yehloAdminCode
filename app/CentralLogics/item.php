@@ -386,7 +386,8 @@ class ProductLogic
         })
         ->whereIn('id',$item_categories)
         ->orderBy('priority','desc')->get();
-
+        echo $categories;
+        exit();
         return [
             'total_size' => $paginator->count(),
             'limit' => $limit,
