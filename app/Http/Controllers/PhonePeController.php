@@ -118,8 +118,8 @@ class PhonePeController extends Controller
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
-            'merchantOrderId' => "orderID879878",
-            "mobileNumber" => $phone_number,
+            // 'merchantOrderId' => "orderID879878",
+            "mobileNumber" => "7988706806",
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
         //  dd($payload);
@@ -250,7 +250,10 @@ class PhonePeController extends Controller
     public function success(Request $request)
     {
         // Check the content of the request for debugging
-        // dd($request->all());
+        // echo "<pre>";
+        // echo print_r($request->all());
+        // exit();
+
 
         if ($request->code == 'PAYMENT_SUCCESS') {
             $transactionId = $request->transactionId ?? 'N/A';
