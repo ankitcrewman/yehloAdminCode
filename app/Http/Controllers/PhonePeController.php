@@ -122,7 +122,7 @@ class PhonePeController extends Controller
             "mobileNumber" => $phone_number,
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
-        // dd($payload);
+        //  dd($payload);
 
 
         // Encode payload to base64
@@ -146,7 +146,6 @@ class PhonePeController extends Controller
 
 
             $ch = curl_init();
-
 
             curl_setopt($ch, CURLOPT_URL, $this->base_url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -197,13 +196,11 @@ class PhonePeController extends Controller
     // Function to check transaction status
     public function checkTransactionStatus($merchantId, $transactionId)
     {
-        // Get system configuration values
+
         $system_config = $this->config_values;
 
-        // Generate checksum
         $checksum = hash('sha256', "/v3/transaction/{$merchantId}/{$transactionId}/status" . $system_config->salt_key) . "###" . $system_config->salt_index;
 
-        // Check if checksum exists
         if ($checksum) {
             // Set request headers
             $headers = [
@@ -211,8 +208,6 @@ class PhonePeController extends Controller
                 'X-VERIFY: ' . $checksum,
                 'X-CLIENT-ID: ' . $merchantId,
             ];
-
-
 
             // Initialize cURL session
             $ch = curl_init();
@@ -266,9 +261,8 @@ class PhonePeController extends Controller
             $status = $request->code;
 
 
-            dd($merchantOrderId);
+            // dd($merchantOrderId);
             //Transaction completed, You can add transaction details into the database
-
             $data = [
                 'providerReferenceId' => $providerReferenceId,
                 'checksum' => $checksum,

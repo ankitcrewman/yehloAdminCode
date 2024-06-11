@@ -1538,6 +1538,7 @@
   'Twitter' => 'Twitter',
   'LinkedIn' => 'LinkedIn',
   'Pinterest' => 'Pinterest',
+
   'social_media_link' => 'Social media link',
   'link' => 'Link',
   'social_media_required' => 'Social media required',
@@ -4433,4 +4434,19 @@
   '
                                                                                                                                                                                                                                                                 messages.system ' => '
                                                                                                                                                                                                                                                                 messages.system ',
+  '
+                                                                                                                                                                                                                                                                                    messages.zone ' => '
+                                                                                                                                                                                                                                                                                    messages.zone ',
+  '
+                                                                                                                                                                                                                                                                                        messages.setting ' => '
+                                                                                                                                                                                                                                                                                        messages.setting ',
+  '
+                                                                                                                                                                                                                                                                                        messages.pages ' => '
+                                                                                                                                                                                                                                                                                        messages.pages ',
+  '
+                                                                                                                                                                                                                                                                                        messages .3 rd_party ' => '
+                                                                                                                                                                                                                                                                                        messages .3 rd party ',
+  '
+                                                                                                                                                                                                                                                                                        messages.system ' => '
+                                                                                                                                                                                                                                                                                        messages.system ',
 );
