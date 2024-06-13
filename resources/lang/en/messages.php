@@ -1538,7 +1538,6 @@
   'Twitter' => 'Twitter',
   'LinkedIn' => 'LinkedIn',
   'Pinterest' => 'Pinterest',
-
   'social_media_link' => 'Social media link',
   'link' => 'Link',
   'social_media_required' => 'Social media required',
@@ -4449,4 +4448,14 @@
   '
                                                                                                                                                                                                                                                                                         messages.system ' => '
                                                                                                                                                                                                                                                                                         messages.system ',
+  'Electronics' => 'Electronics',
+  'Home & Kitchen' => 'Home & Kitchen',
+  'Pet Care' => 'Pet Care',
+  'Ayurveda' => 'Ayurveda',
+  'Fashion' => 'Fashion',
+  'Mobiles' => 'Mobiles',
+  'Appliances' => 'Appliances',
+  'Sports Fitness' => 'Sports Fitness',
+  'Pet Supplies' => 'Pet Supplies',
+  'Yehlo Dost' => 'Yehlo Dost',
 );
