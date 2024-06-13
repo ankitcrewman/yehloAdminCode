@@ -215,6 +215,7 @@ class ItemController extends Controller
             }
         }
         //combinations end
+
         $item->food_variations = json_encode($food_variations);
         $item->price = $request->price;
         $item->image =  $request->has('image') ? Helpers::upload('product/', 'png', $request->file('image')) : $newFileName ?? null;

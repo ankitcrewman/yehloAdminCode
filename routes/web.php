@@ -73,9 +73,10 @@ Route::get('payment-cancel', 'PaymentController@cancel')->name('payment-cancel')
 
 $is_published = 0;
 try {
-$full_data = include('Modules/Gateways/Addon/info.php');
-$is_published = $full_data['is_published'] == 1 ? 1 : 0;
-} catch (\Exception $exception) {}
+    $full_data = include('Modules/Gateways/Addon/info.php');
+    $is_published = $full_data['is_published'] == 1 ? 1 : 0;
+} catch (\Exception $exception) {
+}
 
 
 if (!$is_published) {
@@ -127,12 +128,11 @@ if (!$is_published) {
         Route::group(['prefix' => 'phonepe', 'as' => 'phonepe.'], function () {
             Route::get('payment', [PhonePeController::class, 'payment'])->name('payment');
 
-            Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
-
-         ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
-        Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
-            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
-
+            // Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
+            Route::match(['get', 'post'], 'confirm/{merchantOrderId}', [PhonePeController::class, 'success'])->name('confirm')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
+            Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
         });
 
         //SENANG-PAY
@@ -145,7 +145,7 @@ if (!$is_published) {
         Route::group(['prefix' => 'paytm', 'as' => 'paytm.'], function () {
             Route::get('pay', [PaytmController::class, 'payment']);
             Route::any('response', [PaytmController::class, 'callback'])->name('response')
-            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
         });
 
         //FLUTTERWAVE

@@ -489,6 +489,8 @@ class ConfigController extends Controller
                         $query->where('starting_coverage_area', '>=', $distance_data);
                     });
             })->orderBy('starting_coverage_area')->first();
+            echo json_encode($data);
+            exit();
 
         $extra_charges = (float) (isset($data) ? $data->extra_charges  : 0);
         return response()->json($extra_charges, 200);
@@ -664,7 +666,7 @@ class ConfigController extends Controller
 
                 'seller_footer_heading' => (isset($settings['seller_footer_heading']))  ? $settings['seller_footer_heading'] : null,
                 'seller_footer_sub_heading' => (isset($settings['seller_footer_sub_heading']))  ? $settings['seller_footer_sub_heading'] : null,
-                'footer_seller_image' => (isset($settings['footer_seller_image']))  ? asset('storage/app/public/earning/' .$settings['footer_seller_image']) : null,
+                'footer_seller_image' => (isset($settings['footer_seller_image']))  ? asset('storage/app/public/earning/' . $settings['footer_seller_image']) : null,
                 'seller_purchase' => (isset($settings['seller_purchase']))  ? $settings['seller_purchase'] : null,
                 'seller_description' => (isset($settings['seller_description']))  ? $settings['seller_description'] : null,
 

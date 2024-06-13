@@ -89,8 +89,8 @@ class PhonePeController extends Controller
         if (strpos($phone_number, '+91') === 0) {
             $phone_number = substr($phone_number, 3);
         }
-
-        $redirect_url = route("phonepe.confirm");
+        $merchantOrderId = "orderID879878";
+        $redirect_url = route("phonepe.confirm", ["merchantOrderId" => $merchantOrderId]);
 
         // Prepare payload for PhonePe API
         // $payload = [
@@ -247,13 +247,13 @@ class PhonePeController extends Controller
 
 
 
-    public function success(Request $request)
+    public function success(Request $request , $merchantOrderId)
     {
         // Check the content of the request for debugging
-        // echo "<pre>";
+        echo "<pre>";
         // echo print_r($request->all());
-        // exit();
-
+        echo print_r($merchantOrderId);
+        exit();
 
         if ($request->code == 'PAYMENT_SUCCESS') {
             $transactionId = $request->transactionId ?? 'N/A';
