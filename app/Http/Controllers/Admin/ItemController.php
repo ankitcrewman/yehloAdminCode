@@ -33,6 +33,9 @@ use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Vendor;
+use App\Models\Plan;
+use App\Models\PlanPurchaseRequest;
 
 class ItemController extends Controller
 {
@@ -125,6 +128,7 @@ class ItemController extends Controller
             }
         }
 
+
         $item = new Item;
         $item->name = $request->name[array_search('default', $request->lang)];
 
@@ -196,7 +200,6 @@ class ItemController extends Controller
                 array_push($variations, $temp);
             }
         }
-        //combinations end
 
         if (!empty($request->file('item_images'))) {
             foreach ($request->item_images as $img) {
@@ -241,6 +244,9 @@ class ItemController extends Controller
             }
         }
 
+
+
+
         $item->food_variations = json_encode($food_variations);
         $item->variations = json_encode($variations);
         $item->price = $request->price;
@@ -262,21 +268,93 @@ class ItemController extends Controller
         }
         $item->stock = $request->current_stock ?? 0;
         $item->images = $images;
-        dd($item);
-        $item->save();
-        $item->tags()->sync($tag_ids);
-        if ($module_type == 'pharmacy') {
-            $item_details = new PharmacyItemDetails();
-            $item_details->item_id = $item->id;
-            $item_details->common_condition_id = $request->condition_id;
-            $item_details->is_basic = $request->basic ?? 0;
-            $item_details->save();
+
+
+        $store_details = Store::where("id", $request->store_id)->first();
+
+
+        if ($store_details->phone) {
+            $paid_plan = PlanPurchaseRequest::where("mobile", $store_details->phone)->first();
+
+            if (!$paid_plan->is_purchased) {
+
+                $validator->getMessageBag()->add('name', "Plan is required.");
+                return response()->json(['errors' => Helpers::error_processor($validator)]);
+            } else {
+
+                if (!empty(json_decode($item->choice_options, true))) {
+
+                    // dd("product Variation");
+                    $item->save();
+                    $item->tags()->sync($tag_ids);
+                    if ($module_type == 'pharmacy') {
+                        $item_details = new PharmacyItemDetails();
+                        $item_details->item_id = $item->id;
+                        $item_details->common_condition_id = $request->condition_id;
+                        $item_details->is_basic = $request->basic ?? 0;
+                        $item_details->save();
+                    }
+
+                    Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+                    Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+                    return response()->json(['success' => translate('messages.product_added_successfully')], 200);
+                } else {
+
+
+
+                    $plan_limit = Plan::where('id', $paid_plan->plan_id)->first();
+
+                    $current_product_count = Item::where('store_id', $store_details->id)->count();
+
+                    // Compare current product count with plan limit
+                    if ($current_product_count >= $plan_limit->product_limit) {
+                        return response()->json(['errors' => ['message' => 'Plan limit reached. Please buy a new plan to add more items.']], 403);
+                    }
+
+                    // dd("Product Only");
+                    $item->save();
+                    $item->tags()->sync($tag_ids);
+                    if ($module_type == 'pharmacy') {
+                        $item_details = new PharmacyItemDetails();
+                        $item_details->item_id = $item->id;
+                        $item_details->common_condition_id = $request->condition_id;
+                        $item_details->is_basic = $request->basic ?? 0;
+                        $item_details->save();
+                    }
+
+                    Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+                    Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+                    return response()->json(['success' => translate('messages.product_added_successfully')], 200);
+                }
+            }
+
+            // dd($paid_plan->is_purchased);
+        } else {
+            $validator->getMessageBag()->add('name', 'Vendor Details Not Found');
+            return response()->json(['errors' => Helpers::error_processor($validator)]);
         }
 
-        Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
-        Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
 
-        return response()->json(['success' => translate('messages.product_added_successfully')], 200);
+
+
+
+
+        // $item->save();
+        // $item->tags()->sync($tag_ids);
+        // if ($module_type == 'pharmacy') {
+        //     $item_details = new PharmacyItemDetails();
+        //     $item_details->item_id = $item->id;
+        //     $item_details->common_condition_id = $request->condition_id;
+        //     $item_details->is_basic = $request->basic ?? 0;
+        //     $item_details->save();
+        // }
+
+        // Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+        // Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+        // return response()->json(['success' => translate('messages.product_added_successfully')], 200);
     }
 
     public function view($id)
@@ -523,22 +601,94 @@ class ItemController extends Controller
                 info($e->getMessage());
             }
         }
-        $item->save();
-        $item->tags()->sync($tag_ids);
-        if ($item->module->module_type == 'pharmacy') {
-            DB::table('pharmacy_item_details')
-                ->updateOrInsert(
-                    ['item_id' => $item->id],
-                    [
-                        'common_condition_id' => $request->condition_id,
-                        'is_basic' => $request->basic ?? 0,
-                    ]
-                );
-        }
-        Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
-        Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
 
-        return response()->json(['success' => translate('messages.product_updated_successfully')], 200);
+
+        $store_details = Store::where("id", $request->store_id)->first();
+
+        if ($store_details->phone) {
+            $paid_plan = PlanPurchaseRequest::where("mobile", $store_details->phone)->first();
+
+            if (!$paid_plan->is_purchased) {
+
+                $validator->getMessageBag()->add('name', "Plan is required.");
+                return response()->json(['errors' => Helpers::error_processor($validator)]);
+            } else {
+
+                if (!empty(json_decode($item->choice_options, true))) {
+
+                    // dd("product Variation");
+                    $item->save();
+                    $item->tags()->sync($tag_ids);
+                    if ($item->module->module_type == 'pharmacy') {
+                        DB::table('pharmacy_item_details')
+                            ->updateOrInsert(
+                                ['item_id' => $item->id],
+                                [
+                                    'common_condition_id' => $request->condition_id,
+                                    'is_basic' => $request->basic ?? 0,
+                                ]
+                            );
+                    }
+                    Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+                    Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+                    return response()->json(['success' => translate('messages.product_updated_successfully')], 200);
+                } else {
+
+
+
+                    $plan_limit = Plan::where('id', $paid_plan->plan_id)->first();
+
+                    $current_product_count = Item::where('store_id', $store_details->id)->count();
+
+                    // Compare current product count with plan limit
+                    if ($current_product_count >= $plan_limit->product_limit) {
+                        return response()->json(['errors' => ['message' => 'Plan limit reached. Please buy a new plan to add more items.']], 403);
+                    }
+
+                    // dd("Product Only");
+                    $item->save();
+                    $item->tags()->sync($tag_ids);
+                    if ($item->module->module_type == 'pharmacy') {
+                        DB::table('pharmacy_item_details')
+                            ->updateOrInsert(
+                                ['item_id' => $item->id],
+                                [
+                                    'common_condition_id' => $request->condition_id,
+                                    'is_basic' => $request->basic ?? 0,
+                                ]
+                            );
+                    }
+                    Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+                    Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+                    return response()->json(['success' => translate('messages.product_updated_successfully')], 200);
+                }
+            }
+
+            // dd($paid_plan->is_purchased);
+        } else {
+            $validator->getMessageBag()->add('name', 'Vendor Details Not Found');
+            return response()->json(['errors' => Helpers::error_processor($validator)]);
+        }
+
+
+        // $item->save();
+        // $item->tags()->sync($tag_ids);
+        // if ($item->module->module_type == 'pharmacy') {
+        //     DB::table('pharmacy_item_details')
+        //         ->updateOrInsert(
+        //             ['item_id' => $item->id],
+        //             [
+        //                 'common_condition_id' => $request->condition_id,
+        //                 'is_basic' => $request->basic ?? 0,
+        //             ]
+        //         );
+        // }
+        // Helpers::add_or_update_translations(request: $request, key_data: 'name', name_field: 'name', model_name: 'Item', data_id: $item->id, data_value: $item->name);
+        // Helpers::add_or_update_translations(request: $request, key_data: 'description', name_field: 'description', model_name: 'Item', data_id: $item->id, data_value: $item->description);
+
+        // return response()->json(['success' => translate('messages.product_updated_successfully')], 200);
     }
 
     public function delete(Request $request)

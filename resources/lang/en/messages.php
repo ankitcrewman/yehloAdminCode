@@ -4458,4 +4458,10 @@
   'Sports Fitness' => 'Sports Fitness',
   'Pet Supplies' => 'Pet Supplies',
   'Yehlo Dost' => 'Yehlo Dost',
+  'attribute_added_successfully' => 'Attribute added successfully',
+  'condition_added_successfully' => 'Condition added successfully',
+  'Discount amount can\'t be greater than 100%
+' => 'Discount amount can t be greater than 100%
+',
+  'Homeopathy' => 'Homeopathy',
 );
