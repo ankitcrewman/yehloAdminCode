@@ -365,6 +365,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
             Route::get('discounted', 'ItemController@get_discounted_products');
             Route::get('set-menu', 'ItemController@get_set_menus');
             Route::get('search', 'ItemController@get_searched_products');
+            Route::get('combined-data', 'ItemController@get_combined_data');
             Route::get('search-suggestion', 'ItemController@get_searched_products_suggestion');
             Route::get('details/{id}', 'ItemController@get_product');
             Route::get('related-items/{item_id}', 'ItemController@get_related_products');

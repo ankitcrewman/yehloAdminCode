@@ -622,33 +622,173 @@ class ItemController extends Controller
         }
 
 
-        if ($request['vendor']->stores[0]->module->module_type == 'pharmacy') {
-            DB::table('pharmacy_item_details')
-                ->updateOrInsert(
-                    ['item_id' => $p->id],
-                    [
-                        'common_condition_id' => $request->condition_id,
-                        'is_basic' => $request->basic ?? 0,
-                    ]
-                );
+        ///////////////////////////////////////////////////////////////////////
+
+
+        $store_details = Store::where("id", $request->store_id)->first();
+
+        if ($store_details->phone) {
+            $paid_plan = PlanPurchaseRequest::where("mobile", $store_details->phone)->first();
+
+            if (!$paid_plan->is_purchased) {
+
+                $validator->getMessageBag()->add('name', "Plan is required.");
+                return response()->json(['errors' => Helpers::error_processor($validator)]);
+            } else {
+
+                if (!empty(json_decode($item->choice_options, true))) {
+
+                    // dd("product Variation");
+
+                    if ($request['vendor']->stores[0]->module->module_type == 'pharmacy') {
+                        DB::table('pharmacy_item_details')
+                            ->updateOrInsert(
+                                ['item_id' => $p->id],
+                                [
+                                    'common_condition_id' => $request->condition_id,
+                                    'is_basic' => $request->basic ?? 0,
+                                ]
+                            );
+                    }
+
+                    $p->save();
+                    $p->tags()->sync($tag_ids);
+
+                    foreach ($data as $key => $item) {
+                        Translation::updateOrInsert(
+                            [
+                                'translationable_type' => 'App\Models\Item',
+                                'translationable_id' => $p->id,
+                                'locale' => $item['locale'],
+                                'key' => $item['key']
+                            ],
+                            ['value' => $item['value']]
+                        );
+                    }
+
+                    return response()->json(['message' => translate('messages.product_updated_successfully')], 200);
+                } else {
+
+
+
+                    $plan_limit = Plan::where('id', $paid_plan->plan_id)->first();
+
+                    $current_product_count = Item::where('store_id', $store_details->id)->count();
+
+                    // Compare current product count with plan limit
+                    if ($current_product_count >= $plan_limit->product_limit) {
+                        return response()->json(['errors' => ['message' => 'Plan limit reached. Please buy a new plan to add more items.']], 403);
+                    }
+
+                    // dd("Product Only");
+
+                    if ($request['vendor']->stores[0]->module->module_type == 'pharmacy') {
+                        DB::table('pharmacy_item_details')
+                            ->updateOrInsert(
+                                ['item_id' => $p->id],
+                                [
+                                    'common_condition_id' => $request->condition_id,
+                                    'is_basic' => $request->basic ?? 0,
+                                ]
+                            );
+                    }
+
+                    $p->save();
+                    $p->tags()->sync($tag_ids);
+
+                    foreach ($data as $key => $item) {
+                        Translation::updateOrInsert(
+                            [
+                                'translationable_type' => 'App\Models\Item',
+                                'translationable_id' => $p->id,
+                                'locale' => $item['locale'],
+                                'key' => $item['key']
+                            ],
+                            ['value' => $item['value']]
+                        );
+                    }
+
+                    return response()->json(['message' => translate('messages.product_updated_successfully')], 200);
+                }
+            }
+
+            // dd($paid_plan->is_purchased);
+        } else {
+            $validator->getMessageBag()->add('name', 'Vendor Details Not Found');
+            return response()->json(['errors' => Helpers::error_processor($validator)]);
         }
 
-        $p->save();
-        $p->tags()->sync($tag_ids);
 
-        foreach ($data as $key => $item) {
-            Translation::updateOrInsert(
-                [
-                    'translationable_type' => 'App\Models\Item',
-                    'translationable_id' => $p->id,
-                    'locale' => $item['locale'],
-                    'key' => $item['key']
-                ],
-                ['value' => $item['value']]
-            );
-        }
 
-        return response()->json(['message' => translate('messages.product_updated_successfully')], 200);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+        // if ($request['vendor']->stores[0]->module->module_type == 'pharmacy') {
+        //     DB::table('pharmacy_item_details')
+        //         ->updateOrInsert(
+        //             ['item_id' => $p->id],
+        //             [
+        //                 'common_condition_id' => $request->condition_id,
+        //                 'is_basic' => $request->basic ?? 0,
+        //             ]
+        //         );
+        // }
+
+        // $p->save();
+        // $p->tags()->sync($tag_ids);
+
+        // foreach ($data as $key => $item) {
+        //     Translation::updateOrInsert(
+        //         [
+        //             'translationable_type' => 'App\Models\Item',
+        //             'translationable_id' => $p->id,
+        //             'locale' => $item['locale'],
+        //             'key' => $item['key']
+        //         ],
+        //         ['value' => $item['value']]
+        //     );
+        // }
+
+        // return response()->json(['message' => translate('messages.product_updated_successfully')], 200);
     }
 
     public function delete(Request $request)
