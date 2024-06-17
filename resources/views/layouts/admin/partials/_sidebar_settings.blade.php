@@ -142,8 +142,7 @@
                                         title="{{ translate('messages.admin_landing_page_settings') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
 
-                                            <span
-                                            class="text-truncate">Vendor Settings</span>
+                                        <span class="text-truncate">Vendor Settings</span>
                                     </a>
                                 </li>
 
@@ -202,14 +201,27 @@
                                             </a>
                                         </li>
 
+
+
                                         <li
                                             class="nav-item {{ Request::is('admin/business-settings/pages/business-page/privacy-policy') ? 'active' : '' }}">
                                             <a class="nav-link "
                                                 href="{{ route('admin.business-settings.privacy-policy') }}"
                                                 title="{{ translate('messages.privacy_policy') }}">
                                                 <span class="tio-circle nav-indicator-icon"></span>
-                                                <span
-                                                    class="text-truncate">{{ translate('messages.privacy_policy') }}</span>
+                                                <span class="text-truncate">
+                                                    {{ translate('messages.privacy_policy') }}
+
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li
+                                            class="nav-item {{ Request::is('admin/business-settings/pages/business-page/delivery-man-privacy-policy') ? 'active' : '' }}">
+                                            <a class="nav-link "
+                                                href="{{ route('admin.business-settings.delivery-man-privacy-policy') }}"
+                                                title="Delivery Man Policy">
+                                                <span class="tio-circle nav-indicator-icon"></span>
+                                                <span class="text-truncate"> DeliveryMan Policy</span>
                                             </a>
                                         </li>
 
@@ -547,23 +559,23 @@
                     const suggestions = [
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                    messages.zone '),
+                                                                                                                                                                                                                                                                                                            messages.zone '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                        messages.setting '),
+                                                                                                                                                                                                                                                                                                                messages.setting '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                        messages.pages '),
+                                                                                                                                                                                                                                                                                                                messages.pages '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                        messages .3 rd_party '),
+                                                                                                                                                                                                                                                                                                                messages .3 rd_party '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                        messages.system '),
+                                                                                                                                                                                                                                                                                                                messages.system '),
                         ) }}'
                     ];
                     --

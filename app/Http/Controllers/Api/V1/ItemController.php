@@ -436,177 +436,214 @@ class ItemController extends Controller
 
 
     public function get_combined_data(Request $request)
-{
-    if (!$request->hasHeader('zoneId')) {
-        $errors = [];
-        array_push($errors, ['code' => 'zoneId', 'message' => translate('messages.zone_id_required')]);
-        return response()->json([
-            'errors' => $errors
-        ], 403);
-    }
-
-    $validator = Validator::make($request->all(), [
-        'name' => 'sometimes|string',
-        'data_type' => 'required|string|in:store,product,item,brand,searched,category,subcategory,new,discounted',
-        'list_type' => 'required|string|in:store,product,item',
-        'limit' => 'sometimes|integer',
-        'offset' => 'sometimes|integer',
-        'category_ids' => 'sometimes|array',
-        'brand_ids' => 'sometimes|array',
-        'filter' => 'sometimes|array',
-        'rating_count' => 'sometimes|integer',
-        'min_price' => 'sometimes|numeric',
-        'max_price' => 'sometimes|numeric'
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['errors' => Helpers::error_processor($validator)], 403);
-    }
-
-    $zone_id = $request->header('zoneId');
-    $module_id = $request->header('moduleId');
-    $name = $request->input('name');
-    $data_type = $request->input('data_type');
-    $list_type = $request->input('list_type');
-    $limit = $request->input('limit', 12);
-    $offset = $request->input('offset', 1);
-    // $category_ids = $request->input('category_ids', []);
-    $brand_ids = $request->input('brand_ids', []);
-    $filter = $request->input('filter', []);
-    $rating_count = $request->input('rating_count', 0);
-    $min_price = $request->input('min_price', 0);
-    $max_price = $request->input('max_price', 20000);
-
-    $itemQuery = Item::active();
-    $storeQuery = Store::active();
-
-    // Handle brand data type
-    if ($data_type === 'brand') {
-        if ($name) {
-            $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
+    {
+        if (!$request->hasHeader('zoneId')) {
+            $errors = [];
+            array_push($errors, ['code' => 'zoneId', 'message' => translate('messages.zone_id_required')]);
+            return response()->json(['errors' => $errors], 403);
         }
-        if (!empty($brand_ids)) {
-            $itemQuery->whereIn('brand_id', $brand_ids);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string',
+            'data_type' => 'required|string|in:store,product,item,brand,searched,category,subcategory,new,discounted',
+            'list_type' => 'required|string|in:store,product,item',
+            'limit' => 'sometimes|integer',
+            'offset' => 'sometimes|integer',
+            'category_ids' => 'sometimes|array',
+            'brand_ids' => 'sometimes|array',
+            'filter' => 'sometimes|array',
+            'rating_count' => 'sometimes|integer',
+            'min_price' => 'sometimes|numeric',
+            'max_price' => 'sometimes|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
         }
-    }
 
-    // Handle searched data type
-    if ($data_type === 'searched') {
+        $zone_id = $request->header('zoneId');
+        $module_id = $request->header('moduleId');
+        $name = $request->input('name');
+        $data_type = $request->input('data_type');
+        $list_type = $request->input('list_type');
+        $limit = $request->input('limit', 12);
+        $offset = $request->input('offset', 1);
+        $category_ids = $request->input('category_ids', []);
+        $brand_ids = $request->input('brand_ids', []);
+        $filter = $request->input('filter', []);
+        $rating_count = $request->input('rating_count', 0);
+        $min_price = $request->input('min_price', 0);
+        $max_price = $request->input('max_price', 20000);
 
-        if ($name) {
-            $key = explode(' ', $name);
-            $itemQuery->where(function ($q) use ($key) {
-                foreach ($key as $value) {
-                    $q->orWhere('name', 'like', "%{$value}%")                     ;
-                }
+        $itemQuery = Item::active();
+        $storeQuery = Store::active();
 
-                $q->orWhereHas('tags', function ($query) use ($key) {
-                    $query->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->where('tag', 'like', "%{$value}%");
-                        }
+        // Brand data type
+        if ($data_type === 'brand') {
+            if ($name) {
+                $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
+            }
+
+            if (!empty($brand_ids)) {
+                $itemQuery->whereIn('brand_id', $brand_ids);
+            }
+
+            $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $results->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'data' => $results->items()
+            ], 200);
+        }
+
+        // Searched data type
+        if ($data_type === 'searched') {
+            if ($name) {
+                $key = explode(' ', $name);
+                $itemQuery->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('name', 'like', "%{$value}%");
+                    }
+
+                    $q->orWhereHas('tags', function ($query) use ($key) {
+                        $query->where(function ($q) use ($key) {
+                            foreach ($key as $value) {
+                                $q->where('tag', 'like', "%{$value}%");
+                            }
+                        });
+                    });
+                    $q->orWhereHas('category.parent', function ($query) use ($key) {
+                        $query->where(function ($q) use ($key) {
+                            foreach ($key as $value) {
+                                $q->where('name', 'like', "%{$value}%");
+                            }
+                        });
+                    });
+                    $q->orWhereHas('category', function ($query) use ($key) {
+                        $query->where(function ($q) use ($key) {
+                            foreach ($key as $value) {
+                                $q->where('name', 'like', "%{$value}%");
+                            }
+                        });
                     });
                 });
-                $q->orWhereHas('category.parent', function ($query) use ($key) {
-                    $query->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->where('name', 'like', "%{$value}%");
-                        }
-                    });
+
+                $storeQuery->where(function ($q) use ($key) {
+                    foreach ($key as $value) {
+                        $q->orWhere('name', 'like', "%{$value}%");
+                    }
                 });
-                $q->orWhereHas('category', function ($query) use ($key) {
-                    $query->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->where('name', 'like', "%{$value}%");
-                        }
-                    });
-                });
+            }
+
+            $items = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+            $stores = $storeQuery->paginate($limit, ['*'], 'page', $offset);
+
+            $results = [
+                'items' => $items->items(),
+                'stores' => $stores->items(),
+                'total_items' => $items->total(),
+                'total_stores' => $stores->total(),
+                'limit' => $limit,
+                'offset' => $offset
+            ];
+
+            return response()->json($results, 200);
+        }
+
+        // Category data type
+        if ($data_type === 'category') {
+            $itemQuery->whereHas('category', function ($q) use ($category_ids) {
+                $q->whereIn('id', $category_ids);
             });
 
-            $storeQuery->where(function ($q) use ($key) {
-                foreach ($key as $value) {
-                    $q->orWhere('name', 'like', "%{$value}%");
-                }
+            $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $results->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'data' => $results->items()
+            ], 200);
+        }
+
+        // Subcategory data type
+        if ($data_type === 'subcategory' && !empty($category_ids)) {
+            $itemQuery->whereHas('category', function ($q) use ($category_ids) {
+                $q->whereIn('parent_id', $category_ids);
+            });
+
+            $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $results->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'data' => $results->items()
+            ], 200);
+        }
+
+        // New/latest data type
+        if ($data_type === 'new') {
+            $itemQuery->orderBy('created_at', 'desc');
+
+            $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $results->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'data' => $results->items()
+            ], 200);
+        }
+
+        // Discounted data type
+        if ($data_type === 'discounted') {
+            $itemQuery->where('discount', '>', 0);
+
+            $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $results->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'data' => $results->items()
+            ], 200);
+        }
+
+        // Common filtering logic
+        if (!empty($category_ids)) {
+            $itemQuery->whereHas('category', function ($q) use ($category_ids) {
+                $q->whereIn('id', $category_ids)->orWhereIn('parent_id', $category_ids);
             });
         }
-    }
-    // dd($data_type);
-    // Handle category data type
-    if ($data_type === 'category' && !empty($category_ids)) {
 
-
-
-        $itemQuery->whereHas('category', function ($q) use ($category_ids) {
-            $q->whereIn('id', $category_ids);
-        });
-    }
-
-    // Handle subcategory data type
-    if ($data_type === 'subcategory' && !empty($category_ids)) {
-        $itemQuery->whereHas('category', function ($q) use ($category_ids) {
-            $q->whereIn('parent_id', $category_ids);
-        });
-    }
-
-    // Handle new/latest data type
-    if ($data_type === 'new') {
-        $itemQuery->orderBy('created_at', 'desc');
-    }
-
-    // Handle discounted data type
-    if ($data_type === 'discounted') {
-        $itemQuery->where('discount', '>', 0);
-    }
-
-    // Common filtering logic
-    if (!empty($category_ids)) {
-        $itemQuery->whereHas('category', function ($q) use ($category_ids) {
-            $q->whereIn('id', $category_ids)->orWhereIn('parent_id', $category_ids);
-        });
-    }
-
-    if (!empty($filter)) {
-        foreach ($filter as $key => $value) {
-            $itemQuery->where($key, $value);
+        if (!empty($filter)) {
+            foreach ($filter as $key => $value) {
+                $itemQuery->where($key, $value);
+            }
         }
-    }
 
-    if ($min_price !== null && $max_price !== null) {
-        $itemQuery->whereBetween('price', [$min_price, $max_price]);
-    }
+        if ($min_price !== null && $max_price !== null) {
+            $itemQuery->whereBetween('price', [$min_price, $max_price]);
+        }
 
-    if ($rating_count > 0) {
-        $itemQuery->where('rating_count', '>=', $rating_count);
-    }
+        if ($rating_count > 0) {
+            $itemQuery->where('rating_count', '>=', $rating_count);
+        }
 
-    $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
-        $q->whereIn('zones.id', json_decode($zone_id, true));
-    });
-
-    if ($module_id) {
-        $itemQuery->whereHas('module', function ($q) use ($module_id) {
-            $q->where('id', $module_id);
+        $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
+            $q->whereIn('zones.id', json_decode($zone_id, true));
         });
-    }
 
-    // Fetch results
-    if ($data_type === 'searched') {
-        // If data_type is searched, combine item and store results
-        $items = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-        $stores = $storeQuery->paginate($limit, ['*'], 'page', $offset);
+        if ($module_id) {
+            $itemQuery->whereHas('module', function ($q) use ($module_id) {
+                $q->where('id', $module_id);
+            });
+        }
 
-        $results = [
-            'items' => $items->items(),
-            'stores' => $stores->items(),
-            'total_items' => $items->total(),
-            'total_stores' => $stores->total(),
-            'limit' => $limit,
-            'offset' => $offset
-        ];
-
-        return response()->json($results, 200);
-    } else {
-        // For other data_types, return item results only
+        // Fetch results
         $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
 
         return response()->json([
@@ -616,7 +653,7 @@ class ItemController extends Controller
             'data' => $results->items()
         ], 200);
     }
-}
+
 
 
 

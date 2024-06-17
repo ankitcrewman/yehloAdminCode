@@ -4464,4 +4464,19 @@
 ' => 'Discount amount can t be greater than 100%
 ',
   'Homeopathy' => 'Homeopathy',
+  '
+                                                                                                                                                                                                                                                                                                            messages.zone ' => '
+                                                                                                                                                                                                                                                                                                            messages.zone ',
+  '
+                                                                                                                                                                                                                                                                                                                messages.setting ' => '
+                                                                                                                                                                                                                                                                                                                messages.setting ',
+  '
+                                                                                                                                                                                                                                                                                                                messages.pages ' => '
+                                                                                                                                                                                                                                                                                                                messages.pages ',
+  '
+                                                                                                                                                                                                                                                                                                                messages .3 rd_party ' => '
+                                                                                                                                                                                                                                                                                                                messages .3 rd party ',
+  '
+                                                                                                                                                                                                                                                                                                                messages.system ' => '
+                                                                                                                                                                                                                                                                                                                messages.system ',
 );

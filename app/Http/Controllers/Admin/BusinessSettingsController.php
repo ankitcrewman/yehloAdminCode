@@ -1888,9 +1888,24 @@ class BusinessSettingsController extends Controller
         return view('admin-views.business-settings.privacy-policy', compact('privacy_policy'));
     }
 
+
     public function privacy_policy_update(Request $request)
     {
         $this->update_data($request, 'privacy_policy');
+        Toastr::success(translate('messages.privacy_policy_updated'));
+        return back();
+    }
+
+    public function delivery_privacy_policy()
+    {
+         $delivery_privacy_policy = DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'delivery_privacy_policy')->first();
+        return view('admin-views.business-settings.deliveryman-privacy-policy',compact('delivery_privacy_policy'));
+    }
+
+    public function delivery_privacy_policy_update(Request $request)
+    {
+        // dd($request);
+        $this->update_data($request, 'delivery_privacy_policy');
         Toastr::success(translate('messages.privacy_policy_updated'));
         return back();
     }
