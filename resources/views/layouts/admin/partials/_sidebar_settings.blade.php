@@ -221,7 +221,7 @@
                                                 href="{{ route('admin.business-settings.delivery-man-privacy-policy') }}"
                                                 title="Delivery Man Policy">
                                                 <span class="tio-circle nav-indicator-icon"></span>
-                                                <span class="text-truncate"> DeliveryMan Policy</span>
+                                                <span class="text-truncate"> Deliveryman Policy</span>
                                             </a>
                                         </li>
 
