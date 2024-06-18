@@ -677,8 +677,8 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         ),
         'League\\Uri\\' => 
         array (
-            0 => __DIR__ . '/..' . '/league/uri-interfaces',
-            1 => __DIR__ . '/..' . '/league/uri',
+            0 => __DIR__ . '/..' . '/league/uri',
+            1 => __DIR__ . '/..' . '/league/uri-interfaces',
         ),
         'League\\OAuth2\\Server\\' => 
         array (
@@ -844,8 +844,8 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         ),
         'Doctrine\\Common\\' => 
         array (
-            0 => __DIR__ . '/..' . '/doctrine/event-manager/src',
-            1 => __DIR__ . '/..' . '/doctrine/common/src',
+            0 => __DIR__ . '/..' . '/doctrine/common/src',
+            1 => __DIR__ . '/..' . '/doctrine/event-manager/src',
         ),
         'Dflydev\\DotAccessData\\' => 
         array (
@@ -1036,6 +1036,7 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         'App\\Exports\\ZoneExport' => __DIR__ . '/../..' . '/app/Exports/ZoneExport.php',
         'App\\Http\\Controllers\\Admin\\AccountTransactionController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/AccountTransactionController.php',
         'App\\Http\\Controllers\\Admin\\Banner\\BannerController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Banner/BannerController.php',
+        'App\\Http\\Controllers\\Admin\\BrandController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BrandController.php',
         'App\\Http\\Controllers\\Admin\\BusinessSettingsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/BusinessSettingsController.php',
         'App\\Http\\Controllers\\Admin\\CampaignController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/CampaignController.php',
         'App\\Http\\Controllers\\Admin\\ContactController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/ContactController.php',
@@ -1077,6 +1078,7 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         'App\\Http\\Controllers\\Admin\\SMSModuleController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SMSModuleController.php',
         'App\\Http\\Controllers\\Admin\\SocialMediaController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SocialMediaController.php',
         'App\\Http\\Controllers\\Admin\\StoreDisbursementController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/StoreDisbursementController.php',
+        'App\\Http\\Controllers\\Admin\\StoreReferralController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/StoreReferralController.php',
         'App\\Http\\Controllers\\Admin\\SystemController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/SystemController.php',
         'App\\Http\\Controllers\\Admin\\System\\AddonController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/System/AddonController.php',
         'App\\Http\\Controllers\\Admin\\VendorController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/VendorController.php',
@@ -1109,6 +1111,7 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         'App\\Http\\Controllers\\Api\\V1\\OtherBannerController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/OtherBannerController.php',
         'App\\Http\\Controllers\\Api\\V1\\ParcelCategoryController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/ParcelCategoryController.php',
         'App\\Http\\Controllers\\Api\\V1\\StoreController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/StoreController.php',
+        'App\\Http\\Controllers\\Api\\V1\\StoreReferralController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/StoreReferralController.php',
         'App\\Http\\Controllers\\Api\\V1\\TestimonialController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/TestimonialController.php',
         'App\\Http\\Controllers\\Api\\V1\\Vendor\\AddOnController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/Vendor/AddOnController.php',
         'App\\Http\\Controllers\\Api\\V1\\Vendor\\AttributeController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/Vendor/AttributeController.php',
@@ -1281,6 +1284,7 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         'App\\Models\\AdminWallet' => __DIR__ . '/../..' . '/app/Models/AdminWallet.php',
         'App\\Models\\Attribute' => __DIR__ . '/../..' . '/app/Models/Attribute.php',
         'App\\Models\\Banner' => __DIR__ . '/../..' . '/app/Models/Banner.php',
+        'App\\Models\\Brand' => __DIR__ . '/../..' . '/app/Models/Brand.php',
         'App\\Models\\BusinessSetting' => __DIR__ . '/../..' . '/app/Models/BusinessSetting.php',
         'App\\Models\\Campaign' => __DIR__ . '/../..' . '/app/Models/Campaign.php',
         'App\\Models\\Cart' => __DIR__ . '/../..' . '/app/Models/Cart.php',
@@ -1341,6 +1345,7 @@ class ComposerStaticInit1eab95911c4c28bd2eee65052f62f71e
         'App\\Models\\PlanPurchaseRequest' => __DIR__ . '/../..' . '/app/Models/PlanPurchaseRequest.php',
         'App\\Models\\ProvideDMEarning' => __DIR__ . '/../..' . '/app/Models/ProvideDMEarning.php',
         'App\\Models\\ReactTestimonial' => __DIR__ . '/../..' . '/app/Models/ReactTestimonial.php',
+        'App\\Models\\RefferalCode' => __DIR__ . '/../..' . '/app/Models/RefferalCode.php',
         'App\\Models\\Refund' => __DIR__ . '/../..' . '/app/Models/Refund.php',
         'App\\Models\\RefundReason' => __DIR__ . '/../..' . '/app/Models/RefundReason.php',
         'App\\Models\\Review' => __DIR__ . '/../..' . '/app/Models/Review.php',

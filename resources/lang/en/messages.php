@@ -4479,4 +4479,6 @@
   '
                                                                                                                                                                                                                                                                                                                 messages.system ' => '
                                                                                                                                                                                                                                                                                                                 messages.system ',
+  'Add new brand' => 'Add new brand',
+  'Want to delete this brand' => 'Want to delete this brand',
 );

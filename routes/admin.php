@@ -11,6 +11,21 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     Route::group(['middleware' => ['admin', 'current-module']], function () {
 
+        /// brand
+
+        Route::get('/brand', 'BrandController@index')->name('brand');
+
+
+        Route::post('/brand-store/{id?}', 'BrandController@store')->name('brand-store');
+
+
+
+        Route::get('/brand-edit/{id}', 'BrandController@edit')->name('brand-edit');
+
+        Route::delete('/brand/{id}', 'BrandController@destroy')->name('brand-destroy');
+
+        /// brand
+
 
         Route::get('/new-plan', 'NewPlanController@index')->name('new-plan');
 
