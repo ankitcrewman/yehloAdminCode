@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Brand;
 use App\Models\Module;
+use App\Models\FlashSaleItem;
+use App\Models\FlashSale;
 
 
 
@@ -267,232 +269,8 @@ class ItemController extends Controller
 
 
 
-
-
-
-
     // public function get_combined_data(Request $request)
     // {
-    //     // Validate incoming request parameters
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'sometimes|string',
-    //         'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
-    //         'list_type' => 'required|string|in:store,product,item',
-    //         'limit' => 'sometimes|integer',
-    //         'offset' => 'sometimes|integer',
-    //         // 'category_ids' => 'sometimes|array',
-    //         // 'brand_ids' => 'sometimes|array',
-    //         // 'filter' => 'sometimes|array',
-    //         'rating_count' => 'sometimes|integer',
-    //         'min_price' => 'sometimes|numeric',
-    //         'max_price' => 'sometimes|numeric',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json(['errors' => $validator->errors()], 403);
-    //     }
-
-
-    //     $zone_id = $request->header('zoneId');
-    //     $module_id = $request->header('moduleId');
-    //     $name = $request->input('name');
-    //     $data_type = $request->input('data_type');
-    //     $list_type = $request->input('list_type');
-    //     $limit = $request->input('limit', 12);
-    //     $offset = $request->input('offset', 1);
-    //     $category_ids = $request->input('category_ids', []);
-    //     $brand_ids = $request->input('brand_ids', []);
-    //     $filter = $request->input('filter', []);
-    //     $rating_count = $request->input('rating_count', 0);
-    //     $min_price = $request->input('min_price', 0);
-    //     $max_price = $request->input('max_price', 20000);
-
-    //     // Initialize item query
-    //     $itemQuery = Item::query();
-
-    //     // Apply common filters
-    //     if (!empty($category_ids)) {
-    //         $itemQuery->where(function ($query) use ($category_ids) {
-    //             $query->whereIn('category_id', $category_ids)
-    //                 ->orWhereJsonContains('category_ids', $category_ids);
-    //         });
-    //     }
-
-    //     if (!empty($brand_ids)) {
-    //         $itemQuery->whereIn('brand_id', $brand_ids);
-    //     }
-
-    //     if (!empty($filter)) {
-    //         foreach ($filter as $key => $value) {
-    //             $itemQuery->where($key, $value);
-    //         }
-    //     }
-
-    //     if ($min_price !== null && $max_price !== null) {
-    //         $itemQuery->whereBetween('price', [$min_price, $max_price]);
-    //     }
-
-    //     if ($rating_count > 0) {
-    //         $itemQuery->where('rating_count', '>=', $rating_count);
-    //     }
-
-    //     // Apply zone and module filters
-    //     $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
-    //         $q->whereIn('zones.id', json_decode($zone_id, true));
-    //     });
-
-    //     if ($module_id) {
-    //         $itemQuery->where('module_id', $module_id);
-    //     }
-
-    //     switch ($data_type) {
-    //         case 'store':
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             dd($results);
-    //             return response()->json([
-    //                 'total_size' => $results->total(),
-    //                 'limit' => $limit,
-    //                 'offset' => $offset,
-    //                 'data' => $results->items()
-    //             ], 200);
-
-
-    //         case 'brand':
-
-    //             if ($name) {
-    //                 $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
-    //                 $itemQuery->whereIn('brand_id', $brand_ids);
-    //             }
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             return response()->json([
-    //                 'total_size' => $results->total(),
-    //                 'limit' => $limit,
-    //                 'offset' => $offset,
-    //                 'data' => $results->items()
-    //             ], 200);
-
-    //         case 'searched':
-
-    //             if ($name) {
-    //                 $key = explode(' ', $name);
-    //                 $itemQuery->where(function ($q) use ($key) {
-    //                     foreach ($key as $value) {
-    //                         $q->orWhere('name', 'like', "%{$value}%");
-    //                     }
-    //                     $q->orWhereHas('tags', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('tag', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-    //                     $q->orWhereHas('category.parent', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('name', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-    //                     $q->orWhereHas('category', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('name', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-    //                 });
-    //                 $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //                 return response()->json([
-    //                     'total_size' => $results->total(),
-    //                     'limit' => $limit,
-    //                     'offset' => $offset,
-    //                     'data' => $results->items()
-    //                 ], 200);
-    //             }
-    //             break;
-
-    //         case 'category':
-    //             // Category-specific logic
-    //             if (!empty($category_ids)) {
-    //                 $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //                 return response()->json([
-    //                     'total_size' => $results->total(),
-    //                     'limit' => $limit,
-    //                     'offset' => $offset,
-    //                     'data' => $results->items()
-    //                 ], 200);
-    //             } else {
-    //                 $categories = Category::where('parent_id', 0)->get();
-    //                 return response()->json([
-    //                     'total_size' => $categories->count(),
-    //                     'limit' => $limit,
-    //                     'offset' => $offset,
-    //                     'data' => $categories
-    //                 ], 200);
-    //             }
-    //             break;
-
-    //         case 'subcategory':
-    //             // Subcategory-specific logic
-    //             if (!empty($category_ids)) {
-    //                 $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //                 return response()->json([
-    //                     'total_size' => $results->total(),
-    //                     'limit' => $limit,
-    //                     'offset' => $offset,
-    //                     'data' => $results->items()
-    //                 ], 200);
-    //             }
-    //             break;
-
-    //         case 'new':
-    //             // New/latest-specific logic
-    //             $itemQuery->orderBy('created_at', 'desc');
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             return response()->json([
-    //                 'total_size' => $results->total(),
-    //                 'limit' => $limit,
-    //                 'offset' => $offset,
-    //                 'data' => $results->items()
-    //             ], 200);
-    //             break;
-
-    //         case 'discounted':
-    //             // Discounted-specific logic
-    //             $itemQuery->where('discount', '>', 0);
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             return response()->json([
-    //                 'total_size' => $results->total(),
-    //                 'limit' => $limit,
-    //                 'offset' => $offset,
-    //                 'data' => $results->items()
-    //             ], 200);
-    //             break;
-
-    //         default:
-    //             // Handle additional filters if needed
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             return response()->json([
-    //                 'total_size' => $results->total(),
-    //                 'limit' => $limit,
-    //                 'offset' => $offset,
-    //                 'data' => $results->items()
-    //             ], 200);
-    //             break;
-    //     }
-
-    //     // Return response with data
-    //     return response()->json([
-    //         'total_size' => 0,
-    //         'limit' => $limit,
-    //         'offset' => $offset,
-    //         'data' => []
-    //     ], 200);
-    // }
-
-    // public function get_combined_data(Request $request)
-    // {
-    //     // Validate incoming request parameters
     //     $validator = Validator::make($request->all(), [
     //         'name' => 'sometimes|string',
     //         'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
@@ -517,16 +295,16 @@ class ItemController extends Controller
     //     $offset = $request->input('offset', 1);
     //     $category_ids = $request->input('category_ids', []);
     //     $brand_ids = $request->input('brand_ids', []);
-    //     $filter = $request->input('filter', []);
+    //     $filter = $request->input('filter', 'all');
     //     $rating_count = $request->input('rating_count', 0);
     //     $min_price = $request->input('min_price', 0);
     //     $max_price = $request->input('max_price', 20000);
 
-    //     // Initialize item query
     //     $itemQuery = Item::query();
 
-    //     // Apply common filters
+
     //     if (!empty($category_ids)) {
+
     //         $itemQuery->where(function ($query) use ($category_ids) {
     //             $query->whereIn('category_id', $category_ids)
     //                 ->orWhereJsonContains('category_ids', $category_ids);
@@ -537,11 +315,11 @@ class ItemController extends Controller
     //         $itemQuery->whereIn('brand_id', $brand_ids);
     //     }
 
-    //     if (!empty($filter)) {
-    //         foreach ($filter as $key => $value) {
-    //             $itemQuery->where($key, $value);
-    //         }
-    //     }
+    //     // if (!empty($filter)) {
+    //     //     foreach ($filter as $key => $value) {
+    //     //         $itemQuery->where($key, $value);
+    //     //     }
+    //     // }
 
     //     if ($min_price !== null && $max_price !== null) {
     //         $itemQuery->whereBetween('price', [$min_price, $max_price]);
@@ -551,108 +329,108 @@ class ItemController extends Controller
     //         $itemQuery->where('rating_count', '>=', $rating_count);
     //     }
 
-    //     // Apply zone and module filters
-    //     $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
-    //         $q->whereIn('zones.id', json_decode($zone_id, true));
-    //     });
+    //     if ($zone_id) {
+    //         $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
+    //             $q->whereIn('zones.id', json_decode($zone_id, true));
+    //         });
+    //     }
 
     //     if ($module_id) {
     //         $itemQuery->where('module_id', $module_id);
+    //         $moduleData = Module::find($module_id);
     //     }
 
-    //     // Fetch the module data
-    //     $moduleData = Module::find($module_id);
-
-    //     // Handle different data types
-    //     switch ($data_type) {
-    //         case 'store':
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
-
-    //         case 'brand':
-    //             if ($name) {
-    //                 $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
-    //                 $itemQuery->whereIn('brand_id', $brand_ids);
-    //             }
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
-
-    //         case 'searched':
-    //             if ($name) {
-    //                 $key = explode(' ', $name);
-    //                 $itemQuery->where(function ($q) use ($key) {
-    //                     foreach ($key as $value) {
-    //                         $q->orWhere('name', 'like', "%{$value}%");
-    //                     }
-    //                     $q->orWhereHas('tags', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('tag', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-    //                     $q->orWhereHas('category.parent', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('name', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-    //                     $q->orWhereHas('category', function ($query) use ($key) {
-    //                         $query->where(function ($q) use ($key) {
-    //                             foreach ($key as $value) {
-    //                                 $q->where('name', 'like', "%{$value}%");
-    //                             }
-    //                         });
-    //                     });
-
-    //                 });
-    //             }
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
-
-    //         case 'category':
-    //             if (!empty($category_ids)) {
-    //                 $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             } else {
-    //                 $categories = Category::where('parent_id', 0)->get();
-    //                 return response()->json([
-    //                     'total_size' => $categories->count(),
-    //                     'limit' => $limit,
-    //                     'offset' => $offset,
-    //                     'products' => $categories
-    //                 ], 200);
-    //             }
-    //             break;
-
-    //         case 'subcategory':
-    //             if (!empty($category_ids)) {
-    //                 $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             }
-    //             break;
-
-    //         case 'new':
-    //             $itemQuery->orderBy('created_at', 'desc');
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
-
-    //         case 'discounted':
-    //             $itemQuery->where('discount', '>', 0);
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
-
-    //         default:
-    //             $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-    //             break;
+    //     if ($data_type === 'brand' && $name) {
+    //         $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
+    //         $itemQuery->whereIn('brand_id', $brand_ids);
     //     }
 
-    //     // Add module data to each item in the results
-    //     $itemsWithModuleData = $results->map(function ($item) use ($moduleData) {
+    //     if ($data_type === 'searched' && $name) {
+    //         $keywords = explode(' ', $name);
+    //         $itemQuery->where(function ($q) use ($keywords) {
+    //             foreach ($keywords as $keyword) {
+    //                 $q->orWhere('name', 'like', "%{$keyword}%")
+    //                     ->orWhereHas('tags', function ($query) use ($keyword) {
+    //                         $query->where('tag', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category.parent', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     });
+    //             }
+    //         });
+    //     }
+
+    //     if ($data_type === 'new') {
+    //         $itemQuery->orderBy('created_at', 'desc');
+    //     }
+
+    //     if ($data_type === 'discounted') {
+    //         $itemQuery->where('discount', '>', 0);
+    //     }
+
+    //     if (in_array($data_type, ['category', 'subcategory']) && empty($category_ids)) {
+    //         $categories = Category::where('parent_id', 0)->get();
+    //         return response()->json([
+    //             'total_size' => $categories->count(),
+    //             'limit' => $limit,
+    //             'offset' => $offset,
+    //             'category' => $categories
+    //         ], 200);
+    //     }
+
+    //     $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+
+    //     $currentDateTime = now();
+    //     $flashSaleItems = DB::table('flash_sale_items')
+    //         ->join('flash_sales', 'flash_sale_items.flash_sale_id', '=', 'flash_sales.id')
+    //         ->where('flash_sales.start_date', '<=', $currentDateTime)
+    //         ->where('flash_sales.end_date', '>=', $currentDateTime)
+    //         ->pluck('flash_sale_items.item_id')
+    //         ->toArray();
+    //         ;
+
+    //     $itemsWithModuleData = $results->map(function ($item) use ($moduleData, $flashSaleItems) {
     //         $item->module = $moduleData;
+    //         $item->module_type = $moduleData ? $moduleData->module_type : null;
+
+    //         $store = Store::find($item->store_id);
+    //         if ($store) {
+    //             $item->store_name = $store->name;
+    //             $item->zone_id = $store->zone_id;
+    //             $item->schedule_order = $store->schedule_order;
+    //             $item->delivery_time = $store->delivery_time;
+
+    //             $time_range_clean = str_replace(" min", "", $item->delivery_time);
+
+    //             // Split the cleaned string by the hyphen
+    //             $time_range_parts = explode('-', $time_range_clean);
+
+    //             // Assign min and max values
+    //             if (count($time_range_parts) === 2) {
+    //                 $min = $time_range_parts[0];
+    //                 $max = $time_range_parts[1];
+    //                 $item->delivery_time_min = $min;
+    //                 $item->delivery_time_max = $max;
+    //             }
+
+    //         }
+
+    //         $jsonFields = ['category_ids', 'variations', 'attributes', 'choice_options'];
+    //         foreach ($jsonFields as $field) {
+    //             if ($item->$field) {
+    //                 $item->$field = json_decode($item->$field, true);
+    //             }
+    //         }
+
+    //         $item->flash_sale = in_array($item->id, $flashSaleItems) ? 1 : 0;
+    //         $item->storage = [];
     //         return $item;
     //     });
 
-    //     // Return response with data
     //     return response()->json([
     //         'total_size' => $results->total(),
     //         'limit' => $limit,
@@ -661,9 +439,338 @@ class ItemController extends Controller
     //     ], 200);
     // }
 
+
+
+    // public function get_combined_data(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'sometimes|string',
+    //         'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
+    //         'list_type' => 'required|string|in:store,product,item',
+    //         'limit' => 'sometimes|integer',
+    //         'offset' => 'sometimes|integer',
+    //         'rating_count' => 'sometimes|integer',
+    //         'min_price' => 'sometimes|numeric',
+    //         'max_price' => 'sometimes|numeric',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 403);
+    //     }
+
+    //     $zone_id = $request->header('zoneId');
+    //     $module_id = $request->header('moduleId');
+    //     $name = $request->input('name');
+    //     $data_type = $request->input('data_type');
+    //     $list_type = $request->input('list_type');
+    //     $limit = $request->input('limit', 12);
+    //     $offset = $request->input('offset', 1);
+    //     $category_ids = $request->input('category_ids', []);
+    //     $brand_ids = $request->input('brand_ids', []);
+    //     $filter = $request->input('filter', []);
+    //     $rating_count = $request->input('rating_count', 0);
+    //     $min_price = $request->input('min_price', 0);
+    //     $max_price = $request->input('max_price', 20000);
+
+    //     $itemQuery = Item::query();
+
+    //     if (!empty($category_ids)) {
+    //         $itemQuery->where(function ($query) use ($category_ids) {
+    //             $query->whereIn('category_id', $category_ids)
+    //                 ->orWhereJsonContains('category_ids', $category_ids);
+    //         });
+    //     }
+
+    //     if (!empty($brand_ids)) {
+    //         $itemQuery->whereIn('brand_id', $brand_ids);
+    //     }
+
+    //     if ($min_price !== null && $max_price !== null) {
+    //         $itemQuery->whereBetween('price', [$min_price, $max_price]);
+    //     }
+
+    //     if ($rating_count > 0) {
+    //         $itemQuery->where('rating_count', '>=', $rating_count);
+    //     }
+
+    //     if ($zone_id) {
+    //         $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
+    //             $q->whereIn('zones.id', json_decode($zone_id, true));
+    //         });
+    //     }
+
+    //     if ($module_id) {
+    //         $itemQuery->where('module_id', $module_id);
+    //         $moduleData = Module::find($module_id);
+    //     }
+
+    //     if ($data_type === 'brand' && $name) {
+    //         $brand_ids = Brand::where('brand_name', 'like', "%{$name}%")->pluck('id')->toArray();
+    //         $itemQuery->whereIn('brand_id', $brand_ids);
+    //     }
+
+    //     if ($data_type === 'searched' && $name) {
+    //         $keywords = explode(' ', $name);
+    //         $itemQuery->where(function ($q) use ($keywords) {
+    //             foreach ($keywords as $keyword) {
+    //                 $q->orWhere('name', 'like', "%{$keyword}%")
+    //                     ->orWhereHas('tags', function ($query) use ($keyword) {
+    //                         $query->where('tag', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category.parent', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     });
+    //             }
+    //         });
+    //     }
+
+    //     if ($data_type === 'new') {
+    //         $itemQuery->orderBy('created_at', 'desc');
+    //     }
+
+    //     if ($data_type === 'discounted') {
+    //         $itemQuery->where('discount', '>', 0);
+    //     }
+
+    //     if (in_array($data_type, ['category', 'subcategory']) && empty($category_ids)) {
+    //         $categories = Category::where('parent_id', 0)->get();
+    //         return response()->json([
+    //             'total_size' => $categories->count(),
+    //             'limit' => $limit,
+    //             'offset' => $offset,
+    //             'categories' => $categories
+    //         ], 200);
+    //     }
+
+    //     $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+    //     $currentDateTime = now();
+    //     $flashSaleItems = DB::table('flash_sale_items')
+    //         ->join('flash_sales', 'flash_sale_items.flash_sale_id', '=', 'flash_sales.id')
+    //         ->where('flash_sales.start_date', '<=', $currentDateTime)
+    //         ->where('flash_sales.end_date', '>=', $currentDateTime)
+    //         ->pluck('flash_sale_items.item_id')
+    //         ->toArray();
+
+    //     $itemsWithModuleData = $results->map(function ($item) use ($moduleData, $flashSaleItems) {
+    //         $item->module = $moduleData;
+    //         $item->module_type = $moduleData ? $moduleData->module_type : null;
+
+    //         $store = Store::find($item->store_id);
+    //         if ($store) {
+    //             $item->store_name = $store->name;
+    //             $item->zone_id = $store->zone_id;
+    //             $item->schedule_order = $store->schedule_order;
+    //             $item->delivery_time = $store->delivery_time;
+
+    //             $time_range_clean = str_replace(" min", "", $item->delivery_time);
+    //             $time_range_parts = explode('-', $time_range_clean);
+
+    //             if (count($time_range_parts) === 2) {
+    //                 $item->delivery_time_min = $time_range_parts[0];
+    //                 $item->delivery_time_max = $time_range_parts[1];
+    //             }
+    //         }
+
+    //         $jsonFields = ['category_ids', 'variations', 'attributes', 'choice_options'];
+    //         foreach ($jsonFields as $field) {
+    //             if ($item->$field) {
+    //                 $item->$field = json_decode($item->$field, true);
+    //             }
+    //         }
+
+    //         $item->flash_sale = in_array($item->id, $flashSaleItems) ? 1 : 0;
+    //         $item->storage = [];
+    //         return $item;
+    //     });
+
+    //     return response()->json([
+    //         'total_size' => $results->total(),
+    //         'limit' => $limit,
+    //         'offset' => $offset,
+    //         'products' => $itemsWithModuleData
+    //     ], 200);
+    // }
+
+    // public function get_combined_data(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'sometimes|string',
+    //         'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
+    //         'list_type' => 'required|string|in:store,product,item',
+    //         'limit' => 'sometimes|integer',
+    //         'offset' => 'sometimes|integer',
+    //         'rating_count' => 'sometimes|integer',
+    //         'min_price' => 'sometimes|numeric',
+    //         'max_price' => 'sometimes|numeric',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 403);
+    //     }
+
+    //     $zone_id = $request->header('zoneId');
+    //     $module_id = $request->header('moduleId');
+    //     $name = $request->input('name');
+    //     $data_type = $request->input('data_type');
+    //     $list_type = $request->input('list_type');
+    //     $limit = $request->input('limit', 12);
+    //     $offset = $request->input('offset', 1);
+    //     $category_ids = $request->input('category_ids', []);
+    //     $brand_ids = $request->input('brand_ids', []);
+    //     $filter = $request->input('filter', []);
+    //     $rating_count = $request->input('rating_count', 0);
+    //     $min_price = $request->input('min_price', 0);
+    //     $max_price = $request->input('max_price', 20000);
+
+    //     $itemQuery = Item::query();
+
+    //     $category_ids = $category_ids ? explode(',', trim($category_ids, '[]')) : [];
+    //     $brand_ids = $brand_ids ? explode(',', trim($brand_ids, '[]')) : [];
+
+    //     if (!empty($category_ids)) {
+    //         $itemQuery->where(function ($query) use ($category_ids) {
+    //             $query->whereIn('category_id', $category_ids)
+    //                 ->orWhereJsonContains('category_ids', $category_ids);
+    //         });
+    //     }
+
+    //     if (!empty($brand_ids)) {
+    //         $itemQuery->whereIn('brand_id', $brand_ids);
+    //     }
+
+    //     // Handle brand data type search by name
+    //     if ($data_type === 'brand' && $name) {
+    //         $brand_ids = Brand::where('brand_name', 'like', "%{$name}%")->pluck('id')->toArray();
+    //         $itemQuery->whereIn('brand_id', $brand_ids);
+    //     }
+
+    //     // Handle price range
+    //     if ($min_price !== null && $max_price !== null) {
+    //         $itemQuery->whereBetween('price', [$min_price, $max_price]);
+    //     }
+
+    //     // Handle rating count
+    //     if ($rating_count > 0) {
+    //         $itemQuery->where('rating_count', '>=', $rating_count);
+    //     }
+
+    //     // Handle zone filtering
+    //     if ($zone_id) {
+    //         $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
+    //             $q->whereIn('zones.id', json_decode($zone_id, true));
+    //         });
+    //     }
+
+    //     // Handle module filtering
+    //     if ($module_id) {
+    //         $itemQuery->where('module_id', $module_id);
+    //         $moduleData = Module::find($module_id);
+    //     }
+
+    //     // Handle searched data type
+    //     if ($data_type === 'searched' && $name) {
+    //         $keywords = explode(' ', $name);
+    //         $itemQuery->where(function ($q) use ($keywords) {
+    //             foreach ($keywords as $keyword) {
+    //                 $q->orWhere('name', 'like', "%{$keyword}%")
+    //                     ->orWhereHas('tags', function ($query) use ($keyword) {
+    //                         $query->where('tag', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category.parent', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     })
+    //                     ->orWhereHas('category', function ($query) use ($keyword) {
+    //                         $query->where('name', 'like', "%{$keyword}%");
+    //                     });
+    //             }
+    //         });
+    //     }
+
+    //     // Handle new data type
+    //     if ($data_type === 'new') {
+    //         $itemQuery->orderBy('created_at', 'desc');
+    //     }
+
+    //     // Handle discounted data type
+    //     if ($data_type === 'discounted') {
+    //         $itemQuery->where('discount', '>', 0);
+    //     }
+
+    //     // Handle category and subcategory data types without category IDs
+    //     if (in_array($data_type, ['category', 'subcategory']) && empty($category_ids)) {
+    //         $categories = Category::where('parent_id', 0)->get();
+    //         return response()->json([
+    //             'total_size' => $categories->count(),
+    //             'limit' => $limit,
+    //             'offset' => $offset,
+    //             'categories' => $categories
+    //         ], 200);
+    //     }
+
+    //     $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+    //     $currentDateTime = now();
+    //     $flashSaleItems = DB::table('flash_sale_items')
+    //         ->join('flash_sales', 'flash_sale_items.flash_sale_id', '=', 'flash_sales.id')
+    //         ->where('flash_sales.start_date', '<=', $currentDateTime)
+    //         ->where('flash_sales.end_date', '>=', $currentDateTime)
+    //         ->pluck('flash_sale_items.item_id')
+    //         ->toArray();
+
+    //     $itemsWithModuleData = $results->map(function ($item) use ($moduleData, $flashSaleItems) {
+    //         $item->module = $moduleData;
+    //         $item->module_type = $moduleData ? $moduleData->module_type : null;
+
+    //         $store = Store::find($item->store_id);
+    //         if ($store) {
+    //             $item->store_name = $store->name;
+    //             $item->zone_id = $store->zone_id;
+    //             $item->schedule_order = $store->schedule_order;
+    //             $item->delivery_time = $store->delivery_time;
+
+    //             $time_range_clean = str_replace(" min", "", $item->delivery_time);
+    //             $time_range_parts = explode('-', $time_range_clean);
+
+    //             if (count($time_range_parts) === 2) {
+    //                 $item->delivery_time_min = $time_range_parts[0];
+    //                 $item->delivery_time_max = $time_range_parts[1];
+    //             }
+    //         }
+
+    //         $jsonFields = ['category_ids', 'variations', 'attributes', 'choice_options'];
+    //         foreach ($jsonFields as $field) {
+    //             if ($item->$field) {
+    //                 $item->$field = json_decode($item->$field, true);
+    //             }
+    //         }
+
+    //         $item->flash_sale = in_array($item->id, $flashSaleItems) ? 1 : 0;
+    //         $item->storage = [];
+    //         return $item;
+    //     });
+
+    //     // Prepare categories if data_type is category or subcategory
+    //     $categories = [];
+    //     if (in_array($data_type, ['category', 'subcategory'])) {
+    //         $categories = Category::whereIn('id', $category_ids)->get();
+    //     }
+
+    //     return response()->json([
+    //         'total_size' => $results->total(),
+    //         'limit' => $limit,
+    //         'offset' => $offset,
+    //         'products' => $itemsWithModuleData,
+    //         'categories' => $categories
+    //     ], 200);
+    // }
+
+
     public function get_combined_data(Request $request)
     {
-        // Validate incoming request parameters
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|string',
             'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
@@ -693,10 +800,11 @@ class ItemController extends Controller
         $min_price = $request->input('min_price', 0);
         $max_price = $request->input('max_price', 20000);
 
-        // Initialize item query
         $itemQuery = Item::query();
 
-        // Apply common filters
+        $category_ids = $category_ids ? explode(',', trim($category_ids, '[]')) : [];
+        $brand_ids = $brand_ids ? explode(',', trim($brand_ids, '[]')) : [];
+
         if (!empty($category_ids)) {
             $itemQuery->where(function ($query) use ($category_ids) {
                 $query->whereIn('category_id', $category_ids)
@@ -708,167 +816,150 @@ class ItemController extends Controller
             $itemQuery->whereIn('brand_id', $brand_ids);
         }
 
-        if (!empty($filter)) {
-            foreach ($filter as $key => $value) {
-                $itemQuery->where($key, $value);
-            }
+        // Handle brand data type search by name
+        if ($data_type === 'brand' && $name) {
+            $brand_ids = Brand::where('brand_name', 'like', "%{$name}%")->pluck('id')->toArray();
+            $itemQuery->whereIn('brand_id', $brand_ids);
         }
 
+        // Handle price range
         if ($min_price !== null && $max_price !== null) {
             $itemQuery->whereBetween('price', [$min_price, $max_price]);
         }
 
+        // Handle rating count
         if ($rating_count > 0) {
             $itemQuery->where('rating_count', '>=', $rating_count);
         }
 
-        // Apply zone and module filters
-        $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
-            $q->whereIn('zones.id', json_decode($zone_id, true));
-        });
+        // Handle zone filtering
+        if ($zone_id) {
+            $itemQuery->whereHas('module.zones', function ($q) use ($zone_id) {
+                $q->whereIn('zones.id', json_decode($zone_id, true));
+            });
+        }
 
+        // Handle module filtering
         if ($module_id) {
             $itemQuery->where('module_id', $module_id);
+            $moduleData = Module::find($module_id);
         }
 
-        // Fetch the module data
-        $moduleData = Module::find($module_id);
-
-        // dd($moduleData->module_type);
-
-        // Handle different data types
-        switch ($data_type) {
-            case 'store':
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
-
-            case 'brand':
-                if ($name) {
-                    $brand_ids = Brand::where('name', 'like', "%{$name}%")->pluck('id')->toArray();
-                    $itemQuery->whereIn('brand_id', $brand_ids);
-                }
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
-
-            case 'searched':
-                if ($name) {
-                    $key = explode(' ', $name);
-                    $itemQuery->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->orWhere('name', 'like', "%{$value}%");
-                        }
-                        $q->orWhereHas('tags', function ($query) use ($key) {
-                            $query->where(function ($q) use ($key) {
-                                foreach ($key as $value) {
-                                    $q->where('tag', 'like', "%{$value}%");
-                                }
-                            });
+        // Handle searched data type
+        if ($data_type === 'searched' && $name) {
+            $keywords = explode(' ', $name);
+            $itemQuery->where(function ($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('name', 'like', "%{$keyword}%")
+                        ->orWhereHas('tags', function ($query) use ($keyword) {
+                            $query->where('tag', 'like', "%{$keyword}%");
+                        })
+                        ->orWhereHas('category.parent', function ($query) use ($keyword) {
+                            $query->where('name', 'like', "%{$keyword}%");
+                        })
+                        ->orWhereHas('category', function ($query) use ($keyword) {
+                            $query->where('name', 'like', "%{$keyword}%");
                         });
-                        $q->orWhereHas('category.parent', function ($query) use ($key) {
-                            $query->where(function ($q) use ($key) {
-                                foreach ($key as $value) {
-                                    $q->where('name', 'like', "%{$value}%");
-                                }
-                            });
-                        });
-                        $q->orWhereHas('category', function ($query) use ($key) {
-                            $query->where(function ($q) use ($key) {
-                                foreach ($key as $value) {
-                                    $q->where('name', 'like', "%{$value}%");
-                                }
-                            });
-                        });
-                    });
                 }
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
-
-            case 'category':
-                if (!empty($category_ids)) {
-                    $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                } else {
-                    $categories = Category::where('parent_id', 0)->get();
-                    return response()->json([
-                        'total_size' => $categories->count(),
-                        'limit' => $limit,
-                        'offset' => $offset,
-                        'data' => $categories
-                    ], 200);
-                }
-                break;
-
-            case 'subcategory':
-                if (!empty($category_ids)) {
-                    $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                }
-                break;
-
-            case 'new':
-                $itemQuery->orderBy('created_at', 'desc');
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
-
-            case 'discounted':
-                $itemQuery->where('discount', '>', 0);
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
-
-            default:
-                $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
-                break;
+            });
         }
 
-        // Add module data to each item in the results
-        $itemsWithModuleData = $results->map(function ($item) use ($moduleData) {
+        // Handle new data type
+        if ($data_type === 'new') {
+            $itemQuery->orderBy('created_at', 'desc');
+        }
+
+        // Handle discounted data type
+        if ($data_type === 'discounted') {
+            $itemQuery->where('discount', '>', 0);
+        }
+
+        // Handle category and subcategory data types without category IDs
+        if (in_array($data_type, ['category', 'subcategory']) && empty($category_ids)) {
+            $categories = Category::where('parent_id', 0)->get();
+            return response()->json([
+                'total_size' => $categories->count(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'categories' => $categories
+            ], 200);
+        }
+
+        // Handle list type 'store'
+        if ($list_type === 'store') {
+            // Only proceed if 'name' is provided
+            if (!$name) {
+                return response()->json(['error' => 'Name parameter is required for store list type.'], 403);
+            }
+
+            $stores = Store::where('name', 'like', "%{$name}%")->paginate($limit, ['*'], 'page', $offset);
+
+            return response()->json([
+                'total_size' => $stores->total(),
+                'limit' => $limit,
+                'offset' => $offset,
+                'stores' => $stores
+            ], 200);
+        }
+
+        // Default list type 'item' or 'product'
+        $results = $itemQuery->paginate($limit, ['*'], 'page', $offset);
+
+        $currentDateTime = now();
+        $flashSaleItems = DB::table('flash_sale_items')
+            ->join('flash_sales', 'flash_sale_items.flash_sale_id', '=', 'flash_sales.id')
+            ->where('flash_sales.start_date', '<=', $currentDateTime)
+            ->where('flash_sales.end_date', '>=', $currentDateTime)
+            ->pluck('flash_sale_items.item_id')
+            ->toArray();
+
+        $itemsWithModuleData = $results->map(function ($item) use ($moduleData, $flashSaleItems) {
             $item->module = $moduleData;
+            $item->module_type = $moduleData ? $moduleData->module_type : null;
 
-            $item->module_type = $moduleData->module_type;
-            // Transform category_ids to the desired format
-            if ($item->category_ids) {
-                $categoryIds = json_decode($item->category_ids, true);
-                $formattedCategoryIds = [];
+            $store = Store::find($item->store_id);
+            if ($store) {
+                $item->store_name = $store->name;
+                $item->zone_id = $store->zone_id;
+                $item->schedule_order = $store->schedule_order;
+                $item->delivery_time = $store->delivery_time;
 
-                foreach ($categoryIds as $category) {
-                    $categoryData = Category::find($category['id']);
-                    $formattedCategoryIds[] = [
-                        'id' => $category['id'],
-                        'position' => $category['position'],
-                        'name' => $categoryData ? $categoryData->name : null
-                    ];
+                $time_range_clean = str_replace(" min", "", $item->delivery_time);
+                $time_range_parts = explode('-', $time_range_clean);
+
+                if (count($time_range_parts) === 2) {
+                    $item->delivery_time_min = $time_range_parts[0];
+                    $item->delivery_time_max = $time_range_parts[1];
                 }
-
-                $item->category_ids = $formattedCategoryIds;
             }
 
-            // Transform variations to JSON object
-            if ($item->variations) {
-                $item->variations = json_decode($item->variations, true);
+            $jsonFields = ['category_ids', 'variations', 'attributes', 'choice_options'];
+            foreach ($jsonFields as $field) {
+                if ($item->$field) {
+                    $item->$field = json_decode($item->$field, true);
+                }
             }
 
-            // Transform attributes to JSON array
-            if ($item->attributes) {
-                $item->attributes = json_decode($item->attributes, true);
-            }
-
-            // Transform choice_options to JSON array
-            if ($item->choice_options) {
-                $item->choice_options = json_decode($item->choice_options, true);
-            }
+            $item->flash_sale = in_array($item->id, $flashSaleItems) ? 1 : 0;
+            $item->storage = [];
 
             return $item;
         });
 
-        // Return response with data
+        // Prepare categories if data_type is category or subcategory
+        $categories = [];
+        if (in_array($data_type, ['category', 'subcategory'])) {
+            $categories = Category::whereIn('id', $category_ids)->get();
+        }
+
         return response()->json([
             'total_size' => $results->total(),
             'limit' => $limit,
             'offset' => $offset,
-            'products' => $itemsWithModuleData
+            'products' => $itemsWithModuleData,
+            'categories' => $categories
         ], 200);
     }
-
-
-
 
 
 

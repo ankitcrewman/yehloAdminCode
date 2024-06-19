@@ -4481,4 +4481,6 @@
                                                                                                                                                                                                                                                                                                                 messages.system ',
   'Add new brand' => 'Add new brand',
   'Want to delete this brand' => 'Want to delete this brand',
+  'The minimum order field is required.' => 'The minimum order field is required.',
+  'The maximum delivery time must be greater than 44.' => 'The maximum delivery time must be greater than 44.',
 );
