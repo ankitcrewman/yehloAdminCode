@@ -81,7 +81,9 @@ class WalletController extends Controller
         $wallet->amount = $request->amount;
         $wallet->payment_status = 'pending';
         $wallet->payment_method = $request->payment_method;
+
         $wallet->save();
+
 
         $wallet_amount = $request->amount;
 

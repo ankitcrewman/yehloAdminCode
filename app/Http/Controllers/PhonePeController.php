@@ -79,9 +79,7 @@ class PhonePeController extends Controller
         } else {
             $payer_details = User::where("id", $data->payer_id)->first();
         }
-        // print_r($payer_details);
-        // exit();
-        // $payer_details =  User::where("id", $data->payer_id)->first();
+         dd($system_config);
 
         $phone_number = $payer_details->phone ?? '';
 
@@ -118,7 +116,6 @@ class PhonePeController extends Controller
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
-            // 'merchantOrderId' => "orderID879878",
             "mobileNumber" => "7988706806",
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
@@ -193,6 +190,44 @@ class PhonePeController extends Controller
         return $checksum . '###' . $saltIndex;
     }
 
+    public function success(Request $request, $merchantOrderId)
+    {
+        // Check the content of the request for debugging
+        echo "<pre>";
+        // echo print_r($request->all());
+        echo print_r($merchantOrderId);
+        exit();
+
+        if ($request->code == 'PAYMENT_SUCCESS') {
+            $transactionId = $request->transactionId ?? 'N/A';
+            $merchantId = $request->merchantId ?? 'N/A';
+            $providerReferenceId = $request->providerReferenceId ?? 'N/A';
+            $merchantOrderId = $request->has('merchantOrderId') ? $request->merchantOrderId : 'N/A';
+            $checksum = $request->checksum ?? 'N/A';
+            $status = $request->code;
+
+
+            // dd($merchantOrderId);
+            //Transaction completed, You can add transaction details into the database
+            $data = [
+                'providerReferenceId' => $providerReferenceId,
+                'checksum' => $checksum,
+            ];
+
+            if ($merchantOrderId != 'N/A') {
+                $data['merchantOrderId'] = $merchantOrderId;
+            }
+
+            // Save $data to the database here if needed
+
+            return view('phonepe-success', compact('providerReferenceId', 'transactionId', 'merchantOrderId'));
+        } else {
+            // HANDLE YOUR ERROR MESSAGE HERE
+            return "cdkvjdkF";
+        }
+    }
+
+
     // Function to check transaction status
     public function checkTransactionStatus($merchantId, $transactionId)
     {
@@ -245,49 +280,8 @@ class PhonePeController extends Controller
     }
 
 
-
-
-    public function success(Request $request , $merchantOrderId)
-    {
-        // Check the content of the request for debugging
-        echo "<pre>";
-        // echo print_r($request->all());
-        echo print_r($merchantOrderId);
-        exit();
-
-        if ($request->code == 'PAYMENT_SUCCESS') {
-            $transactionId = $request->transactionId ?? 'N/A';
-            $merchantId = $request->merchantId ?? 'N/A';
-            $providerReferenceId = $request->providerReferenceId ?? 'N/A';
-            $merchantOrderId = $request->has('merchantOrderId') ? $request->merchantOrderId : 'N/A';
-            $checksum = $request->checksum ?? 'N/A';
-            $status = $request->code;
-
-
-            // dd($merchantOrderId);
-            //Transaction completed, You can add transaction details into the database
-            $data = [
-                'providerReferenceId' => $providerReferenceId,
-                'checksum' => $checksum,
-            ];
-
-            if ($merchantOrderId != 'N/A') {
-                $data['merchantOrderId'] = $merchantOrderId;
-            }
-
-            // Save $data to the database here if needed
-
-            return view('phonepe-success', compact('providerReferenceId', 'transactionId', 'merchantOrderId'));
-        } else {
-            // HANDLE YOUR ERROR MESSAGE HERE
-            return "cdkvjdkF";
-        }
-    }
-
-
-
     public function cancel(Request $request)
     {
-        dd("cancel");
+        // dd("cancel");
     }
 }

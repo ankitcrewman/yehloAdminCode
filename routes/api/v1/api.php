@@ -395,10 +395,11 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
             Route::get('reviews', 'StoreController@reviews');
             Route::get('search', 'StoreController@get_searched_stores');
         });
-
+        Route::get('top-banner', 'BannerController@top_get_banners');
         Route::group(['prefix' => 'banners'], function () {
             Route::get('/', 'BannerController@get_banners');
             Route::get('{store_id}/', 'BannerController@get_store_banners');
+
         });
 
         Route::group(['prefix' => 'other-banners'], function () {

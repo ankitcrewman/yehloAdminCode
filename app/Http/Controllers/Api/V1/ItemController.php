@@ -772,7 +772,7 @@ class ItemController extends Controller
     public function get_combined_data(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'sometimes|string',
+            'name' => 'nullable|string',
             'data_type' => 'required|string|in:brand,searched,category,subcategory,new,discounted',
             'list_type' => 'required|string|in:store,product,item',
             'limit' => 'sometimes|integer',
@@ -797,8 +797,8 @@ class ItemController extends Controller
         $brand_ids = $request->input('brand_ids', []);
         $filter = $request->input('filter', []);
         $rating_count = $request->input('rating_count', 0);
-        $min_price = $request->input('min_price', 0);
-        $max_price = $request->input('max_price', 20000);
+        $min_price = $request->input('min_price');
+        $max_price = $request->input('max_price');
 
         $itemQuery = Item::query();
 
@@ -848,9 +848,11 @@ class ItemController extends Controller
         // Handle searched data type
         if ($data_type === 'searched' && $name) {
             $keywords = explode(' ', $name);
+
             $itemQuery->where(function ($q) use ($keywords) {
                 foreach ($keywords as $keyword) {
                     $q->orWhere('name', 'like', "%{$keyword}%")
+
                         ->orWhereHas('tags', function ($query) use ($keyword) {
                             $query->where('tag', 'like', "%{$keyword}%");
                         })
