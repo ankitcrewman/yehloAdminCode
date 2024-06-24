@@ -4483,4 +4483,21 @@
   'Want to delete this brand' => 'Want to delete this brand',
   'The minimum order field is required.' => 'The minimum order field is required.',
   'The maximum delivery time must be greater than 44.' => 'The maximum delivery time must be greater than 44.',
+  '
+                                                                                                                                                                                                                                                                                                                                    messages.zone ' => '
+                                                                                                                                                                                                                                                                                                                                    messages.zone ',
+  '
+                                                                                                                                                                                                                                                                                                                                        messages.setting ' => '
+                                                                                                                                                                                                                                                                                                                                        messages.setting ',
+  '
+                                                                                                                                                                                                                                                                                                                                        messages.pages ' => '
+                                                                                                                                                                                                                                                                                                                                        messages.pages ',
+  '
+                                                                                                                                                                                                                                                                                                                                        messages .3 rd_party ' => '
+                                                                                                                                                                                                                                                                                                                                        messages .3 rd party ',
+  '
+                                                                                                                                                                                                                                                                                                                                        messages.system ' => '
+                                                                                                                                                                                                                                                                                                                                        messages.system ',
+  'Write_the_sub_title_within_50_characters' => 'Write the sub title within 50 characters',
+  '(size: 4:4)' => '(size: 4:4)',
 );

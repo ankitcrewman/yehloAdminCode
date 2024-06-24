@@ -66,6 +66,7 @@ class PhonePeController extends Controller
             return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
         }
 
+
         // Extract business name from additional data or set a default value
         $business_name = optional(json_decode($data->additional_data))->business_name ?? "my_business";
 
@@ -79,7 +80,7 @@ class PhonePeController extends Controller
         } else {
             $payer_details = User::where("id", $data->payer_id)->first();
         }
-         dd($system_config);
+        // dd($system_config);
 
         $phone_number = $payer_details->phone ?? '';
 
@@ -87,8 +88,16 @@ class PhonePeController extends Controller
         if (strpos($phone_number, '+91') === 0) {
             $phone_number = substr($phone_number, 3);
         }
-        $merchantOrderId = "orderID879878";
-        $redirect_url = route("phonepe.confirm", ["merchantOrderId" => $merchantOrderId]);
+
+        $paymentDetails = [
+            'merchantOrderId' => "orderID".rand(100, 99999),
+            'requestId' => $data->id
+        ];
+
+        $encryptedData = base64_encode(json_encode($paymentDetails));
+
+        $redirect_url = route('phonepe.confirm', ['encryptedData' => $encryptedData]);
+
 
         // Prepare payload for PhonePe API
         // $payload = [
@@ -108,7 +117,7 @@ class PhonePeController extends Controller
 
 
         $payload = [
-            "merchantId" => "PGTESTPAYUAT86",
+            "merchantId" => "M226DWVS5EFSO",
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
@@ -116,31 +125,25 @@ class PhonePeController extends Controller
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
-            "mobileNumber" => "7988706806",
+            "mobileNumber" => "8171619719   ",
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
-        //  dd($payload);
 
-
-        // Encode payload to base64
         $encodedPayload = base64_encode(json_encode($payload));
         $jsonData = json_encode(["request" => $encodedPayload]);
 
         // $saltKey = $system_config->salt_key;
-        $saltKey = "96434309-7796-489d-8924-ab56988a6076";
+        $saltKey = "96434309-7796-489d-8924-ab56988a6070";
 
         $salt_index = $system_config->salt_index;
         // Generate checksum
         $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey) . "###" . $salt_index;
 
-
         if ($checksum) {
-
             $headers = [
                 'Content-Type: application/json',
                 'X-VERIFY: ' . $checksum,
             ];
-
 
             $ch = curl_init();
 
@@ -175,28 +178,31 @@ class PhonePeController extends Controller
             return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
         }
     }
-
-
-    private function computeSHA256($data)
+    public function success(Request $request, $encryptedData)
     {
-        return hash('sha256', $data);
-    }
 
-    // Function to generate X-Verify header
-    private  function generateXVerify($payload, $endpoint, $saltKey, $saltIndex)
-    {
-        $checksumString = $payload . $endpoint . $saltKey;
-        $checksum = $this->computeSHA256($checksumString);
-        return $checksum . '###' . $saltIndex;
-    }
+        $validatedData = $request->validate([
+            'code' => 'required|string',
+            'transactionId' => 'nullable|string',
+            'merchantId' => 'nullable|string',
+            'providerReferenceId' => 'nullable|string',
+            'merchantOrderId' => 'nullable|string',
+            'checksum' => 'nullable|string',
+        ], [
+            'code.required' => 'The payment status code is required.',
+            'code.string' => 'The payment status code must be a string.',
+            'transactionId.string' => 'The transaction ID must be a string.',
+            'merchantId.string' => 'The merchant ID must be a string.',
+            'providerReferenceId.string' => 'The provider reference ID must be a string.',
+            'merchantOrderId.string' => 'The merchant order ID must be a string.',
+            'checksum.string' => 'The checksum must be a string.',
+        ]);
 
-    public function success(Request $request, $merchantOrderId)
-    {
-        // Check the content of the request for debugging
-        echo "<pre>";
-        // echo print_r($request->all());
-        echo print_r($merchantOrderId);
-        exit();
+        $decryptedData = json_decode(base64_decode($encryptedData));
+
+        $merchantOrderId = $decryptedData->merchantOrderId;
+        $requestId = $decryptedData->requestId;
+
 
         if ($request->code == 'PAYMENT_SUCCESS') {
             $transactionId = $request->transactionId ?? 'N/A';
@@ -206,9 +212,6 @@ class PhonePeController extends Controller
             $checksum = $request->checksum ?? 'N/A';
             $status = $request->code;
 
-
-            // dd($merchantOrderId);
-            //Transaction completed, You can add transaction details into the database
             $data = [
                 'providerReferenceId' => $providerReferenceId,
                 'checksum' => $checksum,
@@ -218,20 +221,38 @@ class PhonePeController extends Controller
                 $data['merchantOrderId'] = $merchantOrderId;
             }
 
-            // Save $data to the database here if needed
+            $update = $this->payment::where(['id' => $requestId])->update([
+                'payment_method' => 'phonepe',
+                'is_paid' => 1,
+                'transaction_id' => $data['providerReferenceId'],
+            ]);
+            // dd($merchantOrderId);
+            $get_data = $this->payment::where(['id' => $requestId])->first();
+            $payerInformation = json_decode($get_data->payer_information);
+            $payment_details = [
+                'providerReferenceId' => $providerReferenceId,
+                'transactionId' => $merchantId,
+                'merchantOrderId' => $merchantOrderId,
+                'payer_details' => [
+                    'payer_details_name' => $payerInformation->name,
+                    'payer_details_email' => $payerInformation->email,
+                    'payer_details_number' => $payerInformation->phone
+                ]
 
-            return view('phonepe-success', compact('providerReferenceId', 'transactionId', 'merchantOrderId'));
+            ];
+            // dd($payerInformation);
+
+
+            return view('phonepe-success', compact('payment_details'));
         } else {
-            // HANDLE YOUR ERROR MESSAGE HERE
-            return "cdkvjdkF";
+            // // HANDLE YOUR ERROR MESSAGE HERE
+            // return "cdkvjdkF";
         }
     }
 
 
-    // Function to check transaction status
     public function checkTransactionStatus($merchantId, $transactionId)
     {
-
         $system_config = $this->config_values;
 
         $checksum = hash('sha256', "/v3/transaction/{$merchantId}/{$transactionId}/status" . $system_config->salt_key) . "###" . $system_config->salt_index;
@@ -284,4 +305,19 @@ class PhonePeController extends Controller
     {
         // dd("cancel");
     }
+
+    // private function computeSHA256($data)
+    // {
+    //     return hash('sha256', $data);
+    // }
+
+    // // Function to generate X-Verify header
+    // private  function generateXVerify($payload, $endpoint, $saltKey, $saltIndex)
+    // {
+    //     $checksumString = $payload . $endpoint . $saltKey;
+    //     $checksum = $this->computeSHA256($checksumString);
+    //     return $checksum . '###' . $saltIndex;
+    // }
+
+
 }

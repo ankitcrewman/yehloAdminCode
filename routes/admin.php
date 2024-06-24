@@ -378,6 +378,13 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
 
 
+            // delivery Man routes
+
+
+            Route::get('pages/delivery-landing-page-settings/{tab?}', 'BusinessSettingsController@delivery_landing_page_settings')->name('delivery-landing-page-settings');
+            Route::POST('pages/delivery-landing-page-settings/{tab}', 'BusinessSettingsController@update_delivery_landing_page_settings')->name('delivery-landing-page-settings');
+
+             // delivery Man routes
 
             // vendor landing page
 
@@ -390,6 +397,10 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('vendor-promotional-status/{id}/{status}', 'BusinessSettingsController@vendor_promotional_status')->name('vendor-promotional-status');
 
             // vendor landing page
+
+
+
+
 
             Route::post('review-section/update/{id}', 'BusinessSettingsController@review_update')->name('review-update');
             Route::delete('review/delete/{review}', 'BusinessSettingsController@review_destroy')->name('review-delete');

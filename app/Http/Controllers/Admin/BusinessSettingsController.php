@@ -2575,6 +2575,117 @@ class BusinessSettingsController extends Controller
         }
     }
 
+
+    public function delivery_landing_page_settings($tab)
+    {
+        if ($tab == 'fixed-data') {
+            return view('admin-views.business-settings.landing-page-settings.delivery-fixed-data');
+        } else if ($tab == 'promotional-section') {
+            return view('admin-views.business-settings.landing-page-settings.admin-promotional-section');
+        }
+    }
+
+
+
+    public function update_delivery_landing_page_settings(Request $request,$tab){
+        if ($tab == 'fixed-data') {
+            $delivery_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_heading')->first();
+            if ($delivery_heading == null) {
+                $delivery_heading = new DataSetting();
+            }
+
+            $delivery_heading->key = 'delivery_heading';
+            $delivery_heading->type = 'delivery_landing_page';
+            $delivery_heading->value = $request->delivery_heading[0];
+            $delivery_heading->save();
+
+            $delivery_sub_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_sub_heading')->first();
+            if ($delivery_sub_heading == null) {
+                $delivery_sub_heading = new DataSetting();
+            }
+
+            $delivery_sub_heading->key = 'delivery_sub_heading';
+            $delivery_sub_heading->type = 'delivery_landing_page';
+            $delivery_sub_heading->value = $request->delivery_sub_heading[0];
+            $delivery_sub_heading->save();
+
+
+
+
+
+
+            $delivery_footer_image = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_image')->first();
+            if ($delivery_footer_image == null) {
+                $delivery_footer_image = new DataSetting();
+            }
+            $delivery_footer_image->key = 'delivery_footer_image';
+            $delivery_footer_image->type = 'delivery_landing_page';
+            $delivery_footer_image->value = $request->has('delivery_footer_image') ? Helpers::update('deliveryman/', $delivery_footer_image->value, 'png', $request->file('delivery_footer_image')) : $delivery_footer_image->value;
+            $delivery_footer_image->save();
+
+            Toastr::success("Delivery Home Setting update");
+            return back();
+        }
+        else if($tab == 'footer-fixed-data'){
+
+                $delivery_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_heading')->first();
+                if ($delivery_heading == null) {
+                    $delivery_heading = new DataSetting();
+                }
+
+                $delivery_heading->key = 'delivery_heading';
+                $delivery_heading->type = 'delivery_landing_page';
+                $delivery_heading->value = $request->delivery_heading[0];
+                $delivery_heading->save();
+
+                $delivery_sub_heading = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_sub_heading')->first();
+                if ($delivery_sub_heading == null) {
+                    $delivery_sub_heading = new DataSetting();
+                }
+
+                $delivery_sub_heading->key = 'delivery_sub_heading';
+                $delivery_sub_heading->type = 'delivery_landing_page';
+                $delivery_sub_heading->value = $request->delivery_sub_heading[0];
+                $delivery_sub_heading->save();
+
+
+                $sub_head_2 = DataSetting::where('type', 'delivery_landing_page')->where('key', 'sub_head_2')->first();
+                if ($sub_head_2 == null) {
+                    $sub_head_2 = new DataSetting();
+                }
+
+                $sub_head_2->key = 'sub_head_2';
+                $sub_head_2->type = 'delivery_landing_page';
+                $sub_head_2->value = $request->sub_head_2[0];
+                $sub_head_2->save();
+
+
+                $download_link_button = DataSetting::where('type', 'delivery_landing_page')->where('key', 'download_link_button')->first();
+                if ($download_link_button == null) {
+                    $download_link_button = new DataSetting();
+                }
+
+                $download_link_button->key = 'download_link_button';
+                $download_link_button->type = 'delivery_landing_page';
+                $download_link_button->value = $request->download_link_button[0];
+                $download_link_button->save();
+
+
+
+                $delivery_footer_image = DataSetting::where('type', 'delivery_landing_page')->where('key', 'delivery_footer_image')->first();
+                if ($delivery_footer_image == null) {
+                    $delivery_footer_image = new DataSetting();
+                }
+                $delivery_footer_image->key = 'delivery_footer_image';
+                $delivery_footer_image->type = 'delivery_landing_page';
+                $delivery_footer_image->value = $request->has('delivery_footer_image') ? Helpers::update('deliveryman/', $delivery_footer_image->value, 'png', $request->file('delivery_footer_image')) : $delivery_footer_image->value;
+                $delivery_footer_image->save();
+
+                Toastr::success("Delivery Footer Setting update");
+                return back();
+        }
+    }
+
     public function update_admin_landing_page_settings(Request $request, $tab)
     {
         if (env('APP_MODE') == 'demo') {

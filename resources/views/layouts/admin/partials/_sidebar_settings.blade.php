@@ -159,6 +159,26 @@
                                     </a>
                                 </li> --}}
                                 {{-- vandor landing  page --}}
+
+
+
+                                {{-- DeliveryMan Setup --}}
+
+                                <li
+                                    class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/pages/admin-landing-page-settings*') ? 'active' : '' }}">
+
+                                    <a class="nav-link"
+                                        href="{{ route('admin.business-settings.delivery-landing-page-settings', 'fixed-data') }}"
+                                        title="DeliveryMan Landing Page">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+
+                                        <span class="text-truncate">DeliveryMan Landing Page</span>
+                                    </a>
+                                </li>
+
+
+
+                                {{-- DeliveryMan Setup --}}
                                 <li
                                     class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/pages/react-landing-page-settings*') ? 'active' : '' }}">
                                     <a class="nav-link "
@@ -559,23 +579,23 @@
                     const suggestions = [
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                            messages.zone '),
+                                                                                                                                                                                                                                                                                                                                    messages.zone '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                messages.setting '),
+                                                                                                                                                                                                                                                                                                                                        messages.setting '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                messages.pages '),
+                                                                                                                                                                                                                                                                                                                                        messages.pages '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                messages .3 rd_party '),
+                                                                                                                                                                                                                                                                                                                                        messages .3 rd_party '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                messages.system '),
+                                                                                                                                                                                                                                                                                                                                        messages.system '),
                         ) }}'
                     ];
                     --

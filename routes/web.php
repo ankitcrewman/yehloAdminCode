@@ -132,8 +132,10 @@ if (!$is_published) {
             Route::get('payment', [PhonePeController::class, 'payment'])->name('payment');
 
             // Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
-            Route::match(['get', 'post'], 'confirm/{merchantOrderId}', [PhonePeController::class, 'success'])->name('confirm')
-                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
+            Route::match(['get', 'post'], 'confirm/{encryptedData}', [PhonePeController::class, 'success'])
+                ->name('confirm')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+
             Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
                 ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
         });
