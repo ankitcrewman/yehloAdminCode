@@ -165,7 +165,7 @@
                                 {{-- DeliveryMan Setup --}}
 
                                 <li
-                                    class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/pages/admin-landing-page-settings*') ? 'active' : '' }}">
+                                    class="navbar-vertical-aside-has-menu {{ Request::is('admin/business-settings/pages/delivery-landing-page-settings*') ? 'active' : '' }}">
 
                                     <a class="nav-link"
                                         href="{{ route('admin.business-settings.delivery-landing-page-settings', 'fixed-data') }}"

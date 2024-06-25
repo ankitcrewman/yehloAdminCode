@@ -67,6 +67,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
     Route::get('landing-page', 'ConfigController@landing_page');
     Route::get('react-landing-page', 'ConfigController@react_landing_page');
     Route::get('admin-landing-page', 'ConfigController@admin_landing_page');
+    Route::get('deliveryman-landing-page', 'ConfigController@delivery_landing_page');
     Route::get('flutter-landing-page', 'ConfigController@flutter_landing_page');
 
     Route::group(['prefix' => 'delivery-man'], function () {

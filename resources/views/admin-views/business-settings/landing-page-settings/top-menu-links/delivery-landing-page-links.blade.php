@@ -7,8 +7,12 @@
                 href="{{ route('admin.business-settings.delivery-landing-page-settings', 'fixed-data') }}">{{translate('messages.fixed_data')}}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('admin/business-settings/pages/admin-landing-page-settings/promotional-section*') ? 'active' : '' }}"
-                href="{{ route('admin.business-settings.admin-landing-page-settings', 'promotional-section') }}">{{translate('messages.promotional_section')}}</a>
+                <a class="nav-link {{ Request::is('admin/business-settings/pages/delivery-landing-page-settings/promotional-section*') ? 'active' : '' }}"
+                href="{{ route('admin.business-settings.delivery-landing-page-settings', 'promotional-section') }}">{{translate('messages.promotional_section')}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('admin/business-settings/pages/delivery-landing-page-settings/faq*') ? 'active' : '' }}"
+                href="{{ route('admin.business-settings.delivery-landing-page-settings', 'faq') }}">{{translate('messages.delivery_faq')}}</a>
             </li>
             {{-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('admin/business-settings/pages/admin-landing-page-settings/earn-money') ? 'active' : '' }}"

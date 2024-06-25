@@ -30,7 +30,18 @@
         </div>
         @php($delivery_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_heading')->first())
         @php($delivery_sub_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_sub_heading')->first())
-        @php($delivery_home_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_home_image')->first())
+        @php($delivery_head_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_head_image')->first())
+
+        @php($delivery_footer_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_heading')->first())
+        @php($delivery_footer_image = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_image')->first())
+        @php($delivery_footer_sub_heading = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'delivery_footer_sub_heading')->first())
+        @php($sub_head_2 = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'sub_head_2')->first())
+        @php($download_link_button = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'delivery_landing_page')->where('key', 'download_link_button')->first())
+
+
+
+
+
         @php($fixed_module_sub_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'fixed_module_sub_title')->first())
         @php($fixed_referal_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'fixed_referal_title')->first())
         @php($fixed_referal_sub_title = \App\Models\DataSetting::withoutGlobalScope('translate')->where('type', 'admin_landing_page')->where('key', 'fixed_referal_sub_title')->first())
@@ -104,8 +115,8 @@
                                             <div class="position-relative">
                                                 <div class="img">
                                                     <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
-                                                        $delivery_home_image['value'] ?? '',
-                                                        asset('storage/app/public/deliveryman') . '/' . $delivery_home_image['value'] ?? '',
+                                                        $delivery_head_image['value'] ?? '',
+                                                        asset('storage/app/public/deliveryman') . '/' . $delivery_head_image['value'] ?? '',
                                                         asset('/public/assets/admin/img/upload-4.png'),
                                                         'deliveryman/',
                                                     ) }}"
@@ -113,10 +124,10 @@
                                                         class="vertical-img mw-100 vertical onerror-image" alt="">
 
                                                 </div>
-                                                <input type="file" name="delivery_home_image" hidden>
-                                                @if (isset($delivery_home_image['value']))
-                                                    <span id="delivery_home_image" class="remove_image_button remove-image"
-                                                        data-id="delivery_home_image"
+                                                <input type="file" name="delivery_head_image" hidden>
+                                                @if (isset($delivery_head_image['value']))
+                                                    <span id="delivery_head_image" class="remove_image_button remove-image"
+                                                        data-id="delivery_head_image"
                                                         data-title="{{ translate('Warning!') }}"
                                                         data-text="<p>{{ translate('Are_you_sure_you_want_to_remove_this_image_?') }}</p>">
                                                         <i class="tio-clear"></i></span>
@@ -158,8 +169,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="fixed_newsletter_title" type="text" maxlength=""
-                                            name="delivery_heading[]"
-                                            value="{{ $delivery_heading?->getRawOriginal('value') }}"
+                                            name="delivery_footer_heading[]"
+                                            value="{{ $delivery_footer_heading?->getRawOriginal('value') }}"
                                             class="form-control"
                                             placeholder="{{ translate('Ex_:_Sign_Up_to_Our_Newsletter') }}">
 
@@ -170,8 +181,8 @@
                                                     alt="">
                                             </span></label>
                                         <input id="fixed_newsletter_title" type="text" maxlength=""
-                                            name="delivery_sub_heading[]"
-                                            value="{{ $delivery_sub_heading?->getRawOriginal('value') }}"
+                                            name="delivery_footer_sub_heading[]"
+                                            value="{{ $delivery_footer_sub_heading?->getRawOriginal('value') }}"
                                             class="form-control"
                                             placeholder="{{ translate('Ex_:_Sign_Up_to_Our_Newsletter') }}">
                                         <label for="fixed_newsletter_title" class="form-label">Sub-Head 2<span
@@ -182,7 +193,7 @@
                                             </span></label>
                                         <input id="fixed_newsletter_title" type="text" maxlength=""
                                             name="sub_head_2[]"
-                                            value="{{ $delivery_sub_heading?->getRawOriginal('value') }}"
+                                            value="{{ $sub_head_2?->getRawOriginal('value') }}"
                                             class="form-control"
                                             placeholder="{{ translate('Ex_:_Sign_Up_to_Our_Newsletter') }}">
                                         <label for="fixed_newsletter_title" class="form-label">Download Button Link<span
@@ -193,7 +204,7 @@
                                             </span></label>
                                         <input id="fixed_newsletter_title" type="text" maxlength=""
                                             name="download_link_button[]"
-                                            value="{{ $delivery_sub_heading?->getRawOriginal('value') }}"
+                                            value="{{ $download_link_button?->getRawOriginal('value') }}"
                                             class="form-control"
                                             placeholder="{{ translate('Ex_:_Sign_Up_to_Our_Newsletter') }}">
                                     </div>
@@ -205,8 +216,8 @@
                                             <div class="position-relative">
                                                 <div class="img">
                                                     <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper(
-                                                        $delivery_home_image['value'] ?? '',
-                                                        asset('storage/app/public/deliveryman') . '/' . $delivery_home_image['value'] ?? '',
+                                                        $delivery_footer_image['value'] ?? '',
+                                                        asset('storage/app/public/deliveryman') . '/' . $delivery_footer_image['value'] ?? '',
                                                         asset('/public/assets/admin/img/upload-4.png'),
                                                         'deliveryman/',
                                                     ) }}"
