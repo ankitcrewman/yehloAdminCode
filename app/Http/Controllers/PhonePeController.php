@@ -40,7 +40,6 @@ class PhonePeController extends Controller
         if ($config) {
             $this->base_url = ($config->mode == 'test') ? 'https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay' : 'https://api.phonepe.com/apis/hermes/pg/v1/pay';
         }
-
         $this->payment = $payment;
     }
 
@@ -117,7 +116,7 @@ class PhonePeController extends Controller
 
 
         $payload = [
-            "merchantId" => "M226DWVS5EFSO",
+            "merchantId" => "PGTESTPAYUAT86",
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
@@ -133,7 +132,7 @@ class PhonePeController extends Controller
         $jsonData = json_encode(["request" => $encodedPayload]);
 
         // $saltKey = $system_config->salt_key;
-        $saltKey = "96434309-7796-489d-8924-ab56988a6070";
+        $saltKey = "96434309-7796-489d-8924-ab56988a6076";
 
         $salt_index = $system_config->salt_index;
         // Generate checksum
