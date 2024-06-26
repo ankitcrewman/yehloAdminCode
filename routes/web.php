@@ -35,6 +35,9 @@ Route::get('about-us', 'HomeController@about_us')->name('about-us');
 Route::get('contact-us', 'HomeController@contact_us')->name('contact-us');
 Route::post('send-message', 'HomeController@send_message')->name('send-message');
 Route::get('privacy-policy', 'HomeController@privacy_policy')->name('privacy-policy');
+Route::get('delivery-man/privacy-policy', 'HomeController@delivery_privacy_policy')->name('deliveryman-privacy-policy');
+
+
 Route::get('cancelation', 'HomeController@cancelation')->name('cancelation');
 Route::get('refund', 'HomeController@refund_policy')->name('refund');
 Route::get('vendor-terms', 'HomeController@vendor_landing')->name('vendor-terms');
@@ -73,9 +76,10 @@ Route::get('payment-cancel', 'PaymentController@cancel')->name('payment-cancel')
 
 $is_published = 0;
 try {
-$full_data = include('Modules/Gateways/Addon/info.php');
-$is_published = $full_data['is_published'] == 1 ? 1 : 0;
-} catch (\Exception $exception) {}
+    $full_data = include('Modules/Gateways/Addon/info.php');
+    $is_published = $full_data['is_published'] == 1 ? 1 : 0;
+} catch (\Exception $exception) {
+}
 
 
 if (!$is_published) {
@@ -127,12 +131,13 @@ if (!$is_published) {
         Route::group(['prefix' => 'phonepe', 'as' => 'phonepe.'], function () {
             Route::get('payment', [PhonePeController::class, 'payment'])->name('payment');
 
-            Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
+            // Route::match(['get', 'post'], 'confirm', [PhonePeController::class, 'success'])->name('confirm')
+            Route::match(['get', 'post'], 'confirm/{encryptedData}', [PhonePeController::class, 'success'])
+                ->name('confirm')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
-         ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
-        Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
-            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
-
+            Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
         });
 
         //SENANG-PAY
@@ -145,7 +150,7 @@ if (!$is_published) {
         Route::group(['prefix' => 'paytm', 'as' => 'paytm.'], function () {
             Route::get('pay', [PaytmController::class, 'payment']);
             Route::any('response', [PaytmController::class, 'callback'])->name('response')
-            ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
         });
 
         //FLUTTERWAVE

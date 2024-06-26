@@ -19,7 +19,7 @@
             border: 10px solid #f2f2f2;
             margin-top: 100px;
         }
-        h1, p {
+        h1, p , h4{
             text-align: center;
         }
     </style>
@@ -27,9 +27,10 @@
 <body>
 <div class="success-box">
     <h4>Payment Successful!</h4>
-    <p>Transaction ID: {{ $transactionId }}</p>
-    <p>Provider Reference ID: {{ $providerReferenceId }}</p>
-    <p>Merchant Order ID: {{ $merchantOrderId }}</p>
+    {{-- {{  dd($payment_details) }} --}}
+    <p>Transaction ID: {{ $payment_details['transactionId']}}</p>
+    <p>Provider Reference ID: {{ $payment_details['providerReferenceId'] }}</p>
+    <p>Merchant Order ID: {{ $payment_details['merchantOrderId'] }}</p>
 </div>
 </body>
 </html>

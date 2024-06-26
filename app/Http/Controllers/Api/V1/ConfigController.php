@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Validator;
 use MatanYadaev\EloquentSpatial\Objects\Point;
 use App\Models\Store;
 use App\Models\AdminPromotionalBanner;
+use App\Models\DeliveryPromotion;
+use App\Models\DeliveryFaq;
 
 
 use App\Models\AdminFeature;
@@ -489,6 +491,8 @@ class ConfigController extends Controller
                         $query->where('starting_coverage_area', '>=', $distance_data);
                     });
             })->orderBy('starting_coverage_area')->first();
+        echo json_encode($data);
+        exit();
 
         $extra_charges = (float) (isset($data) ? $data->extra_charges  : 0);
         return response()->json($extra_charges, 200);
@@ -545,10 +549,12 @@ class ConfigController extends Controller
                 'company_title' => (isset($settings['company_title']))  ? $settings['company_title'] : null,
                 'company_sub_title' => (isset($settings['company_sub_title']))  ? $settings['company_sub_title'] : null,
                 'company_description' => (isset($settings['company_description']))  ? $settings['company_description'] : null,
+                'banner_image_company' => (isset($settings['banner_image_company']))  ? $settings['banner_image_company'] : null,
                 'company_button_name' => (isset($settings['company_button_name']))  ? $settings['company_button_name'] : null,
                 'company_button_url' => (isset($settings['company_button_url']))  ? $settings['company_button_url'] : null,
                 'download_user_app_title' => (isset($settings['download_user_app_title']))  ? $settings['download_user_app_title'] : null,
                 'download_user_app_sub_title' => (isset($settings['download_user_app_sub_title']))  ? $settings['download_user_app_sub_title'] : null,
+                'banner_image_download' => (isset($settings['banner_image_download']))  ? $settings['banner_image_download'] : null,
                 'earning_title' => (isset($settings['earning_title']))  ? $settings['earning_title'] : null,
                 'earning_sub_title' => (isset($settings['earning_sub_title']))  ? $settings['earning_sub_title'] : null,
                 'earning_seller_title' => (isset($settings['earning_seller_title']))  ? $settings['earning_seller_title'] : null,
@@ -664,7 +670,7 @@ class ConfigController extends Controller
 
                 'seller_footer_heading' => (isset($settings['seller_footer_heading']))  ? $settings['seller_footer_heading'] : null,
                 'seller_footer_sub_heading' => (isset($settings['seller_footer_sub_heading']))  ? $settings['seller_footer_sub_heading'] : null,
-                'footer_seller_image' => (isset($settings['footer_seller_image']))  ? asset('storage/app/public/earning/' .$settings['footer_seller_image']) : null,
+                'footer_seller_image' => (isset($settings['footer_seller_image']))  ? asset('storage/app/public/earning/' . $settings['footer_seller_image']) : null,
                 'seller_purchase' => (isset($settings['seller_purchase']))  ? $settings['seller_purchase'] : null,
                 'seller_description' => (isset($settings['seller_description']))  ? $settings['seller_description'] : null,
 
@@ -675,6 +681,82 @@ class ConfigController extends Controller
                 'promotion_banners' => (isset($promotion_banners))  ? $promotion_banners : null,
                 'download_user_app_links' => (isset($settings['download_user_app_links']))  ? json_decode($settings['download_user_app_links'], true) : null,
                 'download_business_app_links' => (isset($settings['download_business_app_links']))  ? json_decode($settings['download_business_app_links'], true) : null,
+
+            ]
+        );
+    }
+
+    public function delivery_landing_page()
+    {
+        $datas = DataSetting::where('type', 'delivery_landing_page')->get();
+
+
+        // Initialize the settings array
+        $settings = [];
+
+        // Loop through each data setting and add it to the settings array
+        foreach ($datas as $data) {
+            $settings[$data->key] = $data->value;
+        }
+
+
+
+        // Fetch all reviews
+
+        $promotional_banner = DeliveryPromotion::get();
+
+        $promotion_banners = [];
+
+        // Retrieve the first record where main_heading is not null
+        $main_heading_record = DeliveryPromotion::whereNotNull('main_heading')->first();
+        $main_heading = $main_heading_record ? $main_heading_record->main_heading : null;
+
+        // Add the main_heading to the response array
+        $promotion_banners['main_heading'] = $main_heading;
+
+        // Loop through each promotional banner and add its details to the response array
+        foreach ($promotional_banner as $banner) {
+            $promotion_banners['promotional_data'][] = [
+                'title' => $banner->title,
+                'sub_title' => $banner->subtitle,
+                'image' => asset('storage/app/public/delivery_promotion/' . $banner->image),
+            ];
+        }
+
+
+
+        $delivery_faq = DeliveryFaq::get();
+        $delivery_faqs = [];
+        foreach ($delivery_faq as $ad_f) {
+            $delivery_faqs[] = [
+                'question' => $ad_f->question,
+
+                'anwser' => $ad_f->anwser,
+
+                // Add other necessary fields from the AdminPromotionalBanner model
+            ];
+        }
+
+        // echo json_encode($delivery_faqs);
+
+        // exit();
+
+        return  response()->json(
+            [
+                'delivery_heading' => (isset($settings['delivery_heading']))  ? $settings['delivery_heading'] : null,
+                'delivery_sub_heading' => (isset($settings['delivery_sub_heading']))  ? $settings['delivery_sub_heading'] : null,
+                'delivery_head_image' => (isset($settings['delivery_head_image']))  ? asset('storage/app/public/deliveryman/' . $settings['delivery_head_image']) : null,
+
+                'delivery_footer_heading' => (isset($settings['delivery_footer_heading']))  ? $settings['delivery_footer_heading'] : null,
+                'delivery_footer_sub_heading' => (isset($settings['delivery_footer_sub_heading']))  ? $settings['delivery_footer_sub_heading'] : null,
+                'sub_head_2' => (isset($settings['sub_head_2']))  ? $settings['sub_head_2'] : null,
+
+                'download_link_button' => (isset($settings['download_link_button']))  ? $settings['download_link_button'] : null,
+                'delivery_footer_image' => (isset($settings['delivery_footer_image']))  ? asset('storage/app/public/deliveryman/' . $settings['delivery_footer_image']) : null,
+
+
+                'delivery_promotion' => (isset($promotion_banners))  ? $promotion_banners : null,
+                'delivery_faqs' => (isset($delivery_faqs))  ? $delivery_faqs : null,
 
             ]
         );

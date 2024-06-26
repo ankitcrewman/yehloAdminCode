@@ -11,6 +11,21 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     Route::group(['middleware' => ['admin', 'current-module']], function () {
 
+        /// brand
+
+        Route::get('/brand', 'BrandController@index')->name('brand');
+
+
+        Route::post('/brand-store/{id?}', 'BrandController@store')->name('brand-store');
+
+
+
+        Route::get('/brand-edit/{id}', 'BrandController@edit')->name('brand-edit');
+
+        Route::delete('/brand/{id}', 'BrandController@destroy')->name('brand-destroy');
+
+        /// brand
+
 
         Route::get('/new-plan', 'NewPlanController@index')->name('new-plan');
 
@@ -363,6 +378,25 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
 
 
+            // delivery Man routes
+
+
+            Route::get('pages/delivery-landing-page-settings/{tab?}', 'BusinessSettingsController@delivery_landing_page_settings')->name('delivery-landing-page-settings');
+            Route::POST('pages/delivery-landing-page-settings/{tab}', 'BusinessSettingsController@update_delivery_landing_page_settings')->name('delivery-landing-page-settings');
+
+
+            Route::get('del-promotional-status/{id}/{status}', 'BusinessSettingsController@delivery_promotional_status')->name('delivery-promotional-status');
+            Route::get('pages/admin-landing-page-settings/del-promotional-section/edit/{id}', 'BusinessSettingsController@delivery_promotional_edit')->name('delivery-promotional-edit');
+            Route::post('del-promotional-section/update/{id}', 'BusinessSettingsController@delivery_promotional_update')->name('delivery-promotional-update');
+            Route::delete('del-banner/delete/{banner}', 'BusinessSettingsController@delevery_promotional_destroy')->name('delivery-promotional-delete');
+
+
+
+            Route::get('del-faq-status/{id}/{status}', 'BusinessSettingsController@delivery_faq_status')->name('delivery-faq-status');
+            Route::get('pages/admin-landing-page-settings/del-faq-section/edit/{id}', 'BusinessSettingsController@delivery_faq_edit')->name('delivery-faq-edit');
+            Route::post('del-faq-section/update/{id}', 'BusinessSettingsController@delivery_faq_update')->name('delivery-faq-update');
+            Route::delete('del-faq-banner/delete/{banner}', 'BusinessSettingsController@delevery_faq_destroy')->name('delivery-faq-delete');
+            // delivery Man routes
 
             // vendor landing page
 
@@ -375,6 +409,10 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('vendor-promotional-status/{id}/{status}', 'BusinessSettingsController@vendor_promotional_status')->name('vendor-promotional-status');
 
             // vendor landing page
+
+
+
+
 
             Route::post('review-section/update/{id}', 'BusinessSettingsController@review_update')->name('review-update');
             Route::delete('review/delete/{review}', 'BusinessSettingsController@review_destroy')->name('review-delete');
@@ -426,6 +464,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
             Route::get('pages/business-page/privacy-policy', 'BusinessSettingsController@privacy_policy')->name('privacy-policy');
             Route::post('pages/business-page/privacy-policy', 'BusinessSettingsController@privacy_policy_update');
+
+
+            //////////////////////
+
+            Route::get('pages/business-page/delivery-man/privacy-policy', 'BusinessSettingsController@delivery_privacy_policy')->name('delivery-man-privacy-policy');
+            Route::post('pages/business-page/delivery-man/privacy-policy', 'BusinessSettingsController@delivery_privacy_policy_update');
+
+            /////////////////////
+
 
             Route::get('pages/business-page/about-us', 'BusinessSettingsController@about_us')->name('about-us');
             Route::post('pages/business-page/about-us', 'BusinessSettingsController@about_us_update');

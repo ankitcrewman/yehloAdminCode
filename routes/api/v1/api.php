@@ -67,6 +67,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
     Route::get('landing-page', 'ConfigController@landing_page');
     Route::get('react-landing-page', 'ConfigController@react_landing_page');
     Route::get('admin-landing-page', 'ConfigController@admin_landing_page');
+    Route::get('deliveryman-landing-page', 'ConfigController@delivery_landing_page');
     Route::get('flutter-landing-page', 'ConfigController@flutter_landing_page');
 
     Route::group(['prefix' => 'delivery-man'], function () {
@@ -281,6 +282,8 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
     Route::get('stores/details/{id}', 'StoreController@get_details');
 
     Route::group(['middleware' => ['module-check']], function () {
+
+        Route::get('get-combined-data', 'ItemController@get_combined_data');
         Route::group(['prefix' => 'customer', 'middleware' => 'auth:api'], function () {
             // Route::group(['prefix' => 'customer'], function () {
             Route::get('notifications', 'NotificationController@get_notifications');
@@ -365,6 +368,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
             Route::get('discounted', 'ItemController@get_discounted_products');
             Route::get('set-menu', 'ItemController@get_set_menus');
             Route::get('search', 'ItemController@get_searched_products');
+
             Route::get('search-suggestion', 'ItemController@get_searched_products_suggestion');
             Route::get('details/{id}', 'ItemController@get_product');
             Route::get('related-items/{item_id}', 'ItemController@get_related_products');
@@ -392,10 +396,11 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
             Route::get('reviews', 'StoreController@reviews');
             Route::get('search', 'StoreController@get_searched_stores');
         });
-
+        Route::get('top-banner', 'BannerController@top_get_banners');
         Route::group(['prefix' => 'banners'], function () {
             Route::get('/', 'BannerController@get_banners');
             Route::get('{store_id}/', 'BannerController@get_store_banners');
+
         });
 
         Route::group(['prefix' => 'other-banners'], function () {

@@ -90,7 +90,7 @@ class AuthManager implements FactoryContract
             return $this->callCustomCreator($name, $config);
         }
 
-        $driverMethod = 'create' . ucfirst($config['driver']) . 'Driver';
+        $driverMethod = 'create'.ucfirst($config['driver']).'Driver';
 
         if (method_exists($this, $driverMethod)) {
             return $this->{$driverMethod}($name, $config);
