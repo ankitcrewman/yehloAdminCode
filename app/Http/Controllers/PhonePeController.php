@@ -120,11 +120,11 @@ class PhonePeController extends Controller
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
-            "amount" => 1,
+            "amount" => 100*12,
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
-            "mobileNumber" => "8171619719   ",
+            "mobileNumber" => "9999999999",
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
 
@@ -167,7 +167,6 @@ class PhonePeController extends Controller
             if ($response->success == 1 && $response->code == 'PAYMENT_INITIATED') {
 
                 $paymentUrl = $response->data->instrumentResponse->redirectInfo->url;
-
                 return Redirect::away($paymentUrl);
             } else {
 
