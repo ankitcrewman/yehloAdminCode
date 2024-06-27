@@ -279,7 +279,7 @@ class VendorLoginController extends Controller
     public function getplandetails()
     {
 
-        $groupedPlans = Plan::select('name', 'type', 'price', 'product_limit', 'plan_duration', 'description', 'image')
+        $groupedPlans = Plan::all()
             ->distinct()
             ->orderBy('type')
             ->get()

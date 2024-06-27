@@ -47,43 +47,34 @@ class PhonePeController extends Controller
 
     public function payment(Request $request)
     {
-        // Validate the request parameters
+
         $validator = Validator::make($request->all(), [
             'payment_id' => 'required|uuid'
         ]);
 
-        // Check if validation fails
         if ($validator->fails()) {
             return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400, null, $this->error_processor($validator)), 400);
         }
 
-        // Retrieve payment data based on the provided payment_id
         $data = $this->payment::where(['id' => $request->input('payment_id'), 'is_paid' => 0])->first();
 
-        // Check if payment data exists
         if (!$data) {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
-        }
+            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);        }
 
 
-        // Extract business name from additional data or set a default value
         $business_name = optional(json_decode($data->additional_data))->business_name ?? "my_business";
 
-        // Get system configuration values
         $system_config = $this->config_values;
 
-        // Retrieve payer details
         $payer_information = json_decode($data->payer_information);
         if (isset($payer_information->type)) {
             $payer_details = Vendor::where("id", $data->payer_id)->first();
         } else {
             $payer_details = User::where("id", $data->payer_id)->first();
         }
-        // dd($system_config);
 
         $phone_number = $payer_details->phone ?? '';
 
-        // Remove leading '+91' from phone number if present
         if (strpos($phone_number, '+91') === 0) {
             $phone_number = substr($phone_number, 3);
         }
@@ -128,6 +119,8 @@ class PhonePeController extends Controller
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
 
+
+
         $encodedPayload = base64_encode(json_encode($payload));
         $jsonData = json_encode(["request" => $encodedPayload]);
 
@@ -137,7 +130,8 @@ class PhonePeController extends Controller
         $salt_index = $system_config->salt_index;
         // Generate checksum
         $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey) . "###" . $salt_index;
-
+        // echo json_encode($checksum);
+        // exit();
         if ($checksum) {
             $headers = [
                 'Content-Type: application/json',
@@ -163,13 +157,10 @@ class PhonePeController extends Controller
             curl_close($ch);
 
             $response = json_decode($response);
-
             if ($response->success == 1 && $response->code == 'PAYMENT_INITIATED') {
-
                 $paymentUrl = $response->data->instrumentResponse->redirectInfo->url;
                 return Redirect::away($paymentUrl);
             } else {
-
                 return response()->json($this->response_formatter(GATEWAYS_DEFAULT_400), 400);
             }
         } else {
