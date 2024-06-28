@@ -303,24 +303,48 @@ class VendorLoginController extends Controller
     //     return $jsonResponse;
     // }
 
+    // public function getPlanDetails($type = null)
+    // {
+    //     $query = Plan::query();
+
+    //     // Filter by type if provided
+    //     if (!is_null($type)) {
+    //         $query->where('type', $type);
+    //     }
+
+    //     $groupedPlans = $query->orderBy('type')
+    //         ->get()
+    //         ->groupBy('type');
+
+
+    //     $jsonResponse = $groupedPlans->toJson();
+
+    //     return $jsonResponse;
+    // }
     public function getPlanDetails($type = null)
     {
         $query = Plan::query();
 
-        // Filter by type if provided
         if (!is_null($type)) {
             $query->where('type', $type);
         }
 
-        $groupedPlans = $query->orderBy('type')
-            ->get()
-            ->groupBy('type');
+        $plans = $query->orderBy('type')->get();
 
+        $plans->each(function ($plan) {
+            $plan->image_url = asset('storage/app/public/plan/' . $plan->image);
+        });
 
-        $jsonResponse = $groupedPlans->toJson();
+        $groupedPlans = $plans->groupBy('type');
 
-        return $jsonResponse;
+        $result = [];
+        foreach ($groupedPlans as $type => $planGroup) {
+            $result[$type] = $planGroup;
+        }
+
+        return response()->json($result);
     }
+
 
 
 
