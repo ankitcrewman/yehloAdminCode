@@ -269,12 +269,13 @@ class ItemController extends Controller
 
         $store_details = Store::where("id", $request->store_id)->first();
 
+        if ($store_details && $store_details->phone) {
 
-        if ($store_details->phone) {
             $paid_plan = PlanPurchaseRequest::where("mobile", $store_details->phone)->first();
 
-            if (!$paid_plan->is_purchased) {
 
+            if ($paid_plan == null || $paid_plan->is_purchased == 0) {
+                // dd($paid_plan);
                 $validator->getMessageBag()->add('name', "Plan is required.");
                 return response()->json(['errors' => Helpers::error_processor($validator)]);
             } else {
@@ -306,7 +307,11 @@ class ItemController extends Controller
 
                     // Compare current product count with plan limit
                     if ($current_product_count >= $plan_limit->product_limit) {
-                        return response()->json(['errors' => ['message' => 'Plan limit reached. Please buy a new plan to add more items.']], 403);
+
+                        $validator->getMessageBag()->add('name', "Plan limit reached, Please buy a new plan to add more items.");
+                        return response()->json(['errors' => Helpers::error_processor($validator)]);
+                        // return response()->json(['errors' => translate('messages.Plan limit reached, Please buy a new plan to add more items.')], 200);
+                        // return response()->json(['errors' => ['message' => 'Plan limit reached. Please buy a new plan to add more items.']], 403);
                     }
 
                     // dd("Product Only");

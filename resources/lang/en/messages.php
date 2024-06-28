@@ -4526,4 +4526,5 @@
   'plan_limit' => 'Plan limit',
   'plan_product_limit' => 'Plan product limit',
   'The image plan field is required.' => 'The image plan field is required.',
+  'Plan limit reached. Please buy a new plan to add more items.' => 'Plan limit reached. Please buy a new plan to add more items.',
 );
