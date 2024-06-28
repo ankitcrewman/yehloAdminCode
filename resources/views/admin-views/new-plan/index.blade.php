@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group  lang_form" id="">
-                            <label class="input-label"
+                            {{-- <label class="input-label"
                                 for="exampleFormControlInput1">{{ translate('messages.plan_variation') }}
                             </label>
                             <select id="plan_variation" name="plan_variation" class="form-control js-select2-custom">
@@ -48,7 +48,7 @@
                                 @endforeach
 
 
-                            </select>
+                            </select> --}}
 
                         </div>
                         <div class="form-group lang_form" id="default-form">
