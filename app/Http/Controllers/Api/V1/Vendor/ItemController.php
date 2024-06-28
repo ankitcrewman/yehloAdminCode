@@ -279,8 +279,6 @@ class ItemController extends Controller
                     return response()->json(['message' => translate('messages.product_added_successfully')], 200);
                 } else {
 
-
-
                     $plan_limit = Plan::where('id', $paid_plan->plan_id)->first();
 
                     $current_product_count = Item::where('store_id', $store_details->id)->count();

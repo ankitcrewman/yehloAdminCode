@@ -276,32 +276,52 @@ class VendorLoginController extends Controller
 
 
 
-    public function getplandetails()
+    // public function getplandetails()
+    // {
+
+    //     $groupedPlans = Plan::all()
+    //         ->orderBy('type')
+    //         ->get()
+    //         ->groupBy('type')
+    //         ->map(function ($plans) {
+    //             // $prices = $plans->pluck('price', 'plan_duration')->toArray();
+    //             // $product_limit = $plans->pluck('product_limit', 'plan_duration')->toArray();
+
+    //             return [
+    //                 // 'title' => $plans->first()->name,
+    //                 // 'prices' => $prices,
+    //                 // 'product_limit' => $product_limit,
+    //                 // 'description' => $plans->first()->description,
+    //                 // 'image' => asset('storage/app/public/plan/' . $plans->first()->image),
+    //                 // 'plan_duration' => implode(',', array_keys($prices)),
+    //                 'plan' => $plans,
+    //             ];
+    //         });
+
+    //     $jsonResponse = $groupedPlans->toJson();
+
+    //     return $jsonResponse;
+    // }
+
+    public function getPlanDetails($type = null)
     {
+        $query = Plan::query();
 
-        $groupedPlans = Plan::all()
-            ->distinct()
-            ->orderBy('type')
+        // Filter by type if provided
+        if (!is_null($type)) {
+            $query->where('type', $type);
+        }
+
+        $groupedPlans = $query->orderBy('type')
             ->get()
-            ->groupBy('type')
-            ->map(function ($plans) {
-                $prices = $plans->pluck('price', 'plan_duration')->toArray();
-                $product_limit = $plans->pluck('product_limit', 'plan_duration')->toArray();
+            ->groupBy('type');
 
-                return [
-                    'title' => $plans->first()->name,
-                    'prices' => $prices,
-                    'product_limit' => $product_limit,
-                    'description' => $plans->first()->description,
-                    'image' => asset('storage/app/public/plan/' . $plans->first()->image),
-                    'plan_duration' => implode(',', array_keys($prices)),
-                ];
-            });
 
         $jsonResponse = $groupedPlans->toJson();
 
         return $jsonResponse;
     }
+
 
 
     // public function getplandetails()
