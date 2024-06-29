@@ -390,16 +390,6 @@ class ItemController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
         // $food->save();
         // $food->tags()->sync($tag_ids);
 

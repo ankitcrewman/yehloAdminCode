@@ -4527,4 +4527,5 @@
   'plan_product_limit' => 'Plan product limit',
   'The image plan field is required.' => 'The image plan field is required.',
   'Plan limit reached. Please buy a new plan to add more items.' => 'Plan limit reached. Please buy a new plan to add more items.',
+  'Credential_do_not_match,_please_try_again' => 'Credential do not match  please try again',
 );
