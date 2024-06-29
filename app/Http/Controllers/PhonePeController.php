@@ -126,8 +126,8 @@ class PhonePeController extends Controller
 
         // dd($encodedPayload);
 
-        echo $encodedPayload;
-        exit();
+        // echo $encodedPayload;
+        // exit();
 
         // $saltKey = $system_config->salt_key;
         $saltKey = "96434309-7796-489d-8924-ab56988a6076";

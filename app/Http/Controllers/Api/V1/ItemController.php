@@ -890,11 +890,11 @@ class ItemController extends Controller
         // Handle list type 'store'
         if ($list_type === 'store') {
             // Only proceed if 'name' is provided
-            if (!$name) {
-                return response()->json(['error' => 'Name parameter is required for store list type.'], 403);
-            }
+            // if (!$name) {
+            //     return response()->json(['error' => 'Name parameter is required for store list type.'], 403);
+            // }
 
-            $stores = Store::where('name', 'like', "%{$name}%")->paginate($limit, ['*'], 'page', $offset);
+            $stores = Store::where('module_id', $module_id)->paginate($limit, ['*'], 'page', $offset);
 
             return response()->json([
                 'total_size' => $stores->total(),

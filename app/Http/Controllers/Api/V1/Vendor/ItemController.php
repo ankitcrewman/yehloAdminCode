@@ -395,7 +395,7 @@ class ItemController extends Controller
                     // Compare current product count with plan limit
                     if ($current_product_count >= $plan_limit->product_limit) {
 
-                        $validator->getMessageBag()->add('name', "Plan limit reached, Please buy a new plan to add more items.");
+                        $validator->getMessageBag()->add('Plan Limit Reached', "Plan limit reached, Please buy a new plan to add more items.");
                         return response()->json(['errors' => Helpers::error_processor($validator)]);
                     }
 
