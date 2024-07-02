@@ -125,6 +125,9 @@ class ConfigController extends Controller
         );
 
 
+        // dd(config('module.grocery'));
+
+
         return response()->json([
             'business_name' => $settings['business_name'],
             // 'business_open_time' => $settings['business_open_time'],
