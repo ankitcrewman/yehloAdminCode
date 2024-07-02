@@ -124,6 +124,11 @@ class PhonePeController extends Controller
         $encodedPayload = base64_encode(json_encode($payload));
         $jsonData = json_encode(["request" => $encodedPayload]);
 
+        // dd($encodedPayload);
+
+        // echo $encodedPayload;
+        // exit();
+
         // $saltKey = $system_config->salt_key;
         $saltKey = "96434309-7796-489d-8924-ab56988a6076";
 

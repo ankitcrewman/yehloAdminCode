@@ -643,10 +643,10 @@
             contentType: false,
             processData: false,
             beforeSend: function () {
-                $('#loading').show();
+                //$('#loading').show();
             },
             success: function (data) {
-                $('#loading').hide();
+               // $('#loading').hide();
                 if (data.errors) {
                     for (let i = 0; i < data.errors.length; i++) {
                         toastr.error(data.errors[i].message, {
