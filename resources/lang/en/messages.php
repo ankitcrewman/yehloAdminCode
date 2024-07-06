@@ -4530,4 +4530,65 @@
   'Credential_do_not_match,_please_try_again' => 'Credential do not match  please try again',
   'Want to remove discount?' => 'Want to remove discount ',
   'purchase_conditions' => 'Purchase conditions',
+  'services' => 'Services',
+  'Shifting' => 'Shifting',
+  'Plumbing' => 'Plumbing',
+  '
+                                                            messages.order ' => '
+                                                            messages.order ',
+  '
+                                                                messages.campaign ' => '
+                                                                messages.campaign ',
+  '
+                                                                messages.category ' => '
+                                                                messages.category ',
+  '
+                                                                messages.product ' => '
+                                                                messages.product ',
+  '
+                                                                messages.store ' => '
+                                                                messages.store ',
+  'Booking management ' => 'Booking management ',
+  'Booking Management' => 'Booking Management',
+  'Bookings' => 'Bookings',
+  '
+                                                                                                                                                            messages.order ' => '
+                                                                                                                                                            messages.order ',
+  '
+                                                                                                                                                                messages.campaign ' => '
+                                                                                                                                                                messages.campaign ',
+  '
+                                                                                                                                                                messages.category ' => '
+                                                                                                                                                                messages.category ',
+  '
+                                                                                                                                                                messages.product ' => '
+                                                                                                                                                                messages.product ',
+  '
+                                                                                                                                                                messages.store ' => '
+                                                                                                                                                                messages.store ',
+  'Customized Requests' => 'Customized Requests',
+  'Verify Requests' => 'Verify Requests',
+  'Booking Requests' => 'Booking Requests',
+  'Accepted' => 'Accepted',
+  'Ongoing' => 'Ongoing',
+  'Canceled' => 'Canceled',
+  '
+                                                                                                                                                                                    messages.order ' => '
+                                                                                                                                                                                    messages.order ',
+  '
+                                                                                                                                                                                        messages.campaign ' => '
+                                                                                                                                                                                        messages.campaign ',
+  '
+                                                                                                                                                                                        messages.category ' => '
+                                                                                                                                                                                        messages.category ',
+  '
+                                                                                                                                                                                        messages.product ' => '
+                                                                                                                                                                                        messages.product ',
+  '
+                                                                                                                                                                                        messages.store ' => '
+                                                                                                                                                                                        messages.store ',
+  'Promotion management ' => 'Promotion management ',
+  'Discounts' => 'Discounts',
+  'Discount list' => 'Discount list',
+  'Add new ' => 'Add new ',
 );

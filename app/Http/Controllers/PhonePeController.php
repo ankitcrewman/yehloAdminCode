@@ -59,7 +59,8 @@ class PhonePeController extends Controller
         $data = $this->payment::where(['id' => $request->input('payment_id'), 'is_paid' => 0])->first();
 
         if (!$data) {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);        }
+            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
+        }
 
 
         $business_name = optional(json_decode($data->additional_data))->business_name ?? "my_business";
@@ -80,7 +81,7 @@ class PhonePeController extends Controller
         }
 
         $paymentDetails = [
-            'merchantOrderId' => "orderID".rand(100, 99999),
+            'merchantOrderId' => "orderID" . rand(100, 99999),
             'requestId' => $data->id
         ];
 
@@ -111,7 +112,7 @@ class PhonePeController extends Controller
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
-            "amount" => 100*12,
+            "amount" => 100 * 12,
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
@@ -292,6 +293,31 @@ class PhonePeController extends Controller
         } else {
             return "Error: Unable to generate checksum";
         }
+    }
+
+
+    public function phonewebhook(Request $request)
+    {
+
+        $base64Response = $request->input('response');
+
+        $jsonResponse = base64_decode($base64Response);
+
+        // Decode the JSON string to an associative array
+        $data = json_decode($jsonResponse, true);
+
+        if($data['code']  == 'PAYMENT_SUCCESS'){
+            return response()->json("Success");
+        }
+        elseif($data['code']  == 'PAYMENT_PENDING'){
+            return response()->json("Pending");
+        }
+        elseif($data['code']  == 'PAYMENT_FAIL'){
+            return response()->json("fail");
+        }
+
+        // Return the decoded data as a JSON response
+        return response()->json($data);
     }
 
 
