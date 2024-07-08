@@ -156,7 +156,7 @@
                     @php($mod = \App\Models\Module::find(Config::get('module.current_module_id')))
                     <li class="nav-item __nav-item">
                         <a href="javascript:void(0)" class="__nav-link module--nav-icon" id="tourb-0">
-                            @if ($mod)
+                            @if ($mod->module_type != 'services')
                             <img  src="{{\App\CentralLogics\Helpers::onerror_image_helper($mod->icon, asset('storage/app/public/module/').'/' . $mod->icon, asset('/public/assets/admin/img/new-img/module-icon.svg') ,'module/')}}"
                                     class="onerror-image"
                                   data-onerror-image="{{asset('/public/assets/admin/img/new-img/module-icon.svg')}}"
@@ -164,7 +164,7 @@
                             @else
                             <img src="{{asset('/public/assets/admin/img/new-img/module-icon.svg')}}" alt="public/img">
                             @endif
-                            <span class="text-white">{{ $mod ? $mod->module_name : translate('modules') }}</span>
+                            <span class="text-white">{{ $mod->module_type != 'services' ? $mod->module_name : translate('modules') }}</span>
                             <img  src="{{asset('/public/assets/admin/img/new-img/angle-white.svg')}}" class="d-none d-lg-block ml-xl-2" alt="public/img">
                         </a>
                         <div class="__nav-module style-2" id="tourb-1">
@@ -172,7 +172,7 @@
                                 $query->whereHas('zones',function($query){
                                     $query->where('zone_id',auth('admin')->user()->zone_id);
                                 });
-                            })->Active()->get())
+                            })->where('module_type', '!=', 'services')->Active()->get())
                             @if(isset($modules) && ($modules->count()>0))
                             <div class="__nav-module-header">
                                 <div class="inner">
@@ -200,6 +200,73 @@
                                             </div>
                                             <div>
                                                 {{ $module->module_name }}
+                                            </div>
+                                        </a>
+                                        @endforeach
+                                        @if (\App\CentralLogics\Helpers::module_permission_check('module'))
+                                        <a href="{{ route('admin.business-settings.module.create') }}" class="__nav-module-item" data-toggle="tooltip"
+                                        data-placement="top" title="{{ translate('add_new_module') }}">
+                                            <i class="tio-add display-3"></i>
+                                        </a>
+                                        @endif
+                                </div>
+                            </div>
+                            @else
+                            <div class="__nav-module-body text-center py-5">
+                                <img class="w--120px" src="{{ asset('/public/assets/admin/img/empty-box.png') }}" alt="">
+                                <h2 class="my-4">{{ translate('Please, Enable or Create Module First') }}</h2>
+                                <a href="{{ route('admin.business-settings.module.index') }}" class="btn btn--primary">{{ translate('messages.Module Setup') }}</a>
+                            </div>
+                            @endif
+                        </div>
+                    </li>
+                    @php($mod_service = \App\Models\Module::find(Config::get('module.current_module_id')))
+                    <li class="nav-item __nav-item">
+                        <a href="javascript:void(0)" class="__nav-link module--nav-icon" id="tourb-0">
+                            @if ($mod_service ->module_type == 'services')
+                            <img  src="{{\App\CentralLogics\Helpers::onerror_image_helper($mod_service->icon, asset('storage/app/public/module/').'/' . $mod_service->icon, asset('/public/assets/admin/img/new-img/module-icon.svg') ,'module/')}}"
+                                    class="onerror-image"
+                                  data-onerror-image="{{asset('/public/assets/admin/img/new-img/module-icon.svg')}}"
+                           width="20px" alt="public/img">
+                            @else
+                            <img src="{{asset('/public/assets/admin/img/new-img/module-icon.svg')}}" alt="public/img">
+                            @endif
+                            <span class="text-white">{{ $mod_service->module_type == 'services' ? $mod_service->module_name : translate('servives') }}</span>
+                            <img  src="{{asset('/public/assets/admin/img/new-img/angle-white.svg')}}" class="d-none d-lg-block ml-xl-2" alt="public/img">
+                        </a>
+                        <div class="__nav-module style-2" id="tourb-1">
+                            @php($modules_service = \App\Models\Module::when(auth('admin')->user()->zone_id, function($query){
+                                $query->whereHas('zones',function($query){
+                                    $query->where('zone_id',auth('admin')->user()->zone_id);
+                                });
+                            })->where('module_type','services')->Active()->get())
+                            @if(isset($modules_service) && ($modules_service->count()>0))
+                            <div class="__nav-module-header">
+                                <div class="inner">
+                                    <h4>{{translate('Service Section')}}</h4>
+                                    <p>
+                                        {{translate('Select Module & Monitor your business module wise')}}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="__nav-module-body">
+                                <div class="__nav-module-items">
+                                    @foreach ($modules_service as $module_servive)
+                                        <a href="javascript:"
+
+                                            data-module-id="{{ $module_servive->id }}"
+                                            data-url="{{route('admin.dashboard')}}"
+                                            data-filter="module_id"
+
+                                        class="__nav-module-item set-module-service {{Config::get('module.current_module_id') == $module_servive->id?'active':''}}">
+                                            <div class="img w--70px ">
+                                                <img src="{{\App\CentralLogics\Helpers::onerror_image_helper($module_servive?->icon, asset('storage/app/public/module/').'/' . $module_servive?->icon, asset('public/assets/admin/img/new-img/module/e-shop.svg') ,'module/')}}"
+
+                                                     data-onerror-image="{{asset('public/assets/admin/img/new-img/module/e-shop.svg')}}"
+                                                alt="new-img" class="mw-100 onerror-image">
+                                            </div>
+                                            <div>
+                                                {{ $module_servive->module_name }}
                                             </div>
                                         </a>
                                         @endforeach

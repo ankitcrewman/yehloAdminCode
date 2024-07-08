@@ -475,98 +475,308 @@
 
                     {{-- Coupan --}}
                     @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
-                    <li
-                        class="navbar-vertical-aside-has-menu {{ Request::is('admin/campaign') ? 'active' : '' }}">
-                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
-                            title="{{ translate('messages.campaigns') }}">
-                            <i class="tio-layers-outlined nav-icon"></i>
-                            <span
-                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Discounts') }}</span>
-                        </a>
-                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
-                            style="display:{{ Request::is('admin/campaign*') ? 'block' : 'none' }}">
-
-                            <li class="nav-item {{ Request::is('admin/campaign/basic/*') ? 'active' : '' }}">
-                                <a class="nav-link " href="{{ route('admin.campaign.list', 'basic') }}"
-                                    title="{{ translate('messages.basic_campaigns') }}">
-                                    <span class="tio-circle nav-indicator-icon"></span>
-                                    <span class="text-truncate">{{ translate('Discount list') }}</span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ Request::is('admin/campaign/item/*') ? 'active' : '' }}">
-                                <a class="nav-link " href="{{ route('admin.campaign.list', 'item') }}"
-                                    title="{{ translate('messages.item_campaigns') }}">
-                                    <span class="tio-circle nav-indicator-icon"></span>
-                                    <span class="text-truncate">{{ translate('Add new ') }}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
-
-{{-- Coupan --}}
-
-
-
-                    <!-- Banner -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('banner'))
-                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/banner*') ? 'active' : '' }}">
-                            <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.banner.add-new') }}"
-                                title="{{ translate('messages.banners') }}">
-                                <i class="tio-image nav-icon"></i>
-                                <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.banners') }}</span>
-                            </a>
-                        </li>
                         <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/promotional-banner*') ? 'active' : '' }}">
-                            <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.promotional-banner.add-new') }}"
-                                title="{{ translate('messages.other_banners') }}">
-                                <i class="tio-image nav-icon"></i>
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/campaign') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.campaigns') }}">
+                                <i class="tio-layers-outlined nav-icon"></i>
                                 <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.other_banners') }}</span>
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Coupons') }}</span>
                             </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/campaign*') ? 'block' : 'none' }}">
+
+                                <li class="nav-item {{ Request::is('admin/campaign/basic/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'basic') }}"
+                                        title="{{ translate('messages.basic_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Coupons list') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('admin/campaign/item/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'item') }}"
+                                        title="{{ translate('messages.item_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Add new Coupons') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
-                    <!-- End Banner -->
-                    <!-- Coupon -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('coupon'))
-                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/coupon*') ? 'active' : '' }}">
+
+                    {{-- Coupan --}}
+
+                    {{-- wallet Bonus --}}
+                    @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/campaign') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.campaigns') }}">
+                                <i class="tio-layers-outlined nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('wallet bonus') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/campaign*') ? 'block' : 'none' }}">
+
+                                <li class="nav-item {{ Request::is('admin/campaign/basic/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'basic') }}"
+                                        title="{{ translate('messages.basic_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Bonus list') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('admin/campaign/item/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'item') }}"
+                                        title="{{ translate('messages.item_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Add new bonus') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    {{-- wallet Bonus --}}
+
+
+
+
+
+                    {{-- Campaigns --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/campaign') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.campaigns') }}">
+                                <i class="tio-layers-outlined nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Campaigns') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/campaign*') ? 'block' : 'none' }}">
+
+                                <li class="nav-item {{ Request::is('admin/campaign/basic/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'basic') }}"
+                                        title="{{ translate('messages.basic_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Campaigns list') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('admin/campaign/item/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'item') }}"
+                                        title="{{ translate('messages.item_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Add new Campaigns') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+                    {{-- Campaigns  --}}
+
+
+                    {{--  Advertisements --}}
+                    @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/campaign') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.campaigns') }}">
+                                <i class="tio-layers-outlined nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('Advertisements') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/campaign*') ? 'block' : 'none' }}">
+
+                                <li class="nav-item {{ Request::is('admin/campaign/basic/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'basic') }}"
+                                        title="{{ translate('messages.basic_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Advertisements list') }}</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Request::is('admin/campaign/item/*') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.campaign.list', 'item') }}"
+                                        title="{{ translate('messages.item_campaigns') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('Add new Advertisements') }}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    {{--  Advertisements --}}
+
+
+                    {{-- Promotional banners --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/coupon*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
                                 href="{{ route('admin.coupon.add-new') }}"
                                 title="{{ translate('messages.coupons') }}">
                                 <i class="tio-gift nav-icon"></i>
                                 <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.coupons') }}</span>
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.Promotional banners') }}</span>
                             </a>
                         </li>
                     @endif
-                    <!-- End Coupon -->
-                    <!-- Notification -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('notification'))
+
+
+
+                    {{-- Promotional banners --}}
+
+                    {{--  Send Notifications --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('campaign'))
                         <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/notification*') ? 'active' : '' }}">
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/coupon*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.notification.add-new') }}"
-                                title="{{ translate('messages.push_notification') }}">
-                                <i class="tio-notifications nav-icon"></i>
+                                href="{{ route('admin.coupon.add-new') }}"
+                                title="{{ translate('messages.coupons') }}">
+                                <i class="tio-gift nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.Send Notifications') }}</span>
+                            </a>
+                        </li>
+                    @endif
+
+                    {{-- Send Notifications --}}
+
+                    {{-- Provider Management --}}
+
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.item_section') }}">{{ translate('messages.Provider Management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    {{-- Onboarding management --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('attribute'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/attribute*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.attribute.add-new') }}"
+                                title="{{ translate('messages.attributes') }}">
+                                <i class="tio-apps nav-icon"></i>
                                 <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                                    {{ translate('messages.push_notification') }}
+                                    {{ translate('messages.Onboarding Request') }}
                                 </span>
                             </a>
                         </li>
                     @endif
-                    <!-- End Notification -->
 
-                    <!-- End marketing section -->
+                    {{-- Onboarding management  --}}
+
+
+                    {{--  Providers --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('category'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/category*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.categories') }}">
+                                <i class="tio-category nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.Providers') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/category*') ? 'block' : 'none' }}">
+                                <li
+                                    class="nav-item {{ request()->input('position') == 0 && Request::is('admin/category/add') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.category.add', ['position' => 0]) }}"
+                                        title="{{ translate('messages.category') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span class="text-truncate">{{ translate('messages.Providers List') }}</span>
+                                    </a>
+                                </li>
+
+                                <li
+                                    class="nav-item {{ request()->input('position') == 1 && Request::is('admin/category/add') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.category.add', ['position' => 1]) }}"
+                                        title="{{ translate('messages.sub_category') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span
+                                            class="text-truncate">{{ translate('messages.Add new Providers') }}</span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                    @endif
+
+                    {{-- Providers --}}
+
+                    {{-- Withdraws --}}
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('category'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/category*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                                title="{{ translate('messages.categories') }}">
+                                <i class="tio-category nav-icon"></i>
+                                <span
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.Withdraws') }}</span>
+                            </a>
+                            <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                                style="display:{{ Request::is('admin/category*') ? 'block' : 'none' }}">
+                                <li
+                                    class="nav-item {{ request()->input('position') == 0 && Request::is('admin/category/add') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.category.add', ['position' => 0]) }}"
+                                        title="{{ translate('messages.category') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span
+                                            class="text-truncate">{{ translate('messages.Withdraws Request') }}</span>
+                                    </a>
+                                </li>
+
+                                <li
+                                    class="nav-item {{ request()->input('position') == 1 && Request::is('admin/category/add') ? 'active' : '' }}">
+                                    <a class="nav-link " href="{{ route('admin.category.add', ['position' => 1]) }}"
+                                        title="{{ translate('messages.sub_category') }}">
+                                        <span class="tio-circle nav-indicator-icon"></span>
+                                        <span
+                                            class="text-truncate">{{ translate('messages.Withdraws Method Setup') }}</span>
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+                    @endif
+                    {{-- Withdraws --}}
+
+
+
+                    {{-- Provider Management --}}
+
+
 
                     <li class="nav-item">
                         <small class="nav-subtitle"
-                            title="{{ translate('messages.item_section') }}">{{ translate('messages.product_management') }}</small>
+                            title="{{ translate('messages.item_section') }}">{{ translate('messages.Service zone Management') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('attribute'))
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/attribute*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.attribute.add-new') }}"
+                                title="{{ translate('messages.attributes') }}">
+                                <i class="tio-apps nav-icon"></i>
+                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
+                                    {{ translate('messages.Service Zones Setup') }}
+                                </span>
+                            </a>
+                        </li>
+                    @endif
 
                     <!-- Category -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('category'))
@@ -598,103 +808,21 @@
                                     </a>
                                 </li>
 
-                                <li class="nav-item {{ Request::is('admin/category/bulk-import') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.category.bulk-import') }}"
-                                        title="{{ translate('messages.bulk_import') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate text-capitalize">{{ translate('messages.bulk_import') }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item {{ Request::is('admin/category/bulk-export') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.category.bulk-export-index') }}"
-                                        title="{{ translate('messages.bulk_export') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
-                                    </a>
-                                </li>
+
+
                             </ul>
                         </li>
                     @endif
                     <!-- End Category -->
 
-                    <!-- Attributes -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('attribute'))
-                        <li
-                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/attribute*') ? 'active' : '' }}">
-                            <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.attribute.add-new') }}"
-                                title="{{ translate('messages.attributes') }}">
-                                <i class="tio-apps nav-icon"></i>
-                                <span class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">
-                                    {{ translate('messages.attributes') }}
-                                </span>
-                            </a>
-                        </li>
-                    @endif
-                    <!-- End Attributes -->
-
-                    <!-- Unit -->
-                    @if (\App\CentralLogics\Helpers::module_permission_check('unit'))
-                        <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/unit*') ? 'active' : '' }}">
-                            <a class="js-navbar-vertical-aside-menu-link nav-link"
-                                href="{{ route('admin.unit.index') }}" title="{{ translate('messages.units') }}">
-                                <i class="tio-ruler nav-icon"></i>
-                                <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">
-                                    {{ translate('messages.units') }}
-                                </span>
-                            </a>
-                        </li>
-                    @endif
-                    <!-- End Unit -->
-
-                    <!-- AddOn -->
-                    {{-- @if (\App\CentralLogics\Helpers::module_permission_check('addon'))
-                <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/addon*') ? 'active' : '' }}">
-                <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
-                    title="{{ translate('messages.addons') }}">
-                    <i class="tio-add-circle-outlined nav-icon"></i>
-                    <span
-                        class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate">{{ translate('messages.addons') }}</span>
-                </a>
-                <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
-                    style="display:{{ Request::is('admin/addon*') ? 'block' : 'none' }}">
-                    <li class="nav-item {{ Request::is('admin/addon/add-new') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.addon.add-new') }}"
-                            title="{{ translate('messages.addon_list') }}">
-                            <span class="tio-circle nav-indicator-icon"></span>
-                            <span class="text-truncate">{{ translate('messages.list') }}</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item {{ Request::is('admin/addon/bulk-import') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.addon.bulk-import') }}"
-                            title="{{ translate('messages.bulk_import') }}">
-                            <span class="tio-circle nav-indicator-icon"></span>
-                            <span class="text-truncate text-capitalize">{{ translate('messages.bulk_import') }}</span>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ Request::is('admin/addon/bulk-export') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.addon.bulk-export-index') }}"
-                            title="{{ translate('messages.bulk_export') }}">
-                            <span class="tio-circle nav-indicator-icon"></span>
-                            <span class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
-                        </a>
-                    </li>
-                </ul>
-                </li>
-                @endif --}}
-                    <!-- End AddOn -->
-                    <!-- Food -->
+                    <!-- Services -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('item'))
                         <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
                             <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
-                                title="{{ translate('Product Setup') }}">
+                                title="{{ translate('Services') }}">
                                 <i class="tio-premium-outlined nav-icon"></i>
                                 <span
-                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('Product Setup') }}</span>
+                                    class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('Services') }}</span>
                             </a>
                             <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
                                 style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
@@ -703,7 +831,7 @@
                                     <a class="nav-link " href="{{ route('admin.item.add-new') }}"
                                         title="{{ translate('messages.add_new') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span class="text-truncate">{{ translate('messages.add_new') }}</span>
+                                        <span class="text-truncate">{{ translate('messages.Service list') }}</span>
                                     </a>
                                 </li>
                                 <li
@@ -711,19 +839,11 @@
                                     <a class="nav-link " href="{{ route('admin.item.list') }}"
                                         title="{{ translate('messages.food_list') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span class="text-truncate">{{ translate('messages.list') }}</span>
-                                    </a>
-                                </li>
-                                {{-- @if (\App\CentralLogics\Helpers::get_mail_status('product_gallery')) --}}
-                                <li class="nav-item {{ Request::is('admin/item/product-gallery') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.item.product_gallery') }}"
-                                        title="{{ translate('messages.Product_Gallery') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
                                         <span
-                                            class="text-truncate">{{ translate('messages.Product_Gallery') }}</span>
+                                            class="text-truncate">{{ translate('messages.Add new service') }}</span>
                                     </a>
                                 </li>
-                                {{-- @endif --}}
+
                                 @if (\App\CentralLogics\Helpers::get_mail_status('product_approval'))
                                     <li
                                         class="nav-item {{ Request::is('admin/item/requested/item/view/*') || Request::is('admin/item/new/item/list') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'temp_product=1') !== false) ? 'active' : '' }}">
@@ -731,46 +851,277 @@
                                             title="{{ translate('messages.New_Item_Request') }}">
                                             <span class="tio-circle nav-indicator-icon"></span>
                                             <span
-                                                class="text-truncate">{{ translate('messages.New_Item_Request') }}</span>
+                                                class="text-truncate">{{ translate('messages.New Service Requests') }}</span>
                                         </a>
                                     </li>
                                 @endif
-                                <li class="nav-item {{ Request::is('admin/item/reviews') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.item.reviews') }}"
-                                        title="{{ translate('messages.review_list') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
-                                        <span class="text-truncate">{{ translate('messages.review') }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item {{ Request::is('admin/item/bulk-import') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.item.bulk-import') }}"
-                                        title="{{ translate('messages.bulk_import') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate text-capitalize">{{ translate('messages.bulk_import') }}</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item {{ Request::is('admin/item/bulk-export') ? 'active' : '' }}">
-                                    <a class="nav-link " href="{{ route('admin.item.bulk-export-index') }}"
-                                        title="{{ translate('messages.bulk_export') }}">
-                                        <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
-                                    </a>
-                                </li>
+
                             </ul>
                         </li>
                     @endif
-                    <!-- End Food -->
+                    <!-- End Services -->
 
-                    <!-- Store Store -->
+                    <!-- Customer management -->
                     <li class="nav-item">
                         <small class="nav-subtitle"
-                            title="{{ translate('messages.store_section') }}">{{ translate('messages.store_management') }}</small>
+                            title="{{ translate('messages.store_section') }}">{{ translate('messages.Customer management') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
 
-                    @if (\App\CentralLogics\Helpers::module_permission_check('store'))
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                            title="{{ translate('messages.Customers') }}">
+                            <i class="tio-premium-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('messages.Customers') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
+                            <li
+                                class="nav-item {{ Request::is('admin/item/add-new') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'product_gellary=1') !== false) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.add-new') }}"
+                                    title="{{ translate('messages.add_new') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Customer list ') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.food_list') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Add new Customer ') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                            title="{{ translate('messages.Customers Wallet') }}">
+                            <i class="tio-premium-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('messages.Customers Wallet') }}
+                            </span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
+                            <li
+                                class="nav-item {{ Request::is('admin/item/add-new') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'product_gellary=1') !== false) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.add-new') }}"
+                                    title="{{ translate('messages.add_new') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Add Fund to Wallet') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.food_list') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span
+                                        class="text-truncate">{{ translate('messages.Wallet Transactions') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                            title="{{ translate('messages.Customers Wallet') }}">
+                            <i class="tio-premium-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('messages.Loyalty point') }}
+                            </span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
+                            <li
+                                class="nav-item {{ Request::is('admin/item/add-new') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'product_gellary=1') !== false) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.add-new') }}"
+                                    title="{{ translate('messages.add_new') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span
+                                        class="text-truncate">{{ translate('messages.Loyalty Points Transactions') }}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <!-- Customer management -->
+
+                    {{-- Employee management --}}
+
+
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.store_section') }}">{{ translate('messages.Customer management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/add') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.store.add') }}"
+                            title="{{ translate('messages.Employee Role Setup') }}">
+                            <span class="tio-add-circle nav-icon"></span>
+                            <span class="text-truncate">
+                                {{ translate('messages.Employee Role Setup') }}
+                            </span>
+                        </a>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/add') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.store.add') }}"
+                            title="{{ translate('messages.Employee list') }}">
+                            <span class="tio-add-circle nav-icon"></span>
+                            <span class="text-truncate">
+                                {{ translate('messages.Employee list') }}
+                            </span>
+                        </a>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/add') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.store.add') }}"
+                            title="{{ translate('messages.Add new employee') }}">
+                            <span class="tio-add-circle nav-icon"></span>
+                            <span class="text-truncate">
+                                {{ translate('messages.Add new employee') }}
+                            </span>
+                        </a>
+                    </li>
+
+
+                    {{-- Employee management --}}
+
+                    {{-- Transaction management  --}}
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.store_section') }}">{{ translate('messages.Customer management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/add') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link" href="{{ route('admin.store.add') }}"
+                            title="{{ translate('messages.All Transactions') }}">
+                            <span class="tio-add-circle nav-icon"></span>
+                            <span class="text-truncate">
+                                {{ translate('messages.All Transactions') }}
+                            </span>
+                        </a>
+                    </li>
+
+
+                    {{-- Transaction management  --}}
+
+                    {{-- Reports & Analytics  --}}
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.Reports & Analytics ') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                            title="{{ translate('messages.Reports') }}">
+                            <i class="tio-premium-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('messages.Reports') }}</span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
+                            <li
+                                class="nav-item {{ Request::is('admin/item/add-new') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'product_gellary=1') !== false) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.add-new') }}"
+                                    title="{{ translate('messages.Transaction Reports') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span
+                                        class="text-truncate">{{ translate('messages.Transaction Reports ') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.Business Reports') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Business Reports') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.Booking Reports') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Booking Reports ') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.Provider Reports') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Provider Reports ') }}</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
+                        <a class="js-navbar-vertical-aside-menu-link nav-link nav-link-toggle" href="javascript:"
+                            title="{{ translate('messages.Analytics') }}">
+                            <i class="tio-premium-outlined nav-icon"></i>
+                            <span
+                                class="navbar-vertical-aside-mini-mode-hidden-elements text-truncate text-capitalize">{{ translate('messages.Analytics') }}
+                            </span>
+                        </a>
+                        <ul class="js-navbar-vertical-aside-submenu nav nav-sub"
+                            style="display:{{ Request::is('admin/item*') ? 'block' : 'none' }}">
+                            <li
+                                class="nav-item {{ Request::is('admin/item/add-new') || (Request::is('admin/item/edit/*') && strpos(request()->fullUrl(), 'product_gellary=1') !== false) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.add-new') }}"
+                                    title="{{ translate('messages.Keyword Search') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Keyword Search') }}</span>
+                                </a>
+                            </li>
+                            <li
+                                class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                                <a class="nav-link " href="{{ route('admin.item.list') }}"
+                                    title="{{ translate('messages.Customer Search') }}">
+                                    <span class="tio-circle nav-indicator-icon"></span>
+                                    <span class="text-truncate">{{ translate('messages.Customer Search') }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    {{-- Reports & Analytics  --}}
+
+
+                    {{-- System addon  --}}
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.System addon') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                    <li
+                        class="nav-item {{ Request::is('admin/item/list') || (Request::is('admin/item/edit/*') && (strpos(request()->fullUrl(), 'temp_product=1') == false && strpos(request()->fullUrl(), 'product_gellary=1') == false)) ? 'active' : '' }}">
+                        <a class="nav-link " href="{{ route('admin.item.list') }}"
+                            title="{{ translate('messages.Customer Search') }}">
+                            <span class="tio-circle nav-indicator-icon"></span>
+                            <span class="text-truncate">{{ translate('messages.System addons') }}</span>
+                        </a>
+                    </li>
+
+                    {{-- System addon  --}}
+
+                    {{-- System management --}}
+
+                    {{-- <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.System management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+                     System management --}}
+
+
+                    {{-- @if (\App\CentralLogics\Helpers::module_permission_check('store'))
 
                         <li
                             class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/pending-requests') ? 'active' : '' }}">
@@ -783,8 +1134,7 @@
                                     @php(
     $new_str = \App\Models\Store::whereHas('vendor', function ($query) {
         return $query->where('status', null);
-    })->module(Config::get('module.current_module_id'))->get(),
-);
+    })->module(Config::get('module.current_module_id'))->get());
                                     @if (count($new_str) > 0)
                                         <span class="btn-status btn-status-danger border-0 size-8px"></span>
                                     @endif
@@ -842,7 +1192,7 @@
                                     class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
                             </a>
                         </li>
-                    @endif
+                    @endif --}}
                     <!-- End Store -->
 
 
@@ -972,23 +1322,23 @@
                     const suggestions = [
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                            messages.order '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            messages.order '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                messages.campaign '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.campaign '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                messages.category '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.category '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                messages.product '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.product '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                messages.store '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.store '),
                         ) }}'
                     ];
                     --
