@@ -231,7 +231,7 @@
                             @else
                             <img src="{{asset('/public/assets/admin/img/new-img/module-icon.svg')}}" alt="public/img">
                             @endif
-                            <span class="text-white">{{ $mod_service->module_type == 'services' ? $mod_service->module_name : translate('servives') }}</span>
+                            <span class="text-white">{{ $mod_service->module_type == 'services' ? $mod_service->module_name : translate('services') }}</span>
                             <img  src="{{asset('/public/assets/admin/img/new-img/angle-white.svg')}}" class="d-none d-lg-block ml-xl-2" alt="public/img">
                         </a>
                         <div class="__nav-module style-2" id="tourb-1">

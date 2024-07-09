@@ -143,7 +143,7 @@ if (!$is_published) {
             ///////
 
 
-            Route::match(['get', 'post'], 'webhook', [PhonePeController::class, 'phonewebhook'])
+            Route::POST('webhook', [PhonePeController::class, 'phonewebhook'])
                 ->name('webhook')
                 ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
         });
