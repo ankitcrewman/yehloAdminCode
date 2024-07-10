@@ -4821,4 +4821,8 @@
   'Laudary' => 'Laudary',
   'Service Section' => 'Service Section',
   'servives' => 'Servives',
+  'Module not found' => 'Module not found',
+  'Modules' => 'Modules',
+  'Servives Module' => 'Servives Module',
+  'Services Module' => 'Services Module',
 );

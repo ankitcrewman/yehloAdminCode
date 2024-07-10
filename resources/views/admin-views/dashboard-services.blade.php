@@ -8,6 +8,7 @@
     @endpush
 
 @section('content')
+   {{-- {{   dd(Config::get('module.current_module_id'))}} --}}
     <div class="content container-fluid">
         @if (auth('admin')->user()->role_id == 1)
             @php($mod = \App\Models\Module::find(Config::get('module.current_module_id')))

@@ -387,7 +387,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
             Route::get('get-stores/{filter_data}', 'StoreController@get_stores');
             Route::get('get-stores-range/{filter_data}', 'StoreController@get_stores_by_range');
             Route::get('get-stores-nearby/{filter_data}', 'StoreController@get_stores_by_nearby');
-            Route::get('latest', 'get_new_products@get_latest_stores');
+            Route::get('latest', 'StoreController@get_latest_stores');
             Route::get('popular', 'StoreController@get_popular_stores');
             Route::get('recommended', 'StoreController@get_recommended_stores');
             Route::get('discounted', 'StoreController@get_discounted_stores');
