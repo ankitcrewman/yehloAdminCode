@@ -6476,7 +6476,7 @@ class BusinessSettingsController extends Controller
             }
             $banner_image_company->key = 'banner_image_company';
             $banner_image_company->type = 'react_landing_page';
-            $banner_image_company->value = $request->has('banner_image_company') ? Helpers::update('promotion_banner/', $banner_image_company->value, 'png', $request->file('banner_image_company')) : $banner_image_company->value;
+            $banner_image_company->value = $request->has('banner_image_company') ? Helpers::update('promotional_banner/', $banner_image_company->value, 'png', $request->file('banner_image_company')) : $banner_image_company->value;
             $banner_image_company->save();
 
             $company_button_name = DataSetting::where('type', 'react_landing_page')->where('key', 'company_button_name')->first();
