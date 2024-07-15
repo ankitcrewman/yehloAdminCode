@@ -5687,12 +5687,16 @@ class BusinessSettingsController extends Controller
 
         if ($tab == 'download-app-section') {
 
+            // dd($request);
+
             $request->validate([
                 'download_user_app_title.0' => 'required',
                 'download_user_app_sub_title.0' => 'required',
+                'banner_image_download' => 'file|max:2048', // 2048 KB = 2 MB
             ], [
                 'download_user_app_title.0.required' => translate('messages.Default_title_is_required'),
                 'download_user_app_sub_title.0.required' => translate('messages.Default_subtitle_is_required'),
+                'banner_image_download.max' => translate('messages.Banner_image_max_size_is_2MB'),
             ]);
 
             $download_user_app_title = DataSetting::where('type', 'react_landing_page')->where('key', 'download_user_app_title')->first();

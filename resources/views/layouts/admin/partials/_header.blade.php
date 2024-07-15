@@ -221,9 +221,12 @@
                                                 data-url="{{ route('admin.dashboard') }}" data-filter="module_id"
                                                 class="__nav-module-item set-module {{ Config::get('module.current_module_id') == $module->id ? 'active' : '' }}">
                                                 <div class="img w--70px">
+                                                    @if ( $module->module_type != "services" )
                                                     <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper($module?->icon, asset('storage/app/public/module/') . '/' . $module?->icon, asset('public/assets/admin/img/new-img/module/e-shop.svg'), 'module/') }}"
-                                                        data-onerror-image="{{ asset('public/assets/admin/img/new-img/module/e-shop.svg') }}"
-                                                        alt="new-img" class="mw-100 onerror-image">
+                                                    data-onerror-image="{{ asset('public/assets/admin/img/new-img/module/e-shop.svg') }}"
+                                                    alt="new-img" class="mw-100 onerror-image">
+                                                    @endif
+
                                                 </div>
                                                 <div>
                                                     {{ $module->module_name }}
@@ -297,9 +300,12 @@
                                                 data-url="{{ route('admin.dashboard') }}" data-filter="module_id"
                                                 class="__nav-module-item set-module-service {{ Config::get('module.current_module_id') == $module_servive->id ? 'active' : '' }}">
                                                 <div class="img w--70px ">
+                                                    @if ($module_servive->module_type == "services")
                                                     <img src="{{ \App\CentralLogics\Helpers::onerror_image_helper($module_servive?->icon, asset('storage/app/public/module/') . '/' . $module_servive?->icon, asset('public/assets/admin/img/new-img/module/e-shop.svg'), 'module/') }}"
-                                                        data-onerror-image="{{ asset('public/assets/admin/img/new-img/module/e-shop.svg') }}"
-                                                        alt="new-img" class="mw-100 onerror-image">
+                                                    data-onerror-image="{{ asset('public/assets/admin/img/new-img/module/e-shop.svg') }}"
+                                                    alt="new-img" class="mw-100 onerror-image">
+                                                    @endif
+
                                                 </div>
                                                 <div>
                                                     {{ $module_servive->module_name }}
