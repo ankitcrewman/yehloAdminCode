@@ -184,7 +184,6 @@ class RouteListCommand extends Command
     protected function displayRoutes(array $routes)
     {
         $routes = collect($routes);
-
         $this->output->writeln(
             $this->option('json') ? $this->asJson($routes) : $this->forCli($routes)
         );

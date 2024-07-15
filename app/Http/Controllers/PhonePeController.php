@@ -19,6 +19,8 @@ use App\Models\PaymentRequest;
 use App\Http\Controllers\Exception;
 use App\Traits\Processor;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\CallbackUrl;
+use App\Jobs\ProcessWebhook;
 
 class PhonePeController extends Controller
 {
@@ -59,7 +61,8 @@ class PhonePeController extends Controller
         $data = $this->payment::where(['id' => $request->input('payment_id'), 'is_paid' => 0])->first();
 
         if (!$data) {
-            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);        }
+            return response()->json($this->response_formatter(GATEWAYS_DEFAULT_204), 200);
+        }
 
 
         $business_name = optional(json_decode($data->additional_data))->business_name ?? "my_business";
@@ -80,7 +83,7 @@ class PhonePeController extends Controller
         }
 
         $paymentDetails = [
-            'merchantOrderId' => "orderID".rand(100, 99999),
+            'merchantOrderId' => "orderID" . rand(100, 99999),
             'requestId' => $data->id
         ];
 
@@ -111,7 +114,7 @@ class PhonePeController extends Controller
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
             "merchantUserId" => $payer_details->id,
             // "amount" => $data->payment_amount * 100,
-            "amount" => 100*12,
+            "amount" => 100 * 12,
             "redirectUrl" => $redirect_url,
             "redirectMode" => "POST",
             "callbackUrl" => $redirect_url,
@@ -293,6 +296,58 @@ class PhonePeController extends Controller
             return "Error: Unable to generate checksum";
         }
     }
+
+
+    // public function phonewebhook(Request $request)
+    // {
+    //     // Get the base64 encoded response from the request
+    //     $base64Response = $request->input('response');
+
+    //     // Decode the base64 encoded response
+    //     $jsonResponse = base64_decode($base64Response);
+
+    //     // Decode the JSON string to an associative array
+    //     $data = json_decode($jsonResponse, true);
+
+    //     // Check if the 'success' key exists in the decoded data
+    //     if(isset($data['success']) && $data['success'] === true) {
+    //         // Respond based on the 'code' value
+    //         switch ($data['code']) {
+    //             case 'PAYMENT_SUCCESS':
+    //                 return response()->json("Success");
+    //             case 'PAYMENT_PENDING':
+    //                 return response()->json("Pending");
+    //             case 'PAYMENT_FAIL':
+    //                 return response()->json("Fail");
+    //             default:
+    //                 // Handle unexpected 'code' values
+    //                 return response()->json("Unknown payment status");
+    //         }
+    //     } else {
+    //         // Handle the case where 'success' is false or not present
+    //         return response()->json("Invalid or unsuccessful response", 400);
+    //     }
+    // }
+
+    public function phonewebhook(Request $request)
+    {
+        // Get all request data
+        $requestData = $request->all();
+
+        // Assuming the response is contained in the 'response' key of the request
+        $base64Response = $requestData['response'] ?? null;
+
+        if (!$base64Response) {
+            return response()->json("No response found in the request", 400);
+        }
+
+        // Dispatch the job to process the webhook
+        ProcessWebhook::dispatch($base64Response);
+
+        // Respond immediately to the webhook request
+        return response()->json("Webhook received", 200);
+    }
+
 
 
     public function cancel(Request $request)

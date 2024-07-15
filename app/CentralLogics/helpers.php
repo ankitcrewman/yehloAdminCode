@@ -1839,7 +1839,9 @@ class Helpers
         }
 
         $permission = auth('admin')->user()->role->modules;
+
         if (isset($permission) && in_array($mod_name, (array)json_decode($permission)) == true) {
+
             return true;
         }
 

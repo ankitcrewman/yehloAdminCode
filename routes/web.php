@@ -138,6 +138,14 @@ if (!$is_published) {
 
             Route::any('cancel', [PhonePeController::class, 'cancel'])->name('cancel')
                 ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);;
+
+
+            ///////
+
+
+            Route::POST('webhook', [PhonePeController::class, 'phonewebhook'])
+                ->name('webhook')
+                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
         });
 
         //SENANG-PAY

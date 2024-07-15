@@ -678,7 +678,7 @@ class ConfigController extends Controller
                 'seller_description' => (isset($settings['seller_description']))  ? $settings['seller_description'] : null,
 
 
-
+                'feature_title' => (isset($settings['feature_title']))  ? $settings['feature_title'] : null,
 
                 'admin_features' => (isset($admin_features))  ? $admin_features : null,
                 'promotion_banners' => (isset($promotion_banners))  ? $promotion_banners : null,
