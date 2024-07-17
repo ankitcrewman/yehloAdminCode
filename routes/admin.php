@@ -377,11 +377,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('pages/admin-landing-page-settings/testimonials/review-list/edit/{id}', 'BusinessSettingsController@review_edit')->name('review-edit');
             // admin landing page
 
-
-
             // delivery Man routes
-
-
             Route::get('pages/delivery-landing-page-settings/{tab?}', 'BusinessSettingsController@delivery_landing_page_settings')->name('delivery-landing-page-settings');
             Route::POST('pages/delivery-landing-page-settings/{tab}', 'BusinessSettingsController@update_delivery_landing_page_settings')->name('delivery-landing-page-settings');
 
