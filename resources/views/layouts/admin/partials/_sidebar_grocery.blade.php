@@ -72,7 +72,7 @@
 
 
                     <!-- Add plan -->
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <small class="nav-subtitle"
                             title="{{ translate('messages.add_plan') }}">{{ translate('add_plan') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -85,20 +85,20 @@
                             <i class="tio-shopping-basket-outlined nav-icon"></i>
                             <span class="text-truncate">{{ translate('add_plan') }}</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <!-- Add plam -->
 
 
 
 
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <small class="nav-subtitle"
                             title="{{ translate('messages.employee_handle') }}">{{ translate('pos section') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
-                    </li>
+                    </li> --}}
                     <!-- Pos -->
-                     @if (\App\CentralLogics\Helpers::module_permission_check('pos'))
+                     {{-- @if (\App\CentralLogics\Helpers::module_permission_check('pos'))
                     <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/pos*') ? 'active' : '' }}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link " href="{{ route('admin.pos.index') }}"
                             title="{{ translate('New Sale') }}">
@@ -106,7 +106,7 @@
                             <span class="text-truncate">{{ translate('New Sale') }}</span>
                         </a>
                     </li>
-                    @endif
+                    @endif --}}
                     <!-- Pos -->
 
                     <!-- Orders -->

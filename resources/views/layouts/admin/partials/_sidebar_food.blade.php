@@ -56,11 +56,11 @@
                     </li>
                     <!-- End Dashboards -->
                     <!-- Marketing section -->
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <small class="nav-subtitle" title="{{ translate('messages.employee_handle') }}">{{ translate('pos section') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
-                    <!-- Pos -->
+
                     @if(\App\CentralLogics\Helpers::module_permission_check('pos'))
                     <li class="navbar-vertical-aside-has-menu {{Request::is('admin/pos*')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link " href="{{route('admin.pos.index')}}" title="{{translate('New Sale')}}">
@@ -68,8 +68,8 @@
                             <span class="text-truncate">{{translate('New Sale')}}</span>
                         </a>
                     </li>
-                    @endif
-                    <!-- Pos -->
+                    @endif --}}
+
 
                                         <!-- Orders -->
                     @if (\App\CentralLogics\Helpers::module_permission_check('order'))
