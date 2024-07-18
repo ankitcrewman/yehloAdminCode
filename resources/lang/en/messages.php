@@ -4827,4 +4827,6 @@
   'Services Module' => 'Services Module',
   'Banner_image_max_size_is_2MB' => 'Banner image max size is 2MB',
   'Banner image max size is 2MB' => 'Banner image max size is 2MB',
+  'New_Store_Registration' => 'New Store Registration',
+  'application_status_updated_successfully' => 'Application status updated successfully',
 );
