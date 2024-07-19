@@ -831,7 +831,7 @@
                                     <a class="nav-link " href="{{ route('admin.item.add-new') }}"
                                         title="{{ translate('messages.add_new') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span class="text-truncate">{{ translate('messages.Service list') }}</span>
+                                        <span class="text-truncate">{{ translate('messages.Add new service') }}</span>
                                     </a>
                                 </li>
                                 <li
@@ -840,7 +840,7 @@
                                         title="{{ translate('messages.food_list') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
                                         <span
-                                            class="text-truncate">{{ translate('messages.Add new service') }}</span>
+                                            class="text-truncate">{{ translate('messages.Service List') }}</span>
                                     </a>
                                 </li>
 
@@ -1157,7 +1157,7 @@
 
 
 
-                        <li
+                        {{-- <li
                             class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/bulk-import') ? 'active' : '' }}">
                             <a class="nav-link " href="{{ route('admin.store.bulk-import') }}"
                                 title="{{ translate('messages.bulk_import') }}">
@@ -1174,7 +1174,7 @@
                                 <span
                                     class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
                             </a>
-                        </li>
+                        </li> --}}
                     @endif
                     <!-- End Store -->
 

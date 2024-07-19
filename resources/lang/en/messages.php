@@ -4829,4 +4829,5 @@
   'Banner image max size is 2MB' => 'Banner image max size is 2MB',
   'New_Store_Registration' => 'New Store Registration',
   'application_status_updated_successfully' => 'Application status updated successfully',
+  'Service List' => 'Service List',
 );
