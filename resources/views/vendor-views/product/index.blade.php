@@ -183,7 +183,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                @if ($module_data['unit'])
+                                @if (isset($module_data['unit']))
                                 <div class="col-sm-6 col-lg-4">
                                     <div class="form-group mb-0">
                                         <label class="input-label text-capitalize" for="unit">{{translate('messages.unit')}}</label>
@@ -212,7 +212,7 @@
                                     </div>
                                 </div>
                                 @endif
-                                @if ($module_data['veg_non_veg'])
+                                @if ( isset($module_data['veg_non_veg']) )
                                 <div class="col-sm-6 col-lg-4">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="exampleFormControlInput1">{{translate('messages.item_type')}}</label>
@@ -246,7 +246,7 @@
                                                 placeholder="{{ translate('messages.Ex:') }} 100" >
                                     </div>
                                 </div>
-                                @if ($module_data['stock'])
+                                @if (isset($module_data['stock']))
                                 <div class="col-sm-6 col-lg-4">
                                     <div class="form-group mb-0">
                                         <label class="input-label" for="total_stock">{{translate('messages.total_stock')}}</label>
@@ -614,7 +614,7 @@
         $.ajax({
             type: "POST",
             url: '{{route('vendor.item.variant-combination')}}',
-            data: $('#item_form').serialize()+'&stock={{$module_data['stock']}}',
+            data: $('#item_form').serialize()+'&stock={{ isset( $module_data['stock']) ? $module_data['stock'] : 1 }}',
             beforeSend: function () {
                 $('#loading').show();
             },

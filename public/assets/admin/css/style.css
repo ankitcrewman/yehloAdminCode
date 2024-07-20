@@ -1588,7 +1588,7 @@ select.form-control {
     }
 }
 .page-header {
-    box-shadow: 2px 3px 10px #bebebe;
+    /* box-shadow: 2px 3px 10px #bebebe; */
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 4px;
