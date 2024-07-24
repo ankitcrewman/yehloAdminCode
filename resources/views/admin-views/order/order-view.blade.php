@@ -1421,6 +1421,7 @@
                             </span>
                         @endif
 
+
                         @if ($order->delivery_address)
                             @php($address = json_decode($order->delivery_address, true))
                             <hr>
@@ -1441,7 +1442,7 @@
                             @if (isset($address))
                                 <div class="delivery--information-single mt-3">
                                     <span class="name">{{ translate('messages.name') }}</span>
-                                    <span class="info">{{ data_get($address,'contact_person_name', translate('messages.N/A')) }}</span>
+                                    <span class="info">{{ data_get($address,'contact_person_name.contact_person_name', translate('messages.N/A')) }}</span>
                                     <span class="name">{{ translate('messages.contact') }}</span>
                                     <a class="deco-none info" href="tel:{{ data_get($address,'contact_person_number', translate('messages.N/A'))  }}">
                                         {{ data_get($address,'contact_person_number', translate('messages.N/A')) }}</a>
@@ -1750,7 +1751,7 @@
                                 </label>
                                 <div class="col-md-10 js-form-message">
                                     <input type="text" class="form-control" name="contact_person_name"
-                                        value="{{ $address['contact_person_name'] }}" required>
+                                        value="{{ $address['contact_person_name']['contact_person_name'] }}" required>
                                 </div>
                             </div>
 

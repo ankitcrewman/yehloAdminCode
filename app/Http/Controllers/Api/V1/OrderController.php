@@ -85,16 +85,16 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'order_amount' => 'required',
             'payment_method' => 'required|in:cash_on_delivery,digital_payment,wallet,offline_payment',
-            'order_type' => 'required|in:take_away,delivery,parcel',
-            'store_id' => 'required_unless:order_type,parcel',
-            'distance' => 'required_unless:order_type,take_away',
-            'address' => 'required_unless:order_type,take_away',
-            'longitude' => 'required_unless:order_type,take_away',
-            'latitude' => 'required_unless:order_type,take_away',
-            'parcel_category_id' => 'required_if:order_type,parcel',
-            'receiver_details' => 'required_if:order_type,parcel',
-            'charge_payer' => 'required_if:order_type,parcel|in:sender,receiver',
-            'dm_tips' => 'nullable|numeric',
+            'order_type' => 'required|in:take_away,delivery,parcel,service',
+            'store_id' => 'required_unless:order_type,parcel,service',
+            'distance' => 'required_unless:order_type,take_away,service',
+            'address' => 'required_unless:order_type,take_away,service',
+            'longitude' => 'required_unless:order_type,take_away,service',
+            'latitude' => 'required_unless:order_type,take_away,service',
+            'parcel_category_id' => 'required_if:order_type,parcel,service',
+            'receiver_details' => 'required_if:order_type,parcel,service',
+            'charge_payer' => 'required_if:order_type,parcel|in:sender,receiver,service',
+            'dm_tips' => 'nullable|numeric,service',
             'guest_id' => $request->user ? 'nullable' : 'required',
             'contact_person_name' => $request->user ? 'nullable' : 'required',
             'contact_person_number' => $request->user ? 'nullable' : 'required',
@@ -148,9 +148,6 @@ class OrderController extends Controller
             ], 403);
         }
 
-
-
-
         if ($request->payment_method == 'offline_payment' &&  Helpers::get_mail_status('offline_payment_status') == 0) {
             return response()->json([
                 'errors' => [
@@ -158,9 +155,6 @@ class OrderController extends Controller
                 ]
             ], 403);
         }
-
-
-
 
         $digital_payment = Helpers::get_business_settings('digital_payment');
         if ($digital_payment['status'] == 0 && $request->payment_method == 'digital_payment') {
@@ -203,8 +197,14 @@ class OrderController extends Controller
                         ]
                     ], 404);
                 }
+
+
                 $zone_id = isset($store) ? [$store->zone_id] : json_decode($request->header('zoneId'), true);
-                $zone = Zone::where('id', $zone_id)->whereContains('coordinates', new Point($request->latitude, $request->longitude, POINT_SRID))->first();
+
+                // exit();
+                //                 $zone = Zone::where('id', $zone_id)->whereContains('coordinates', new Point($request->latitude, $request->longitude, POINT_SRID))->first();
+
+                $zone = Zone::where('id', $zone_id)->first();
             }
         }
 
@@ -1828,8 +1828,8 @@ class OrderController extends Controller
 
         $zone_id = json_decode($request->header('zoneId'), true);
         $data = Store::withOpen($longitude, $latitude)->wherehas('orders', function ($q) use ($request) {
-                $q->where('user_id', $request->user()->id)->where('is_guest', 0)->latest();
-            })
+            $q->where('user_id', $request->user()->id)->where('is_guest', 0)->latest();
+        })
             ->where('module_id', $request->header('moduleId'))
             ->withcount('items')
             ->with(['itemsForReorder'])

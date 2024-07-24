@@ -4830,4 +4830,5 @@
   'New_Store_Registration' => 'New Store Registration',
   'application_status_updated_successfully' => 'Application status updated successfully',
   'Service List' => 'Service List',
+  'item on the way' => 'Item on the way',
 );

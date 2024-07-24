@@ -44,12 +44,13 @@ class OrderController extends Controller
 {
     public function list($status, Request $request)
     {
-        // dd($status);
+
         $key = explode(' ', $request['search']);
         if (session()->has('zone_filter') == false) {
             session()->put('zone_filter', 0);
         }
         $module_id = $request->query('module_id', null);
+
         if (session()->has('order_filter')) {
             $request = json_decode(session('order_filter'));
         }
@@ -136,6 +137,8 @@ class OrderController extends Controller
             ->module(Config::get('module.current_module_id'))
             ->orderBy('schedule_at', 'desc')
             ->paginate(config('default_pagination'));
+
+
         $orderstatus = isset($request->orderStatus) ? $request->orderStatus : [];
         $scheduled = isset($request->scheduled) ? $request->scheduled : 0;
         $vendor_ids = isset($request->vendor) ? $request->vendor : [];
