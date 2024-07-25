@@ -494,8 +494,8 @@ class ConfigController extends Controller
                         $query->where('starting_coverage_area', '>=', $distance_data);
                     });
             })->orderBy('starting_coverage_area')->first();
-        echo json_encode($data);
-        exit();
+        // echo json_encode($data);
+        // exit();
 
         $extra_charges = (float) (isset($data) ? $data->extra_charges  : 0);
         return response()->json($extra_charges, 200);

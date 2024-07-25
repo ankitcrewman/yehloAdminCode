@@ -19,6 +19,7 @@ class CampaignController extends Controller
                 'errors' => $errors
             ], 200);
         }
+
         $zone_id= $request->header('zoneId');
         try {
             $campaigns = Campaign::
