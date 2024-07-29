@@ -26,4 +26,6 @@ class LocalizationMiddleware
 
         return $next($request);
     }
+
 }
+

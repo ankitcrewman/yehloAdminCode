@@ -29,6 +29,7 @@ class FileManagerController extends Controller
         // dd($files);
         $data = array_merge($folders, $files);
         return view('admin-views.file-manager.index', compact('data', 'folder_path'));
+
     }
 
 
@@ -44,7 +45,7 @@ class FileManagerController extends Controller
 
             foreach($images as $image) {
                 $name = $image->getClientOriginalName();
-                Storage::disk('local')->put($request->path.'/'. $name, file_get_contents($image));  
+                Storage::disk('local')->put($request->path.'/'. $name, file_get_contents($image));
             }
         }
         if ($request->hasfile('file')) {
@@ -52,14 +53,12 @@ class FileManagerController extends Controller
             $name = $file->getClientOriginalName();
 
             Madzipper::make($file)->extractTo('storage/app/'.$request->path);
-            // Storage::disk('local')->put($request->path.'/'. $name, file_get_contents($file));  
+            // Storage::disk('local')->put($request->path.'/'. $name, file_get_contents($file));
 
         }
         Toastr::success(translate('messages.image_uploaded_successfully'));
         return back()->with('success', translate('messages.image_uploaded_successfully'));
     }
-
-
 
 
     public function download($file_name)

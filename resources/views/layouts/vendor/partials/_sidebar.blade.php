@@ -43,7 +43,7 @@
                         <input type="text" class="form-control form--control" placeholder="{{ translate('messages.Search Menu...') }}" id="search-sidebar-menu">
                     </div>
                 </form>
-                <ul class="navbar-nav navbar-nav-lg nav-tabs">
+                <ul class="navbar-nav navbar-nav-lg nav-tabs sidebar-custom-bg">
                     <!-- Dashboards -->
                     <li class="navbar-vertical-aside-has-menu {{Request::is('store-panel')?'active':''}}">
                         <a class="js-navbar-vertical-aside-menu-link nav-link"

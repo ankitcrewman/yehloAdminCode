@@ -12,3 +12,4 @@ class CallbackUrl extends Model
 
     protected $fillable = ['payload'];
 }
+

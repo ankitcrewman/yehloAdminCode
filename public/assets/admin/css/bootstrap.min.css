@@ -14837,7 +14837,7 @@ input[type="number"] {
 
 ::selection {
     color: #fff;
-    background-color: #00868f;
+  background-color: #4e1ea5;
 }
 
 .bg-primary ::-moz-selection {

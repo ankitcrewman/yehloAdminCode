@@ -831,7 +831,8 @@
                                     <a class="nav-link " href="{{ route('admin.item.add-new') }}"
                                         title="{{ translate('messages.add_new') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span class="text-truncate">{{ translate('messages.Service list') }}</span>
+                                        <span
+                                            class="text-truncate">{{ translate('messages.Add new service') }}</span>
                                     </a>
                                 </li>
                                 <li
@@ -839,8 +840,7 @@
                                     <a class="nav-link " href="{{ route('admin.item.list') }}"
                                         title="{{ translate('messages.food_list') }}">
                                         <span class="tio-circle nav-indicator-icon"></span>
-                                        <span
-                                            class="text-truncate">{{ translate('messages.Add new service') }}</span>
+                                        <span class="text-truncate">{{ translate('messages.Service List') }}</span>
                                     </a>
                                 </li>
 
@@ -867,6 +867,8 @@
                             title="{{ translate('messages.store_section') }}">{{ translate('messages.Customer management') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
+
+
 
 
                     <li class="navbar-vertical-aside-has-menu {{ Request::is('admin/item*') ? 'active' : '' }}">
@@ -1093,9 +1095,124 @@
                     </li>
                     {{-- Reports & Analytics  --}}
 
+                    {{-- Store --}}
 
-                    {{-- System addon  --}}
+                    <!-- Store Store -->
                     <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.store_section') }}">{{ translate('messages.store_management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    @if (\App\CentralLogics\Helpers::module_permission_check('store'))
+
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/pending-requests') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.store.pending-requests') }}"
+                                title="{{ translate('messages.pending_requests') }}">
+                                <span class="tio-calendar-note nav-icon"></span>
+                                <span class="text-truncate position-relative overflow-visible">
+                                    {{ translate('messages.new_stores') }}
+                                                                                    @php(
+                                                    $new_str = \App\Models\Store::whereHas('vendor', function ($query) {
+                                                        return $query->where('status', null);
+                                                    })->module(Config::get('module.current_module_id'))->get()
+                                                );
+                                    @if (count($new_str) > 0)
+                                        <span class="btn-status btn-status-danger border-0 size-8px"></span>
+                                    @endif
+                                </span>
+                            </a>
+                        </li>
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/add') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.store.add') }}"
+                                title="{{ translate('messages.add_store') }}">
+                                <span class="tio-add-circle nav-icon"></span>
+                                <span class="text-truncate">
+                                    {{ translate('messages.add_store') }}
+                                </span>
+                            </a>
+                        </li>
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/list') || Request::is('admin/store/view/*') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.store.list') }}"
+                                title="{{ translate('messages.stores_list') }}">
+                                <span class="tio-layout nav-icon"></span>
+                                <span class="text-truncate">{{ translate('messages.stores') }}
+                                    {{ translate('list') }}</span>
+                            </a>
+                        </li>
+
+                        <li class="navbar-item {{ Request::is('admin/store/recommended-store') ? 'active' : '' }}">
+                            <a class="js-navbar-vertical-aside-menu-link nav-link"
+                                href="{{ route('admin.store.recommended_store') }}"
+                                title="{{ translate('messages.pending_requests') }}">
+                                <span class="tio-hot  nav-icon"></span>
+                                <span
+                                    class="text-truncate text-capitalize">{{ translate('Recommended_Store') }}</span>
+                            </a>
+                        </li>
+
+
+
+                        {{-- <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/bulk-import') ? 'active' : '' }}">
+                            <a class="nav-link " href="{{ route('admin.store.bulk-import') }}"
+                                title="{{ translate('messages.bulk_import') }}">
+                                <span class="tio-publish nav-icon"></span>
+                                <span
+                                    class="text-truncate text-capitalize">{{ translate('messages.bulk_import') }}</span>
+                            </a>
+                        </li>
+                        <li
+                            class="navbar-vertical-aside-has-menu {{ Request::is('admin/store/bulk-export') ? 'active' : '' }}">
+                            <a class="nav-link " href="{{ route('admin.store.bulk-export-index') }}"
+                                title="{{ translate('messages.bulk_export') }}">
+                                <span class="tio-download-to nav-icon"></span>
+                                <span
+                                    class="text-truncate text-capitalize">{{ translate('messages.bulk_export') }}</span>
+                            </a>
+                        </li> --}}
+                    @endif
+                    <!-- End Store -->
+
+
+                    {{-- Store --}}
+
+                    {{-- serviceman Setup --}}
+
+                    <li class="nav-item">
+                        <small class="nav-subtitle"
+                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.employee management') }}</small>
+                        <small class="tio-more-horizontal nav-subtitle-replacer"></small>
+                    </li>
+
+                    <li
+                        class="nav-item {{  Request::is('admin/serviceman/add') ? 'active' : '' }}">
+                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                            title="{{ translate('messages.sub_category') }}">
+                            <span class="tio-circle nav-indicator-icon"></span>
+                            <span class="text-truncate">{{ translate('messages.add serviceman') }}</span>
+                        </a>
+                    </li>
+                    <li
+                        class="nav-item {{  Request::is('admin/serviceman/list') ? 'active' : '' }}">
+                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                            title="{{ translate('messages.sub_category') }}">
+                            <span class="tio-circle nav-indicator-icon"></span>
+                            <span class="text-truncate">{{ translate('messages.serviceman list') }}</span>
+                        </a>
+                    </li>
+
+
+
+                    {{-- serviceman Setup --}}
+                    {{-- System addon  --}}
+                    {{-- <li class="nav-item">
                         <small class="nav-subtitle"
                             title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.System addon') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
@@ -1107,7 +1224,7 @@
                             <span class="tio-circle nav-indicator-icon"></span>
                             <span class="text-truncate">{{ translate('messages.System addons') }}</span>
                         </a>
-                    </li>
+                    </li> --}}
 
                     {{-- System addon  --}}
 
@@ -1131,10 +1248,10 @@
                                 <span class="tio-calendar-note nav-icon"></span>
                                 <span class="text-truncate position-relative overflow-visible">
                                     {{ translate('messages.new_stores') }}
-                                    @php(
-    $new_str = \App\Models\Store::whereHas('vendor', function ($query) {
-        return $query->where('status', null);
-    })->module(Config::get('module.current_module_id'))->get());
+                                                                            @php(
+                                            $new_str = \App\Models\Store::whereHas('vendor', function ($query) {
+                                                return $query->where('status', null);
+                                            })->module(Config::get('module.current_module_id'))->get());
                                     @if (count($new_str) > 0)
                                         <span class="btn-status btn-status-danger border-0 size-8px"></span>
                                     @endif
@@ -1322,23 +1439,23 @@
                     const suggestions = [
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            messages.order '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            messages.order '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.campaign '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.campaign '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.category '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.category '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.product '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.product '),
                         ) }}',
                         '{{ strtolower(
                             translate('
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.store '),
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                messages.store '),
                         ) }}'
                     ];
                     --

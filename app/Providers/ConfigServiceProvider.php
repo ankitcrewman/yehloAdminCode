@@ -59,6 +59,7 @@ class ConfigServiceProvider extends ServiceProvider
             'ssl_commerz',
             'paystack' ];
 
+
             $data= Setting::whereIn('key_name',$gateway)->pluck('live_values','key_name')->toArray();
             if (isset($data['paystack'])) {
                 $config = array(

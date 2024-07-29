@@ -44,12 +44,13 @@ class OrderController extends Controller
 {
     public function list($status, Request $request)
     {
-        // dd($status);
+
         $key = explode(' ', $request['search']);
         if (session()->has('zone_filter') == false) {
             session()->put('zone_filter', 0);
         }
         $module_id = $request->query('module_id', null);
+
         if (session()->has('order_filter')) {
             $request = json_decode(session('order_filter'));
         }
@@ -136,6 +137,8 @@ class OrderController extends Controller
             ->module(Config::get('module.current_module_id'))
             ->orderBy('schedule_at', 'desc')
             ->paginate(config('default_pagination'));
+
+
         $orderstatus = isset($request->orderStatus) ? $request->orderStatus : [];
         $scheduled = isset($request->scheduled) ? $request->scheduled : 0;
         $vendor_ids = isset($request->vendor) ? $request->vendor : [];
@@ -555,6 +558,7 @@ class OrderController extends Controller
             $cash_in_hand = $deliveryman?->wallet?->collected_cash ?? 0;
             $dm_max_cash=BusinessSetting::where('key','dm_max_cash_in_hand')->first();
             $value=  $dm_max_cash?->value ?? 0;
+
 
             if(($order->payment_method == "cash_on_delivery" || $payments) && (($cash_in_hand+$order->order_amount) >= $value)){
                 return response()->json(['message'=> \App\CentralLogics\Helpers::format_currency($value) ." ".translate('max_cash_in_hand_exceeds')  ], 400);

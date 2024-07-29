@@ -51,13 +51,13 @@ class VendorController extends Controller
 {
     public function index()
     {
-       
+
         return view('admin-views.vendor.index');
     }
 
     public function store(Request $request)
     {
-       
+
         $validator = Validator::make($request->all(), [
             'f_name' => 'required|max:100',
             'l_name' => 'nullable|max:100',
@@ -378,8 +378,6 @@ class VendorController extends Controller
                 }
             }
         }
-
-
         $store?->deliverymen()?->delete();
         $store?->discount()?->delete();
         $store?->schedules()?->delete();
@@ -442,6 +440,7 @@ class VendorController extends Controller
             ->Notpos()->paginate(10);
             return view('admin-views.vendor.view.order', compact('store','orders'));
         }
+
         else if($tab == 'item')
         {
             if($sub_tab == 'pending-items' || $sub_tab == 'rejected-items' ){
@@ -564,7 +563,7 @@ class VendorController extends Controller
 
     public function list(Request $request)
     {
-       
+
         $key = explode(' ', $request['search']);
 
         $zone_id = $request->query('zone_id', 'all');

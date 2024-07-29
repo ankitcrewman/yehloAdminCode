@@ -22,6 +22,7 @@
         </div>
 
         <!-- Body -->
+
         <div class="card-body sidebar-scrollbar">
             <h4 class="mb-1">Layout skins <span id="js-builder-disabled" class="badge badge-soft-danger opacity-0">Disabled</span></h4>
             <p>3 kinds of layout skins to choose from.</p>

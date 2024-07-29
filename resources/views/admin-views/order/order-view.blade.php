@@ -1421,6 +1421,7 @@
                             </span>
                         @endif
 
+
                         @if ($order->delivery_address)
                             @php($address = json_decode($order->delivery_address, true))
                             <hr>
@@ -1438,6 +1439,8 @@
                                     @endif
                                 @endif
                             </div>
+
+
                             @if (isset($address))
                                 <div class="delivery--information-single mt-3">
                                     <span class="name">{{ translate('messages.name') }}</span>

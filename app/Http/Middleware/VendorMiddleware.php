@@ -26,6 +26,7 @@ class VendorMiddleware
             }
             return $next($request);
         }
+
         else if (Auth::guard('vendor_employee')->check()) {
             if(Auth::guard('vendor_employee')->user()->is_logged_in == 0)
             {

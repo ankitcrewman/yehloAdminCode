@@ -20,6 +20,7 @@
 
                     <li class="list-inline-item">
                         <!-- Keyboard Shortcuts Toggle -->
+
                         <div class="hs-unfold">
                             <a class="js-hs-unfold-invoker btn btn-icon btn-ghost-secondary rounded-circle"
                                href="{{route('vendor.dashboard')}}">

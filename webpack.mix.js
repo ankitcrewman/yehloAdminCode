@@ -1,3 +1,4 @@
+y
 const mix = require('laravel-mix');
 
 /*

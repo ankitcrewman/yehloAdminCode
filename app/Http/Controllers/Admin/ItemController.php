@@ -265,10 +265,7 @@ class ItemController extends Controller
         }
         $item->stock = $request->current_stock ?? 0;
         $item->images = $images;
-
-
         $store_details = Store::where("id", $request->store_id)->first();
-
         if ($store_details && $store_details->phone) {
 
             $paid_plan = PlanPurchaseRequest::where("mobile", $store_details->phone)->first();
