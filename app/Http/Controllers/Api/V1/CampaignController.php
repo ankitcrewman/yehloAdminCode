@@ -40,6 +40,7 @@ class CampaignController extends Controller
         } catch (\Exception $e) {
             return response()->json([], 200);
         }
+
     }
     public function basic_campaign_details(Request $request){
         if (!$request->hasHeader('zoneId')) {

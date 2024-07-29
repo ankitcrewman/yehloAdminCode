@@ -30,6 +30,7 @@ class EcommerceRouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/ecommerce.php'));
+
         });
     }
 }

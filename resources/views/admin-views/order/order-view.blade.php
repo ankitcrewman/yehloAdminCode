@@ -1440,6 +1440,7 @@
                                 @endif
                             </div>
 
+
                             @if (isset($address))
                                 <div class="delivery--information-single mt-3">
                                     <span class="name">{{ translate('messages.name') }}</span>

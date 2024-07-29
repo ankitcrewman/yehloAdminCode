@@ -559,6 +559,7 @@ class OrderController extends Controller
             $dm_max_cash=BusinessSetting::where('key','dm_max_cash_in_hand')->first();
             $value=  $dm_max_cash?->value ?? 0;
 
+
             if(($order->payment_method == "cash_on_delivery" || $payments) && (($cash_in_hand+$order->order_amount) >= $value)){
                 return response()->json(['message'=> \App\CentralLogics\Helpers::format_currency($value) ." ".translate('max_cash_in_hand_exceeds')  ], 400);
             }

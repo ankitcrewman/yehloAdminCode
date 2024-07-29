@@ -11,6 +11,15 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
     Route::group(['middleware' => ['admin', 'current-module']], function () {
 
+
+
+        // service man
+
+        Route::get('/service-man', 'ServicemanController@create')->name('service-man');
+
+
+        // service man
+
         /// brand
 
         Route::get('/brand', 'BrandController@index')->name('brand');
