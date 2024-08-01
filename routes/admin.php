@@ -14,10 +14,11 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
 
         // service man
-
+        Route::group(['prefix' => 'service', 'as' => 'service.'], function () {
         Route::get('/service-man', 'ServicemanController@create')->name('service-man');
+        Route::post('/service-man', 'ServicemanController@store')->name('create');
 
-
+        });
         // service man
 
         /// brand

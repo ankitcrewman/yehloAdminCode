@@ -540,4 +540,11 @@ class Store extends Model
     {
         return $this->hasOne(StoreConfig::class);
     }
+
+
+
+    public function servicemen()
+    {
+        return $this->hasMany(Serviceman::class, 'store_id');
+    }
 }

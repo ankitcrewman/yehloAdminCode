@@ -4866,4 +4866,7 @@
   'serviceman list' => 'Serviceman list',
   'Add new Service Man' => 'Add new Service Man',
   'add_new_serviceman' => 'Add new serviceman',
+  'Addon Bulk Export' => 'Addon Bulk Export',
+  'addons_bulk_export' => 'Addons bulk export',
+  'The password confirmation does not match.' => 'The password confirmation does not match.',
 );

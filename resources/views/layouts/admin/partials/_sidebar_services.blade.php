@@ -1193,7 +1193,7 @@
 
                     <li
                         class="nav-item {{  Request::is('admin/serviceman/add') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                        <a class="nav-link " href="{{ route('admin.service.service-man') }}"
                             title="{{ translate('messages.sub_category') }}">
                             <span class="tio-circle nav-indicator-icon"></span>
                             <span class="text-truncate">{{ translate('messages.add serviceman') }}</span>
@@ -1201,7 +1201,7 @@
                     </li>
                     <li
                         class="nav-item {{  Request::is('admin/serviceman/list') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                        <a class="nav-link " href="{{ route('admin.service.service-man') }}"
                             title="{{ translate('messages.sub_category') }}">
                             <span class="tio-circle nav-indicator-icon"></span>
                             <span class="text-truncate">{{ translate('messages.serviceman list') }}</span>

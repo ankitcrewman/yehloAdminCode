@@ -17,8 +17,7 @@
             </h1>
         </div>
         <!-- End Page Header -->
-        <form action="{{ route('admin.users.delivery-man.store') }}" method="post" enctype="multipart/form-data"
-            class="js-validate">
+        <form action="{{ route('admin.service.create') }}" method="post" enctype="multipart/form-data" class="js-validate">
             @csrf
             <div class="card">
                 <div class="card-header">
@@ -75,68 +74,22 @@
                                             placeholder="{{ translate('messages.Ex:') }} ex@example.com" required>
                                     </div>
                                 </div>
-                                {{-- <div class="col-sm-6">
-                                <div class="form-group mb-0">
-                                    <label class="input-label"
-                                        for="exampleFormControlInput1">{{ translate('messages.deliveryman_type') }}
-                                        <span class="form-label-secondary text-danger" data-toggle="tooltip"
-                                            data-placement="right"
-                                            data-original-title="{{ translate('messages.Required.') }}"> *
-                                        </span>
-                                    </label>
-                                    <select name="earning" data-placeholder="{{ translate('messages.Select_deliveryman_type') }}" required class="form-control js-select2-custom">
-                                        <option value="" readonly="true" hidden="true" > {{ translate('messages.Select_deliveryman_type') }}</option>
-                                        <option value="1">{{ translate('messages.freelancer') }}</option>
-                                        <option value="0">{{ translate('messages.salary_based') }}</option>
-                                    </select>
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-sm-6">
-                                <div class="form-group mb-0">
-                                    <label class="input-label"
-                                        for="exampleFormControlInput1">{{ translate('messages.zone') }} <span
-                                            class="form-label-secondary text-danger" data-toggle="tooltip"
-                                            data-placement="right"
-                                            data-original-title="{{ translate('messages.Required.') }}"> *
-                                        </span>
-                                    </label>
-                                    <select name="zone_id" class="form-control js-select2-custom" required
-                                        data-placeholder="{{ translate('messages.select_zone') }}">
-                                        <option value="" readonly="true" hidden="true">
-                                            {{ translate('messages.select_zone') }}</option>
-                                        @foreach (\App\Models\Zone::all() as $zone)
-                                            @if (isset(auth('admin')->user()->zone_id))
-                                                @if (auth('admin')->user()->zone_id == $zone->id)
-                                                    <option value="{{ $zone->id }}" selected>{{ $zone->name }}
-                                                    </option>
-                                                @endif
-                                            @else
-                                                <option value="{{ $zone->id }}">{{ $zone->name }}</option>
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div> --}}
-                                {{-- <div class="col-sm-6">
-                                    <div class="form-group m-0">
-                                        <label class="input-label"
-                                            for="exampleFormControlInput1">{{ translate('messages.Vehicle') }} <span
+                                <div class="col-sm-6 ">
+                                    <div class="form-group mb-0">
+                                        <label class="input-label" for="store_id">{{ translate('messages.store') }} <span
                                                 class="form-label-secondary text-danger" data-toggle="tooltip"
                                                 data-placement="right"
                                                 data-original-title="{{ translate('messages.Required.') }}"> *
-                                            </span>
-                                        </label>
-                                        <select name="vehicle_id" class="form-control js-select2-custom h--45px" required
-                                            data-placeholder="{{ translate('messages.select_vehicle') }}">
-                                            <option value="" readonly="true" hidden="true">
-                                                {{ translate('messages.select_vehicle') }}</option>
-                                            @foreach (\App\Models\DMVehicle::where('status', 1)->get(['id', 'type']) as $v)
-                                                <option value="{{ $v->id }}">{{ $v->type }}
-                                                </option>
-                                            @endforeach
+                                            </span><span class="input-label-secondary"></span></label>
+                                        <select name="store_id" id="store_id"
+                                            data-placeholder="{{ translate('messages.select_store') }}"
+                                            class="js-data-example-ajax form-control"
+                                            oninvalid="this.setCustomValidity('{{ translate('messages.please_select_store') }}')">
+
                                         </select>
                                     </div>
-                                </div> --}}
+                                </div>
+
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -412,5 +365,33 @@
                 }
             });
         })
+
+
+
+        $('#store_id').select2({
+            ajax: {
+                url: '{{ url('/') }}/admin/store/get-stores',
+                data: function(params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page,
+                        module_id: {{ Config::get('module.current_module_id') }},
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                },
+                __port: function(params, success, failure) {
+                    let $request = $.ajax(params);
+
+                    $request.then(success);
+                    $request.fail(failure);
+
+                    return $request;
+                }
+            }
+        });
     </script>
 @endpush
