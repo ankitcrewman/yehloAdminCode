@@ -7,10 +7,29 @@ use Illuminate\Http\Request;
 use App\Models\Serviceman;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\FileManagerTrait;
+use Illuminate\Support\Facades\Config;
+use App\Models\Store;
+use Illuminate\Session\Store as SessionStore;
 
 class ServicemanController extends Controller
 {
     use FileManagerTrait;
+
+    public function index(Request $request)
+    {
+        return $this->getListView($request);
+    }
+
+
+    private function getListView(Request $request)
+    {
+        $servicemen = Serviceman::where('module_id', Config::get('module.current_module_id'))->paginate(10); // Adjust the number
+        return view('admin-views.serviceman.list', compact('servicemen'));
+    }
+
+
+
+
     public function create()
     {
         return view('admin-views.serviceman.create');
@@ -37,7 +56,6 @@ class ServicemanController extends Controller
 
             $imagePath = $this->upload('service-man/', 'png', $request->file('image'));
         }
-
         // Handle multiple identity images
         $identityImages = [];
         if ($request->hasFile('identity_image')) {
@@ -46,8 +64,13 @@ class ServicemanController extends Controller
             }
         }
 
+        $store = Store::find($request->store_id);
+        $module_id = $store->module_id;
+        // dd($module_id);
+
         // Insert data into the servicemen table
         $serviceman = Serviceman::create([
+
             'first_name' => $request->f_name,
             'last_name' => $request->l_name,
             'email' => $request->email,
@@ -60,9 +83,36 @@ class ServicemanController extends Controller
             'identification_image' => json_encode($identityImages),
             'module_type' => 'services',
             'status' => '1',
+            'module_id' => $module_id
         ]);
 
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Serviceman created successfully!');
     }
+
+
+
+    public function delete(Request $request)
+    {
+        // Validate the request to ensure an ID is provided
+        // $request->validate([
+        //     'id' => 'required|exists:servicemen,id'
+        // ]);
+
+        // Find the serviceman by ID
+        $serviceman = Serviceman::find($request->id);
+
+        // Check if the serviceman exists
+        if ($serviceman) {
+            // Delete the serviceman
+            $serviceman->delete();
+
+            // Redirect back with a success message
+            return redirect()->back()->with('success', 'Serviceman deleted successfully!');
+        }
+
+        // Redirect back with an error message if the serviceman was not found
+        return redirect()->back()->with('error', 'Serviceman not found!');
+    }
+
 }

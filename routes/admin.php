@@ -15,8 +15,11 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
 
         // service man
         Route::group(['prefix' => 'service', 'as' => 'service.'], function () {
-        Route::get('/service-man', 'ServicemanController@create')->name('service-man');
-        Route::post('/service-man', 'ServicemanController@store')->name('create');
+            Route::get('/service-man', 'ServicemanController@create')->name('service-man');
+            Route::post('/service-man', 'ServicemanController@store')->name('create');
+            Route::get('/service-man/list', 'ServicemanController@index')->name('list');
+            Route::delete('/service-man/sm-del/{id}', 'ServicemanController@delete')->name('delete');
+
 
         });
         // service man

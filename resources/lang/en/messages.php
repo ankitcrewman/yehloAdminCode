@@ -4869,4 +4869,9 @@
   'Addon Bulk Export' => 'Addon Bulk Export',
   'addons_bulk_export' => 'Addons bulk export',
   'The password confirmation does not match.' => 'The password confirmation does not match.',
+  'serviceman.list' => 'Serviceman.list',
+  'add.serviceman' => 'Add.serviceman',
+  'employee.management' => 'Employee.management',
+  'serviceman' => 'Serviceman',
+  'serviceman_list' => 'Serviceman list',
 );

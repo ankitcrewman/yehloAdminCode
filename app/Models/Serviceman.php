@@ -26,6 +26,7 @@ class Serviceman extends Model
         'store_id',
         'secondary_store_id',
         'module_type',
+        'module_id',
         'status',
     ];
 
