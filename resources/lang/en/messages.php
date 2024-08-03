@@ -4874,4 +4874,8 @@
   'employee.management' => 'Employee.management',
   'serviceman' => 'Serviceman',
   'serviceman_list' => 'Serviceman list',
+  'Update Service Man' => 'Update Service Man',
+  'update_servicemen' => 'Update servicemen',
+  'servicemen_type' => 'Servicemen type',
+  'servicemen_image' => 'Servicemen image',
 );

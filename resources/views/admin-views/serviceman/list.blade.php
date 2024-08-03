@@ -196,7 +196,7 @@
                                             title="{{ translate('messages.view') }}"><i
                                                 class="tio-visible-outlined"></i>
                                         </a>
-                                    <a class="btn action-btn btn--primary btn-outline-primary" href="{{route('admin.users.delivery-man.edit',[$dm['id']])}}" title="{{translate('messages.edit')}}"><i class="tio-edit"></i>
+                                    <a class="btn action-btn btn--primary btn-outline-primary" href="{{route('admin.service.edit',[$dm['id']])}}" title="{{translate('messages.edit')}}"><i class="tio-edit"></i>
                                         </a>
                                         <a class="btn action-btn btn--danger btn-outline-danger form-alert" href="javascript:" data-id="delivery-man-{{$dm['id']}}" data-message="{{ translate('Want to remove this deliveryman ?') }}" title="{{translate('messages.delete')}}"><i class="tio-delete-outlined"></i>
                                     </a>

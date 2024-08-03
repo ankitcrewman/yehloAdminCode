@@ -3221,7 +3221,7 @@ class Helpers
 
 
     public static function onerror_image_helper($data, $src, $error_src ,$path){
-
+        // dd($path);
         if(isset($data) && strlen($data) >1 && Storage::disk('public')->exists($path.$data)){
             return $src;
         }

@@ -23,7 +23,7 @@ class ServicemanController extends Controller
 
     private function getListView(Request $request)
     {
-        $servicemen = Serviceman::where('module_id', Config::get('module.current_module_id'))->paginate(10); // Adjust the number
+        $servicemen = Serviceman::where('module_id', Config::get('module.current_module_id'))->paginate(10);
         return view('admin-views.serviceman.list', compact('servicemen'));
     }
 
@@ -86,7 +86,6 @@ class ServicemanController extends Controller
             'module_id' => $module_id
         ]);
 
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'Serviceman created successfully!');
     }
 
@@ -94,15 +93,7 @@ class ServicemanController extends Controller
 
     public function delete(Request $request)
     {
-        // Validate the request to ensure an ID is provided
-        // $request->validate([
-        //     'id' => 'required|exists:servicemen,id'
-        // ]);
-
-        // Find the serviceman by ID
         $serviceman = Serviceman::find($request->id);
-
-        // Check if the serviceman exists
         if ($serviceman) {
             // Delete the serviceman
             $serviceman->delete();
@@ -113,6 +104,19 @@ class ServicemanController extends Controller
 
         // Redirect back with an error message if the serviceman was not found
         return redirect()->back()->with('error', 'Serviceman not found!');
+    }
+
+
+    public function edit($id)
+    {
+        $servicemen = Serviceman::find($id);
+       // dd($servicemen);
+        return view('admin-views.serviceman.edit', compact('servicemen'));
+    }
+
+    public function updateServiceman(Request $request, $id)
+    {
+        return ;
     }
 
 }
