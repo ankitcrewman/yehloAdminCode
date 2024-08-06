@@ -18,11 +18,11 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::get('/service-man/list', 'ServicemanController@index')->name('list');
             Route::delete('/service-man/sm-del/{id}', 'ServicemanController@delete')->name('delete');
             Route::get('/service-man/sm-edit/{id}', 'ServicemanController@edit')->name('edit');
-
-
+            Route::post('/service-man/sm-update/{id}', 'ServicemanController@updateServiceman')->name('update');
         });
-        // service man
 
+
+        // service man
         /// brand
 
         Route::get('/brand', 'BrandController@index')->name('brand');

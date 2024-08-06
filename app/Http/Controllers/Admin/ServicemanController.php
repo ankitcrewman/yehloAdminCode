@@ -10,6 +10,7 @@ use App\Traits\FileManagerTrait;
 use Illuminate\Support\Facades\Config;
 use App\Models\Store;
 use Illuminate\Session\Store as SessionStore;
+use Illuminate\Support\Facades\Storage;
 
 class ServicemanController extends Controller
 {
@@ -110,13 +111,66 @@ class ServicemanController extends Controller
     public function edit($id)
     {
         $servicemen = Serviceman::find($id);
-       // dd($servicemen);
+        // dd($servicemen);
         return view('admin-views.serviceman.edit', compact('servicemen'));
     }
 
     public function updateServiceman(Request $request, $id)
     {
-        return ;
-    }
 
+        $request->validate([
+            'f_name' => 'required|string|max:255',
+            'l_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'phone' => 'required|string|max:15',
+            'identity_number' => 'required|string|max:255',
+            'identity_type' => 'required|string|max:255',
+            'password' => 'nullable|string|min:6',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'identity_image' => 'nullable|array',
+            'identity_image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        // Handle profile image upload
+        if ($request->hasFile('image')) {
+            $imageName = $this->updateAndUpload('service-man/', $request->file('image'), 'png');
+        } else {
+            $imageName = $request->input('image');
+        }
+
+
+        if ($request->hasFile('identity_image')) {
+            $imgKeeper = [];
+            foreach ($request->file('identity_image') as $img) {
+                $identityImage = $this->upload('service-man-identification/', 'png', $img);
+                $imgKeeper[] = $identityImage;
+            }
+            $identityImage = json_encode($imgKeeper);
+        } else {
+            $identityImage = $request->input('identity_image');
+        }
+
+
+
+        $serviceman = Serviceman::find($id);
+        $serviceman->first_name = $request->f_name;
+        $serviceman->last_name = $request->l_name;
+        $serviceman->email = $request->email;
+        $serviceman->phone_number = $request->phone;
+        $serviceman->identity_number = $request->identity_number;
+        $serviceman->document_type = $request->identity_type;
+        $serviceman->identification_image =  isset($identityImage) ? $identityImage : $serviceman->identification_image;
+
+
+
+        $serviceman->serviceman_image = isset($imageName) ? $imageName : $serviceman->serviceman_image;
+        if ($request->filled('password')) {
+            $serviceman->password = bcrypt($request->password);
+        }
+        // $serviceman->status = in_array($request->input('application_status'), ['pending', 'denied']) ? 1 : $request->status;
+
+        $serviceman->save();
+
+        return redirect()->route('admin.service.list');
+    }
 }

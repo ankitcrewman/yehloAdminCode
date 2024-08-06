@@ -15,7 +15,7 @@
             </h1>
         </div>
         <!-- End Page Header -->
-        <form action="{{ route('admin.users.delivery-man.update', [$servicemen['id']]) }}" method="post" class="js-validate"
+        <form action="{{ route('admin.service.update', [$servicemen['id']]) }}" method="post" class="js-validate"
             enctype="multipart/form-data">
             @csrf
             <div class="card">
@@ -81,19 +81,19 @@
                                                 data-placement="right"
                                                 data-original-title="{{ translate('messages.Required.') }}"> *
                                             </span><span class="input-label-secondary"></span></label>
-                               @php
-                                   $store = \App\Models\Store::where('id', $servicemen['store_id'])->first()
-                               @endphp
+                                        @php
+                                            $store = \App\Models\Store::where('id', $servicemen['store_id'])->first();
+                                        @endphp
 
-                                            <select name="store_id" id="store_id"
+                                        <select name="store_id" id="store_id" disabled
                                             data-placeholder="{{ translate('messages.select_store') }}"
                                             class="js-data-example-ajax form-control"
                                             oninvalid="this.setCustomValidity('{{ translate('messages.please_select_store') }}')">
 
 
-                                                <option value="{{ $store->id}}"
-                                                    {{ $store->id == $servicemen['store_id'] ? 'selected' : '' }}>
-                                                    {{ $store->name }}</option>
+                                            <option value="{{ $store->id }}"
+                                                {{ $store->id == $servicemen['store_id'] ? 'selected' : '' }}>
+                                                {{ $store->name }}</option>
 
                                         </select>
                                     </div>
@@ -177,14 +177,15 @@
                                             </div>
                                         </div>
 
+                                        @if ($servicemen['identification_image'] != null)
+                                            @foreach ( json_decode($servicemen['identification_image'] , true)  as $img)
+                                                <div class="col-6 spartan_item_wrapper size--sm">
+                                                    <img class="rounded border"
+                                                        src="{{ \App\CentralLogics\Helpers::onerror_image_helper($img, asset('storage/app/public') . '/' . $img, asset('public/assets/admin/img/160x160/img1.jpg'), 'service-man-identification') }}">
+                                                </div>
+                                            @endforeach
+                                        @endif
 
-                                        @foreach (json_decode($servicemen['identification_image'], true) as $img)
-
-                                            <div class="col-6 spartan_item_wrapper size--sm">
-                                                <img class="rounded border"
-                                                    src="{{ \App\CentralLogics\Helpers::onerror_image_helper($img, asset('storage/app/public') . '/' . $img, asset('public/assets/admin/img/160x160/img1.jpg'), 'service-man-identification') }}">
-                                            </div>
-                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="col-md-6">
