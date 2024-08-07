@@ -1187,24 +1187,24 @@
 
                     <li class="nav-item">
                         <small class="nav-subtitle"
-                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.employee management') }}</small>
+                            title="{{ translate('messages.Reports & Analytics') }}">{{ translate('messages.employee.management') }}</small>
                         <small class="tio-more-horizontal nav-subtitle-replacer"></small>
                     </li>
 
                     <li
                         class="nav-item {{  Request::is('admin/serviceman/add') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                        <a class="nav-link " href="{{ route('admin.service.service-man') }}"
                             title="{{ translate('messages.sub_category') }}">
                             <span class="tio-circle nav-indicator-icon"></span>
-                            <span class="text-truncate">{{ translate('messages.add serviceman') }}</span>
+                            <span class="text-truncate">{{ translate('add serviceman') }}</span>
                         </a>
                     </li>
                     <li
                         class="nav-item {{  Request::is('admin/serviceman/list') ? 'active' : '' }}">
-                        <a class="nav-link " href="{{ route('admin.service-man') }}"
+                        <a class="nav-link " href="{{ route('admin.service.list') }}"
                             title="{{ translate('messages.sub_category') }}">
                             <span class="tio-circle nav-indicator-icon"></span>
-                            <span class="text-truncate">{{ translate('messages.serviceman list') }}</span>
+                            <span class="text-truncate">{{ translate('serviceman list') }}</span>
                         </a>
                     </li>
 

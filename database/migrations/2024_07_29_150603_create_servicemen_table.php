@@ -24,6 +24,10 @@ class CreateServicemenTable extends Migration
             $table->string('identification_image')->nullable();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('module_type'); // Adding module_type
+            $table->unsignedBigInteger('store_id'); // Adding store_id
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade'); // Adding foreign key constraint
+            $table->string('status'); // Adding status
             $table->timestamps();
         });
     }
@@ -35,6 +39,10 @@ class CreateServicemenTable extends Migration
      */
     public function down()
     {
+        Schema::table('servicemen', function (Blueprint $table) {
+            $table->dropForeign(['store_id']); // Dropping the foreign key constraint
+        });
+
         Schema::dropIfExists('servicemen');
     }
 }
