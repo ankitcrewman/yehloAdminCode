@@ -28,6 +28,8 @@ use App\Http\Controllers\PhonePeController;
 |
 */
 
+Route::webhooks('phonepe-webhook');
+
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('lang/{locale}', 'HomeController@lang')->name('lang');
 Route::get('terms-and-conditions', 'HomeController@terms_and_conditions')->name('terms-and-conditions');
@@ -143,9 +145,9 @@ if (!$is_published) {
             ///////
 
 
-            Route::POST('webhook', [PhonePeController::class, 'phonewebhook'])
-                ->name('webhook')
-                ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
+            // Route::POST('webhook', [PhonePeController::class, 'phonewebhook'])
+            //     ->name('webhook')
+            //     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
         });
 
         //SENANG-PAY
