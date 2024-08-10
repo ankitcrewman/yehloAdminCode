@@ -137,6 +137,98 @@ class WalletController extends Controller
 
     }
 
+    public function add_fund_sdk(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'amount' => 'required|numeric|min:1',
+            'payment_method' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => Helpers::error_processor($validator)], 403);
+        }
+
+
+
+        $digital_payment = Helpers::get_business_settings('digital_payment');
+        if($digital_payment['status'] == 0){
+            return response()->json(['errors' => ['message' => 'digital_payment_is_disable']], 403);
+        }
+
+
+
+        $customer = User::find($request->user()->id);  // issue with user Request type
+        // $customer = User::find($request->id);
+
+        $wallet = new WalletPayment();
+        $wallet->user_id = $customer->id;
+        $wallet->amount = $request->amount;
+        $wallet->payment_status = 'pending';
+        $wallet->payment_method = $request->payment_method;
+
+        $wallet->save();
+
+
+        $wallet_amount = $request->amount;
+
+        if (!isset($customer)) {
+            return response()->json(['errors' => ['message' => 'Customer not found']], 403);
+        }
+
+        if (!isset($wallet_amount)) {
+            return response()->json(['errors' => ['message' => 'Amount not found']], 403);
+        }
+
+        if (!$request->has('payment_method')) {
+            return response()->json(['errors' => ['message' => 'Payment not found']], 403);
+        }
+
+        $payer = new Payer(
+            $customer->f_name . ' ' . $customer->l_name ,
+            $customer->email,
+            $customer->phone,
+            ''
+        );
+
+        $currency=BusinessSetting::where(['key'=>'currency'])->first()->value;
+        $additional_data = [
+            'business_name' => BusinessSetting::where(['key'=>'business_name'])->first()?->value,
+            'business_logo' => asset('storage/app/public/business') . '/' .BusinessSetting::where(['key' => 'logo'])->first()?->value
+        ];
+
+        // $merchant_sdk_id ="MT".rand(1000,999999999999);
+        $merchant_sdk_id =$request->merchant_sdk_id;
+        $payment_info = new PaymentInfo(
+            success_hook: 'wallet_success',
+            failure_hook: 'wallet_failed',
+            currency_code: $currency,
+            payment_method: $request->payment_method,
+            payment_platform: $request->payment_platform,
+            payer_id: $customer->id,
+            receiver_id: '100',
+            additional_data: $additional_data,
+            payment_amount: $wallet_amount,
+            external_redirect_link: $request->has('callback')?$request['callback']:session('callback'),
+            attribute: 'wallet_payments',
+            attribute_id: $wallet->id,
+            merchant_id_sdk: $merchant_sdk_id
+        );
+
+        // dd($payment_info);
+        $receiver_info = new Receiver('receiver_name','example.png');
+        $redirect_link = Payment::generate_link_sdk($payer, $payment_info, $receiver_info);
+
+        // $data = [
+        //     'redirect_link' => $redirect_link,
+        // ];
+
+        if($redirect_link){
+            return response()->json(['merchant_id' => $merchant_sdk_id], 200);
+        }else{
+            return response()->json(false, 401);
+        }
+    }
+
     public function get_bonus()
     {
         $bonuses = WalletBonus::Active()->Running()->latest()->get();

@@ -4,6 +4,7 @@ use App\WebSockets\Handler\DMLocationSocketHandler;
 use Illuminate\Support\Facades\Route;
 use BeyondCode\LaravelWebSockets\Facades\WebSocketsRouter;
 use App\Http\Controllers\Api\V1\StoreReferralController;
+use App\Http\Controllers\Api\V1\Webhook;
 
 
 /*
@@ -17,6 +18,10 @@ use App\Http\Controllers\Api\V1\StoreReferralController;
 */
 
 Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function () {
+
+    Route::post('phn-webhook', [Webhook::class, 'handle']);
+
+    Route::post('add-fund-sdk', 'WalletController@add_fund_sdk');
 
     Route::post('referrals', 'StoreReferralController@create');
     Route::get('zone/list', 'ZoneController@get_zones');
@@ -328,6 +333,7 @@ Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function
                 Route::get('transactions', 'WalletController@transactions');
                 Route::get('bonuses', 'WalletController@get_bonus');
                 Route::post('add-fund', 'WalletController@add_fund');
+                Route::post('add-fund-sdk', 'WalletController@add_fund_sdk');
             });
 
             Route::get('visit-again', 'OrderController@order_again');
