@@ -76,6 +76,7 @@ class Kernel extends HttpKernel
         'actch' => ActivationCheckMiddleware::class,
         'localization' => \App\Http\Middleware\LocalizationMiddleware::class,
         'module-check' => \App\Http\Middleware\ModuleCheckMiddleware::class,
+
         'current-module' => \App\Http\Middleware\CurrentModule::class,
         'apiGuestCheck' => \App\Http\Middleware\APIGuestMiddleware::class,
     ];

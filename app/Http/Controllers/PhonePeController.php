@@ -91,7 +91,6 @@ class PhonePeController extends Controller
 
         $redirect_url = route('phonepe.confirm', ['encryptedData' => $encryptedData]);
 
-
         // Prepare payload for PhonePe API
         // $payload = [
         //     "merchantId" => $system_config->merchant_id,
@@ -106,9 +105,6 @@ class PhonePeController extends Controller
         //     "paymentInstrument" => ["type" => "PAY_PAGE"],
         // ];
 
-
-
-
         $payload = [
             "merchantId" => "PGTESTPAYUAT86",
             "merchantTransactionId" => "yehlo" . rand(1000, 99999999999),
@@ -122,15 +118,8 @@ class PhonePeController extends Controller
             "paymentInstrument" => ["type" => "PAY_PAGE"],
         ];
 
-
-
         $encodedPayload = base64_encode(json_encode($payload));
         $jsonData = json_encode(["request" => $encodedPayload]);
-
-        // dd($encodedPayload);
-
-        // echo $encodedPayload;
-        // exit();
 
         // $saltKey = $system_config->salt_key;
         $saltKey = "96434309-7796-489d-8924-ab56988a6076";
@@ -138,8 +127,7 @@ class PhonePeController extends Controller
         $salt_index = $system_config->salt_index;
         // Generate checksum
         $checksum = hash('sha256', $encodedPayload . "/pg/v1/pay" . $saltKey) . "###" . $salt_index;
-        // echo json_encode($checksum);
-        // exit();
+
         if ($checksum) {
             $headers = [
                 'Content-Type: application/json',
@@ -237,13 +225,10 @@ class PhonePeController extends Controller
                 ]
 
             ];
-            // dd($payerInformation);
-
 
             return view('phonepe-success', compact('payment_details'));
         } else {
-            // // HANDLE YOUR ERROR MESSAGE HERE
-            // return "cdkvjdkF";
+
         }
     }
 

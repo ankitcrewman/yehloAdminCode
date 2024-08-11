@@ -100,6 +100,11 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+        'webhook' => [
+            'driver' => 'single', // You can use other drivers depending on your needs
+            'path' => storage_path('logs/webhook.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
     ],
 
 ];
