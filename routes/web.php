@@ -72,6 +72,11 @@ Route::group(['prefix' => 'payment-mobile'], function () {
     Route::get('set-payment-method/{name}', 'PaymentController@set_payment_method')->name('set-payment-method');
 });
 
+Route::group(['prefix' => 'payment-mobile-sdk'], function () {
+    Route::get('/', 'PaymentController@payment_sdk')->name('payment-mobile-sdk');
+    Route::get('set-payment-method-sdk/{name}', 'PaymentController@set_payment_method_sdk')->name('set-payment-method-sdk');
+});
+
 Route::get('payment-success', 'PaymentController@success')->name('payment-success');
 Route::get('payment-fail', 'PaymentController@fail')->name('payment-fail');
 Route::get('payment-cancel', 'PaymentController@cancel')->name('payment-cancel');

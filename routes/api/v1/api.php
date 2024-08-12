@@ -20,8 +20,10 @@ use App\Http\Controllers\Api\V1\Webhook;
 Route::group(['namespace' => 'Api\V1', 'middleware' => 'localization'], function () {
 
     Route::post('phn-webhook', [Webhook::class, 'handle']);
+    Route::post('order-sdk',[Webhook::class, 'order_sdk']);
 
     Route::post('add-fund-sdk', 'WalletController@add_fund_sdk');
+
 
     Route::post('referrals', 'StoreReferralController@create');
     Route::get('zone/list', 'ZoneController@get_zones');
