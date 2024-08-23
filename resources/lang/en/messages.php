@@ -4879,4 +4879,5 @@
   'servicemen_type' => 'Servicemen type',
   'servicemen_image' => 'Servicemen image',
   'The status field is required.' => 'The status field is required.',
+  'phonepay' => 'Phonepay',
 );

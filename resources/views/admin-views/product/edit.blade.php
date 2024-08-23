@@ -75,6 +75,7 @@
                                     @endforeach
                                 </ul>
                             @endif
+
                             @if ($language)
                                 <div class="lang_form" id="default-form">
                                     <div class="form-group">
