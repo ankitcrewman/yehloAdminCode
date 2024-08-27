@@ -176,7 +176,6 @@ class PaymentController extends Controller
             $customer = User::find($request['customer_id']);
         }
 
-        //guest user check
         if ($order->is_guest) {
             $address = json_decode($order['delivery_address'], true);
             $customer = collect([

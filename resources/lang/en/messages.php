@@ -4879,4 +4879,8 @@
   'servicemen_type' => 'Servicemen type',
   'servicemen_image' => 'Servicemen image',
   'The status field is required.' => 'The status field is required.',
+  'phonepay' => 'Phonepay',
+  'order_already_assign_to_this_deliveryman' => 'Order already assign to this deliveryman',
+  'Service Stores' => 'Service Stores',
+  'razor pay' => 'Razor pay',
 );
