@@ -173,4 +173,11 @@ class ServicemanController extends Controller
 
         return redirect()->route('admin.service.list');
     }
+
+
+    public function preview(Request $request, int|string $id, string $tab='info')
+    {
+
+        return  view('admin-views.serviceman.view.info');
+    }
 }

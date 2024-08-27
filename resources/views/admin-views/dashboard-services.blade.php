@@ -8,7 +8,7 @@
     @endpush
 
 @section('content')
-   {{-- {{   dd(Config::get('module.current_module_id'))}} --}}
+    {{-- {{   dd(Config::get('module.current_module_type'))}} --}}
     <div class="content container-fluid">
         @if (auth('admin')->user()->role_id == 1)
             @php($mod = \App\Models\Module::find(Config::get('module.current_module_id')))
@@ -86,7 +86,16 @@
                             <div class="__dashboard-card-2">
                                 <img src="{{ asset('/public/assets/admin/img/dashboard/grocery/orders.svg') }}"
                                     alt="dashboard/grocery">
-                                <h6 class="name">{{ translate('messages.orders') }}</h6>
+                                <h6 class="name">
+
+                                    @if (Config::get('module.current_module_type') === 'services')
+                                        {{ translate('messages.Services') }}
+                                    @else
+                                        {{ translate('messages.orders') }}
+                                    @endif
+
+
+                                </h6>
                                 <h3 class="count">{{ $data['total_orders'] }}</h3>
                                 <div class="subtxt">{{ $data['new_orders'] }} {{ translate('newly added') }}</div>
                             </div>
@@ -95,7 +104,16 @@
                             <div class="__dashboard-card-2">
                                 <img src="{{ asset('/public/assets/admin/img/dashboard/grocery/stores.svg') }}"
                                     alt="dashboard/grocery">
-                                <h6 class="name">{{ translate('Grocery Stores') }}</h6>
+                                <h6 class="name">
+
+                                    @if (Config::get('module.current_module_type') === 'services')
+                                        {{ translate('Service Stores') }}
+                                    @else
+                                        {{ translate('Grocery Stores') }}
+                                    @endif
+
+
+                                </h6>
                                 <h3 class="count">{{ $data['total_stores'] }}</h3>
                                 <div class="subtxt">{{ $data['new_stores'] }} {{ translate('newly added') }}</div>
                             </div>
@@ -292,9 +310,7 @@
                                 {{ translate('User Statistics') }}
                             </h5>
                             <div id="stat_zone">
-
                                 @include('admin-views.partials._zone-change', ['data' => $data])
-
 
                             </div>
                             <select class="custom-select border-0 text-center w-auto user_overview_stats_update"

@@ -191,8 +191,14 @@
                             </td>
                             <td>
                                 <div class="btn--container justify-content-center">
-                                    <a class="btn action-btn btn--warning btn-outline-warning"
+                                    {{-- <a class="btn action-btn btn--warning btn-outline-warning"
                                             href="{{route('admin.users.delivery-man.preview',[$dm['id']])}}"
+                                            title="{{ translate('messages.view') }}"><i
+                                                class="tio-visible-outlined"></i>
+                                        </a> --}}
+
+                                        <a class="btn action-btn btn--warning btn-outline-warning"
+                                            href="{{route('admin.service.preview')}}"
                                             title="{{ translate('messages.view') }}"><i
                                                 class="tio-visible-outlined"></i>
                                         </a>
