@@ -26,7 +26,7 @@ class Webhook extends Controller
         $requestData = $request->all();
         $base64Response = $requestData['response'] ?? null;
 
-        // Create a new CallbackUrl instance and save the request data
+
         $callbackUrl = new CallbackUrl();
         $callbackUrl->payload = json_encode([
             'url' => $request->input('response'),
@@ -56,8 +56,6 @@ class Webhook extends Controller
                     if (isset($transactionRequest->success_hook) && function_exists($transactionRequest->success_hook)) {
                         call_user_func($transactionRequest->success_hook, $transactionRequest);
                         $transactionRequest->is_paid = 1;
-
-                        // Save the updated transaction request
                         $transactionRequest->save();
                         return response()->json(['message' => 'Webhook processed successfully'], 200);
                     }
@@ -74,7 +72,7 @@ class Webhook extends Controller
                 return response()->json(['message' => 'Transaction request not found'], 404);
             }
         } else {
-            // Log or handle the case where merchantTransactionId is missing
+
             Log::warning('Missing merchantTransactionId in decoded response');
             return response()->json(['message' => 'Invalid webhook payload'], 400);
         }
