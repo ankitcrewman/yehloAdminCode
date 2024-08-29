@@ -4883,4 +4883,8 @@
   'order_already_assign_to_this_deliveryman' => 'Order already assign to this deliveryman',
   'Service Stores' => 'Service Stores',
   'razor pay' => 'Razor pay',
+  'Registration_Information' => 'Registration Information',
+  'serviceman_preview' => 'Serviceman preview',
+  'Service Man Preview' => 'Service Man Preview',
+  'service_man_preview' => 'Service man preview',
 );

@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', translate('Delivery Man Preview'))
+@section('title', translate('Service Man Preview'))
 
 @section('content')
     <div class="content container-fluid pb-0">
@@ -14,14 +14,31 @@
                     <div>
                         <h1 class="page-header-title text-break mb-1">
                             <span>
-                                {{ translate('messages.deliveryman_preview') }}
+                                {{-- {{ translate('messages.service_man_preview') }}
                                 @if ($deliveryMan->application_status == 'approved')
-                                    <span class="badge badge-soft-dark ml-2" id="itemCount">{{ $reviews->total() }}</span>
+                                    <span class="badge badge-soft-dark ml-2" id="itemCount">
+                                        {{ $reviews->total() }}
+                                    </span>
+                                @endif --}}
+                                {{ translate('messages.service_man_preview') }}
+
+                                @if ($deliveryMan->application_status == 'approved')
+                                    <!-- Display the number of reviews -->
+                                    <span class="badge badge-soft-dark ml-2" id="itemCount">
+                                        {{ $reviews->count() }}
+                                    </span>
+
+                                    <!-- Display the average rating -->
+                                    {{-- <span class="ml-2">
+                                            Average Rating: {{ number_format($averageRating, 1) }} / 5
+                                        </span> --}}
                                 @endif
+
                             </span>
                         </h1>
 
-                        <p class="mb-0 fs-12">{{ translate('messages.Requested_to_join_at') }} {{ \App\CentralLogics\Helpers::time_date_format($deliveryMan->created_at) }}
+                        <p class="mb-0 fs-12">{{ translate('messages.Requested_to_join_at') }}
+                            {{ \App\CentralLogics\Helpers::time_date_format($deliveryMan->created_at) }}
                         </p>
                     </div>
                 </div>
@@ -55,7 +72,7 @@
             </div>
 
             <div class="">
-                @include('admin-views.delivery-man.partials._tab_menu')
+                @include('admin-views.serviceman.partials._tab_menu')
             </div>
         </div>
         <!-- End Page Header -->
@@ -71,7 +88,7 @@
                         </div>
                         <div>
                             <h2 class="title">
-                                {{count($deliveryMan['order_transaction'])}}
+                                {{ count($deliveryMan['order_transaction']) }}
                             </h2>
                             <div class="subtitle">
                                 {{ translate('messages.total_delivered_orders') }}
@@ -131,8 +148,7 @@
                             <div class="color-card color-4">
                                 <div class="img-box">
                                     <img class="resturant-icon w--30"
-                                        src="{{ asset('/public/assets/admin/img/icons/group.png') }}"
-                                        alt="transactions">
+                                        src="{{ asset('/public/assets/admin/img/icons/group.png') }}" alt="transactions">
                                 </div>
                                 <div>
                                     <h2 class="title">
@@ -167,8 +183,7 @@
                             <div class="color-card color-4">
                                 <div class="img-box">
                                     <img class="resturant-icon w--30"
-                                        src="{{ asset('/public/assets/admin/img/icons/group.png') }}"
-                                        alt="transactions">
+                                        src="{{ asset('/public/assets/admin/img/icons/group.png') }}" alt="transactions">
                                 </div>
                                 <div>
                                     <h2 class="title">
@@ -229,34 +244,34 @@
         <div class="card my-3">
             <div class="card-body pb-5">
                 @if ($deliveryMan->application_status == 'approved')
-                <div
-                    class="d-flex mb-3 justify-content-between align-items-center gap-2 flex-wrap position-relative z-index-2">
-                    <h4 class="card-title align-items-center flex-wrap gap-2">
-                        {{ $deliveryMan['f_name'] . ' ' . $deliveryMan['l_name'] }}
-                            {{ $deliveryMan?->zone?->name  ??  translate('messages.zone_deleted')}}
-                        @if ($deliveryMan->application_status == 'approved')
-                            @if ($deliveryMan['status'])
-                                @if ($deliveryMan['active'])
-                                    <label
-                                        class=" mb-0 badge badge-soft-primary">{{ translate('messages.online') }}</label>
+                    <div
+                        class="d-flex mb-3 justify-content-between align-items-center gap-2 flex-wrap position-relative z-index-2">
+                        <h4 class="card-title align-items-center flex-wrap gap-2">
+                            {{ $deliveryMan['f_name'] . ' ' . $deliveryMan['l_name'] }}
+                            {{ $deliveryMan?->zone?->name ?? translate('messages.zone_deleted') }}
+                            @if ($deliveryMan->application_status == 'approved')
+                                @if ($deliveryMan['status'])
+                                    @if ($deliveryMan['active'])
+                                        <label
+                                            class=" mb-0 badge badge-soft-primary">{{ translate('messages.online') }}</label>
+                                    @else
+                                        <label
+                                            class=" mb-0 badge badge-soft-danger">{{ translate('messages.offline') }}</label>
+                                    @endif
                                 @else
-                                    <label
-                                        class=" mb-0 badge badge-soft-danger">{{ translate('messages.offline') }}</label>
+                                    <label class=" mb-0 badge badge-danger">{{ translate('messages.suspended') }}</label>
                                 @endif
                             @else
-                                <label class=" mb-0 badge badge-danger">{{ translate('messages.suspended') }}</label>
+                                <label
+                                    class=" mb-0 badge badge-soft-{{ $deliveryMan->application_status == 'pending' ? 'info' : 'danger' }}">{{ translate('messages.' . $deliveryMan->application_status) }}</label>
                             @endif
-                        @else
-                            <label
-                                class=" mb-0 badge badge-soft-{{ $deliveryMan->application_status == 'pending' ? 'info' : 'danger' }}">{{ translate('messages.' . $deliveryMan->application_status) }}</label>
-                        @endif
-                    </h4>
+                        </h4>
 
-                    <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap gap-2">
 
-                            <a  href="{{route('admin.users.delivery-man.edit',[$deliveryMan->id])}}"
+                            <a href="{{ route('admin.users.delivery-man.edit', [$deliveryMan->id]) }}"
                                 class="btn py-2 btn-primary align-items-center d-flex">
-                                {{translate('Edit Information')}}
+                                {{ translate('Edit Information') }}
                             </a>
 
                             <a href="javascript:"
@@ -265,30 +280,31 @@
                                 data-message="{{ $deliveryMan->status ? translate('messages.you_want_to_suspend_this_deliveryman') : translate('messages.you_want_to_unsuspend_this_deliveryman') }}">
                                 {{ $deliveryMan->status ? translate('messages.suspend_this_delivery_man') : translate('messages.unsuspend_this_delivery_man') }}
                             </a>
-                        <div class="hs-unfold">
-                            <div class="dropdown">
-                                <button class="btn btn--primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    {{ translate('messages.type') }}
-                                    ({{ $deliveryMan->earning ? translate('messages.freelancer') : translate('messages.salary_based') }})
-                                </button>
-                                <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
-                                    <a class="dropdown-item {{ $deliveryMan->earning ? 'active' : '' }} request-alert"
-                                        data-url="{{ route('admin.users.delivery-man.earning', [$deliveryMan['id'], 1]) }}"
-                                        data-message="{{ translate('messages.want_to_enable_earnings') }}"
-                                        href="javascript:">{{ translate('messages.freelancer') }}</a>
-                                    <a class="dropdown-item {{ $deliveryMan->earning ? '' : 'active' }} request-alert"
-                                        data-url="{{ route('admin.users.delivery-man.earning', [$deliveryMan['id'], 0]) }}"
-                                        data-message="{{ translate('messages.want_to_disable_earnings') }}"
-                                        href="javascript:">{{ translate('messages.salary_based') }}</a>
+                            <div class="hs-unfold">
+                                <div class="dropdown">
+                                    <button class="btn btn--primary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{ translate('messages.type') }}
+                                        ({{ $deliveryMan->earning ? translate('messages.freelancer') : translate('messages.salary_based') }})
+                                    </button>
+                                    <div class="dropdown-menu text-capitalize" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item {{ $deliveryMan->earning ? 'active' : '' }} request-alert"
+                                            data-url="{{ route('admin.users.delivery-man.earning', [$deliveryMan['id'], 1]) }}"
+                                            data-message="{{ translate('messages.want_to_enable_earnings') }}"
+                                            href="javascript:">{{ translate('messages.freelancer') }}</a>
+                                        <a class="dropdown-item {{ $deliveryMan->earning ? '' : 'active' }} request-alert"
+                                            data-url="{{ route('admin.users.delivery-man.earning', [$deliveryMan['id'], 0]) }}"
+                                            data-message="{{ translate('messages.want_to_disable_earnings') }}"
+                                            href="javascript:">{{ translate('messages.salary_based') }}</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
-
-
-                </div>
-@endif
+                @endif
                 <div class="d-flex flex-column flex-md-row align-items-center gap-3 border rounded p-3">
                     <div class="d-flex gap-3">
                         <img class="rounded" data-onerror-image="{{ asset('public/assets/admin/img/160x160/img1.jpg') }}"
@@ -299,7 +315,8 @@
                     <div class="flex-grow-1">
                         <div class="row g-2">
                             <div class="col-12">
-                                <h4 title="{{$deliveryMan['f_name'] . ' ' . $deliveryMan['l_name']}}" class="d-flex justify-content-center justify-content-md-start mb-0">
+                                <h4 title="{{ $deliveryMan['f_name'] . ' ' . $deliveryMan['l_name'] }}"
+                                    class="d-flex justify-content-center justify-content-md-start mb-0">
                                     {{ $deliveryMan['f_name'] . ' ' . $deliveryMan['l_name'] }}</h4>
                                 <div class="fs-12 text-muted d-flex justify-content-center justify-content-md-start">
                                     @if ($deliveryMan->application_status == 'approved')
@@ -341,7 +358,9 @@
                                         height="35" alt="">
                                     <div class="">
                                         <h6 class="mb-1">{{ translate('messages.Zone') }}</h6>
-                                        <p class="mb-0 font-weight-normal">{{ isset($deliveryMan->zone)?$deliveryMan->zone->name:translate('zone_deleted') }}</p>
+                                        <p class="mb-0 font-weight-normal">
+                                            {{ isset($deliveryMan->zone) ? $deliveryMan->zone->name : translate('zone_deleted') }}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -351,8 +370,8 @@
                         @php($total = $deliveryMan->reviews->count())
 
 
-                            <div class="d-flex flex-column flex-lg-row gap-3 flex-grow-1 border-lg-left">
-                                @if ($total > 0)
+                        <div class="d-flex flex-column flex-lg-row gap-3 flex-grow-1 border-lg-left">
+                            @if ($total > 0)
                                 <div class="d-flex flex-column align-items-center justify-content-center px-4">
                                     <img class="" width="80" height="80"
                                         src="{{ asset('public/assets/admin/img/icons/rating-stars.png') }}"
@@ -444,32 +463,29 @@
                                     </li>
                                     <!-- End Review Ratings -->
                                 </ul>
-
-                                @else
-
+                            @else
                                 <div class="d-flex flex-column align-items-center justify-content-center px-4 m-auto">
-                                    <img class=" w-100"
-                                        src="{{ asset('public/assets/admin/img/icons/no_rating.png') }}"
+                                    <img class=" w-100" src="{{ asset('public/assets/admin/img/icons/no_rating.png') }}"
                                         alt="">
                                     <p class="mb-0 font-weight-normal">
                                         {{ translate('messages.no_review/rating_given_yet') }}
                                     </p>
                                 </div>
-                                @endif
-                            </div>
+                            @endif
+                        </div>
 
 
                     @endif
                 </div>
 
                 <div class="d-flex gap-2 align-items-center mt-5">
-                    <img src="{{ asset('public/assets/admin/img/entypo_image-inverted.png') }}" width="20" height="20"
-                        alt="">
-                        @if ($deliveryMan->application_status == 'approved')
+                    <img src="{{ asset('public/assets/admin/img/entypo_image-inverted.png') }}" width="20"
+                        height="20" alt="">
+                    @if ($deliveryMan->application_status == 'approved')
                         <h5 class="mb-0">{{ translate('Identity_Documents') }}</h5>
-                        @else
+                    @else
                         <h5 class="mb-0">{{ translate('Registration_Information') }}</h5>
-                        @endif
+                    @endif
 
 
                 </div>
@@ -527,7 +543,7 @@
                             <h5 class="mb-3 mt-5">{{ translate('messages.Identity_Image') }}</h5>
                         @endif
                         <div class="d-flex flex-wrap gap-3">
-                            @foreach (json_decode($deliveryMan->identity_image) as $key => $img)
+                            @foreach (json_decode($deliveryMan->identification_image) as $key => $img)
                                 <button class="btn" data-toggle="modal" data-target="#image-{{ $key }}">
                                     <div class="gallary-card">
                                         <img class="rounded mx-h150 mx-w-100"
@@ -542,7 +558,8 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h4 class="modal-title" id="myModlabel">
-                                                    {{ translate('messages.Identity_Image') }}</h4>
+                                                    {{ translate('messages.Identity_Image') }}
+                                                </h4>
                                                 <button type="button" class="close" data-dismiss="modal"><span
                                                         aria-hidden="true">&times;</span><span
                                                         class="sr-only">{{ translate('messages.Close') }}</span></button>
@@ -572,57 +589,64 @@
 
 
     @if ($deliveryMan->application_status == 'approved')
-    <div class="content container-fluid pt-0">
-        <div class="card">
-            <!-- Header -->
-            <div class="card-header py-2 border-0">
-                <h5 class="card-header-title">
-                    {{ translate('messages.review_list') }}
-                    <span class="badge badge-soft-dark ml-2" id="itemCount">
-                            {{$reviews->total()}}
+        <div class="content container-fluid pt-0">
+            <div class="card">
+                <!-- Header -->
+                <div class="card-header py-2 border-0">
+                    <h5 class="card-header-title">
+                        {{ translate('messages.review_list') }}
+                        <span class="badge badge-soft-dark ml-2" id="itemCount">
+
+                            {{-- {{ $reviews->total() }} --}}
+                            <span class="badge badge-soft-dark ml-2" id="itemCount">
+                                {{ $reviews->count() }} <!-- Correctly display the number of reviews -->
+                            </span>
+
+                            <!-- Display the average rating -->
+
                         </span>
-                </h5>
-                <div class="search--button-wrapper justify-content-end">
-                    <!-- Unfold -->
-                    <div class="hs-unfold mr-2">
-                        <a class="js-hs-unfold-invoker btn btn-sm btn-white dropdown-toggle min-height-40"
-                            href="javascript:;"
-                            data-hs-unfold-options='{
+                    </h5>
+                    <div class="search--button-wrapper justify-content-end">
+                        <!-- Unfold -->
+                        <div class="hs-unfold mr-2">
+                            <a class="js-hs-unfold-invoker btn btn-sm btn-white dropdown-toggle min-height-40"
+                                href="javascript:;"
+                                data-hs-unfold-options='{
                                     "target": "#usersExportDropdown",
                                     "type": "css-animation"
                                 }'>
-                            <i class="tio-download-to mr-1"></i> {{ translate('messages.export') }}
-                        </a>
+                                <i class="tio-download-to mr-1"></i> {{ translate('messages.export') }}
+                            </a>
 
-                        <div id="usersExportDropdown"
-                            class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
-                            <span class="dropdown-header">{{ translate('messages.download_options') }}</span>
-                            <a id="export-excel" class="dropdown-item"
-                                href="{{ route('admin.users.delivery-man.review-export', ['type' => 'excel', 'id' => $deliveryMan->id, request()->getQueryString()]) }}">
-                                <img class="avatar avatar-xss avatar-4by3 mr-2"
-                                    src="{{ asset('public/assets/admin') }}/svg/components/excel.svg"
-                                    alt="Image Description">
-                                {{ translate('messages.excel') }}
-                            </a>
-                            <a id="export-csv" class="dropdown-item"
-                                href="{{ route('admin.users.delivery-man.review-export', ['type' => 'csv', 'id' => $deliveryMan->id, request()->getQueryString()]) }}">
-                                <img class="avatar avatar-xss avatar-4by3 mr-2"
-                                    src="{{ asset('public/assets/admin') }}/svg/components/placeholder-csv-format.svg"
-                                    alt="Image Description">
-                                .{{ translate('messages.csv') }}
-                            </a>
+                            <div id="usersExportDropdown"
+                                class="hs-unfold-content dropdown-unfold dropdown-menu dropdown-menu-sm-right">
+                                <span class="dropdown-header">{{ translate('messages.download_options') }}</span>
+                                <a id="export-excel" class="dropdown-item"
+                                    href="{{ route('admin.users.delivery-man.review-export', ['type' => 'excel', 'id' => $deliveryMan->id, request()->getQueryString()]) }}">
+                                    <img class="avatar avatar-xss avatar-4by3 mr-2"
+                                        src="{{ asset('public/assets/admin') }}/svg/components/excel.svg"
+                                        alt="Image Description">
+                                    {{ translate('messages.excel') }}
+                                </a>
+                                <a id="export-csv" class="dropdown-item"
+                                    href="{{ route('admin.users.delivery-man.review-export', ['type' => 'csv', 'id' => $deliveryMan->id, request()->getQueryString()]) }}">
+                                    <img class="avatar avatar-xss avatar-4by3 mr-2"
+                                        src="{{ asset('public/assets/admin') }}/svg/components/placeholder-csv-format.svg"
+                                        alt="Image Description">
+                                    .{{ translate('messages.csv') }}
+                                </a>
+                            </div>
                         </div>
+                        <!-- End Unfold -->
                     </div>
-                    <!-- End Unfold -->
                 </div>
-            </div>
-            <!-- End Header -->
+                <!-- End Header -->
 
-            <!-- New Table -->
-            <div class="card-body p-0">
-                <div class="table-responsive datatable-custom">
-                    <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
-                        data-hs-datatables-options='{
+                <!-- New Table -->
+                <div class="card-body p-0">
+                    <div class="table-responsive datatable-custom">
+                        <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
+                            data-hs-datatables-options='{
                         "columnDefs": [{
                             "targets": [0, 3, 6],
                             "orderable": false
@@ -638,173 +662,173 @@
                         "isShowPaging": false,
                         "pagination": "datatablePagination"
                     }'>
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="border-0">{{ translate('messages.SL') }}</th>
-                                <th class="border-0">{{ translate('messages.order_ID') }}</th>
-                                <th class="border-0">{{ translate('messages.customer') }}</th>
-                                <th class="border-0">{{ translate('messages.Rating') }}</th>
-                                <th class="border-0">{{ translate('messages.review') }}</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            @foreach ($reviews as $k => $review)
+                            <thead class="thead-light">
                                 <tr>
-                                    <td scope="row">{{$k+$reviews->firstItem()}}</td>
-                                    <td>
-                                        <a
-                                            href="{{ route('admin.order.all-details', ['id' => $review->order_id]) }}">{{ $review->order_id }}</a>
-                                    </td>
-                                    <td>
-                                        @if ($review->customer)
-                                            <a class="d-flex align-items-center"
-                                                href="{{ route('admin.customer.view', [$review['user_id']]) }}">
-                                                <span class="d-block text-dark">
-                                                    {{ $review->customer ? $review->customer['f_name'] . ' ' . $review->customer['l_name'] : '' }}
-                                                </span>
-                                            </a>
-                                        @else
-                                            {{ translate('messages.customer_not_found') }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="">
-                                            <div class="d-flex">
-                                                <label
-                                                    class="badge badge-soft-warning mb-0 d-flex align-items-center gap-1 justify-content-center">
-                                                    <span class="d-inline-block mt-half">{{ $review->rating }}</span>
-                                                    <i class="tio-star"></i>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-wrap">
-                                            {{ $review['comment'] }}
-                                        </div>
-                                    </td>
+                                    <th class="border-0">{{ translate('messages.SL') }}</th>
+                                    <th class="border-0">{{ translate('messages.order_ID') }}</th>
+                                    <th class="border-0">{{ translate('messages.customer') }}</th>
+                                    <th class="border-0">{{ translate('messages.Rating') }}</th>
+                                    <th class="border-0">{{ translate('messages.review') }}</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- End Table -->
-                @if (count($reviews) !== 0)
-                    <hr>
-                @endif
-                <div class="page-area">
-                    {!! $reviews->links() !!}
-                </div>
-                @if (count($reviews) === 0)
-                    <div class="empty--data">
-                        <img src="{{ asset('/public/assets/admin/svg/illustrations/sorry.svg') }}" alt="public">
-                        <h5>
-                            {{ translate('no_data_found') }}
-                        </h5>
-                    </div>
-                @endif
-            </div>
+                            </thead>
 
-            <!-- previous Table -->
-            <div class="card-body p-0 d-none">
-                <div class="table-responsive datatable-custom">
-                    <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
-                        data-hs-datatables-options='{
-                        "columnDefs": [{
-                            "targets": [0, 3, 6],
-                            "orderable": false
-                        }],
-                        "order": [],
-                        "info": {
-                        "totalQty": "#datatableWithPaginationInfoTotalQty"
-                        },
-                        "search": "#datatableSearch",
-                        "entries": "#datatableEntries",
-                        "pageLength": 25,
-                        "isResponsive": false,
-                        "isShowPaging": false,
-                        "pagination": "datatablePagination"
-                    }'>
-                        <thead class="thead-light">
-                            <tr>
-                                <th class="border-0">{{ translate('messages.reviewer') }}</th>
-                                <th class="border-0">{{ translate('messages.order_id') }}</th>
-                                <th class="border-0">{{ translate('messages.reviews') }}</th>
-                                <th class="border-0">{{ translate('messages.date') }}</th>
-                            </tr>
-                        </thead>
+                            <tbody>
 
-                        <tbody>
-
-                            @foreach ($reviews as $review)
-                                <tr>
-                                    <td>
-                                        @if ($review->customer)
-                                            <a class="d-flex align-items-center"
-                                                href="{{ route('admin.customer.view', [$review['user_id']]) }}">
-                                                <div class="avatar avatar-circle">
-                                                    <img class="avatar-img" width="75" height="75"
-                                                        src="{{ asset('storage/app/public/profile/') }}/{{ $review->customer ? $review->customer->image : '' }}"
-                                                        alt="Image Description">
+                                @foreach ($reviews as $k => $review)
+                                    <tr>
+                                        <td scope="row">{{ $k + $reviews->firstItem() }}</td>
+                                        <td>
+                                            <a
+                                                href="{{ route('admin.order.all-details', ['id' => $review->order_id]) }}">{{ $review->order_id }}</a>
+                                        </td>
+                                        <td>
+                                            @if ($review->customer)
+                                                <a class="d-flex align-items-center"
+                                                    href="{{ route('admin.customer.view', [$review['user_id']]) }}">
+                                                    <span class="d-block text-dark">
+                                                        {{ $review->customer ? $review->customer['f_name'] . ' ' . $review->customer['l_name'] : '' }}
+                                                    </span>
+                                                </a>
+                                            @else
+                                                {{ translate('messages.customer_not_found') }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="">
+                                                <div class="d-flex">
+                                                    <label
+                                                        class="badge badge-soft-warning mb-0 d-flex align-items-center gap-1 justify-content-center">
+                                                        <span class="d-inline-block mt-half">{{ $review->rating }}</span>
+                                                        <i class="tio-star"></i>
+                                                    </label>
                                                 </div>
-                                                <div class="ml-3">
-                                                    <span
-                                                        class="d-block h5 text-hover-primary mb-0">{{ $review->customer ? $review->customer['f_name'] . ' ' . $review->customer['l_name'] : '' }}
-                                                        <i class="tio-verified text-primary" data-toggle="tooltip"
-                                                            data-placement="top" title="Verified Customer"></i></span>
-                                                    <span
-                                                        class="d-block font-size-sm text-body">{{ $review->customer ? $review->customer->email : '' }}</span>
-                                                </div>
-                                            </a>
-                                        @else
-                                            {{ translate('messages.customer_not_found') }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a
-                                            href="{{ route('admin.order.all-details', ['id' => $review->order_id]) }}">{{ $review->order_id }}</a>
-                                    </td>
-                                    <td>
-                                        <div class="text-wrap w-18rem">
-                                            <div class="d-flex">
-                                                <label class="badge badge-soft-info">
-                                                    {{ $review->rating }} <i class="tio-star"></i>
-                                                </label>
                                             </div>
-
-                                            <p>
+                                        </td>
+                                        <td>
+                                            <div class="text-wrap">
                                                 {{ $review['comment'] }}
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        {{ date('d M Y ' . config('timeformat'), strtotime($review['created_at'])) }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- End Table -->
-                @if (count($reviews) !== 0)
-                    <hr>
-                @endif
-                <div class="page-area">
-                    {!! $reviews->links() !!}
-                </div>
-                @if (count($reviews) === 0)
-                    <div class="empty--data">
-                        <img src="{{ asset('/public/assets/admin/svg/illustrations/sorry.svg') }}" alt="public">
-                        <h5>
-                            {{ translate('no_data_found') }}
-                        </h5>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
-                @endif
+                    <!-- End Table -->
+                    @if (count($reviews) !== 0)
+                        <hr>
+                    @endif
+                    <div class="page-area">
+                        {{-- {!! $reviews->links() !!} --}}
+                    </div>
+                    @if (count($reviews) === 0)
+                        <div class="empty--data">
+                            <img src="{{ asset('/public/assets/admin/svg/illustrations/sorry.svg') }}" alt="public">
+                            <h5>
+                                {{ translate('no_data_found') }}
+                            </h5>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- previous Table -->
+                <div class="card-body p-0 d-none">
+                    <div class="table-responsive datatable-custom">
+                        <table id="datatable" class="table table-borderless table-thead-bordered table-nowrap card-table"
+                            data-hs-datatables-options='{
+                        "columnDefs": [{
+                            "targets": [0, 3, 6],
+                            "orderable": false
+                        }],
+                        "order": [],
+                        "info": {
+                        "totalQty": "#datatableWithPaginationInfoTotalQty"
+                        },
+                        "search": "#datatableSearch",
+                        "entries": "#datatableEntries",
+                        "pageLength": 25,
+                        "isResponsive": false,
+                        "isShowPaging": false,
+                        "pagination": "datatablePagination"
+                    }'>
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="border-0">{{ translate('messages.reviewer') }}</th>
+                                    <th class="border-0">{{ translate('messages.order_id') }}</th>
+                                    <th class="border-0">{{ translate('messages.reviews') }}</th>
+                                    <th class="border-0">{{ translate('messages.date') }}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach ($reviews as $review)
+                                    <tr>
+                                        <td>
+                                            @if ($review->customer)
+                                                <a class="d-flex align-items-center"
+                                                    href="{{ route('admin.customer.view', [$review['user_id']]) }}">
+                                                    <div class="avatar avatar-circle">
+                                                        <img class="avatar-img" width="75" height="75"
+                                                            src="{{ asset('storage/app/public/profile/') }}/{{ $review->customer ? $review->customer->image : '' }}"
+                                                            alt="Image Description">
+                                                    </div>
+                                                    <div class="ml-3">
+                                                        <span
+                                                            class="d-block h5 text-hover-primary mb-0">{{ $review->customer ? $review->customer['f_name'] . ' ' . $review->customer['l_name'] : '' }}
+                                                            <i class="tio-verified text-primary" data-toggle="tooltip"
+                                                                data-placement="top" title="Verified Customer"></i></span>
+                                                        <span
+                                                            class="d-block font-size-sm text-body">{{ $review->customer ? $review->customer->email : '' }}</span>
+                                                    </div>
+                                                </a>
+                                            @else
+                                                {{ translate('messages.customer_not_found') }}
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <a
+                                                href="{{ route('admin.order.all-details', ['id' => $review->order_id]) }}">{{ $review->order_id }}</a>
+                                        </td>
+                                        <td>
+                                            <div class="text-wrap w-18rem">
+                                                <div class="d-flex">
+                                                    <label class="badge badge-soft-info">
+                                                        {{ $review->rating }} <i class="tio-star"></i>
+                                                    </label>
+                                                </div>
+
+                                                <p>
+                                                    {{ $review['comment'] }}
+                                                </p>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {{ date('d M Y ' . config('timeformat'), strtotime($review['created_at'])) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- End Table -->
+                    @if (count($reviews) !== 0)
+                        <hr>
+                    @endif
+                    <div class="page-area">
+                        {{-- {!! $reviews->links() !!} --}}
+                    </div>
+                    @if (count($reviews) === 0)
+                        <div class="empty--data">
+                            <img src="{{ asset('/public/assets/admin/svg/illustrations/sorry.svg') }}" alt="public">
+                            <h5>
+                                {{ translate('no_data_found') }}
+                            </h5>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
     </div>

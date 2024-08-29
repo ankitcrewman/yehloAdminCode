@@ -198,7 +198,7 @@
                                         </a> --}}
 
                                         <a class="btn action-btn btn--warning btn-outline-warning"
-                                            href="{{route('admin.service.preview')}}"
+                                            href="{{route('admin.service.preview', [$dm['id']])}}"
                                             title="{{ translate('messages.view') }}"><i
                                                 class="tio-visible-outlined"></i>
                                         </a>

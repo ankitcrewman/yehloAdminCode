@@ -177,7 +177,29 @@ class ServicemanController extends Controller
 
     public function preview(Request $request, int|string $id, string $tab='info')
     {
+        $deliveryMan = Serviceman::find($id);
 
-        return  view('admin-views.serviceman.view.info');
+        // Fetch reviews and calculate average rating
+        $reviews = $deliveryMan->reviews;
+        $averageRating = $reviews->avg('rating');
+
+        if($tab === "info"){
+
+        }
+        elseif($tab === "transaction"){
+
+        }
+        elseif ($tab === "order_list"){
+
+        }elseif($tab === "conversation"){
+
+        }
+        elseif($tab === "disbursement"){
+
+        }
+
+        return view('admin-views.serviceman.view.info', compact('deliveryMan', 'reviews', 'averageRating'));
     }
+
+
 }
