@@ -1163,13 +1163,14 @@
                         <div class="card-body">
 
 
-
                             @if($order?->offline_payments  && !in_array($order->order_status, ['canceled']) )
+
                                 <div class="card border-info text-center mb-2">
                                     <div class="card-body">
                                         <h2>
                                             {{ $order?->offline_payments->status == 'verified'?translate('Payment_Verified'):translate('Payment_Verification') }}
                                         </h2>
+
                                         @if ($order?->offline_payments->status == 'pending')
                                             <p class="text-danger"> {{ translate('Please_Verify_the_payment_before_confirm_order.') }}</p>
                                             <div class="btn--container justify-content-center">
@@ -1246,18 +1247,26 @@
                                     </div>
                                 </div>
                             @endif
-                                @if (!in_array($order->order_status, [ 'refunded','delivered', 'canceled']) &&  ( !$order->delivery_man && $order['order_type'] != 'take_away' && (($order->store && !$order?->store?->self_delivery_system) || $parcel_order)))
-                                    <div class="w-100 text-center mt-3">
+                                     {{-- @if (!in_array($order->order_status, [ 'refunded','delivered', 'canceled']) &&  ( !$order->delivery_man && $order['order_type'] != 'take_away' && (($order->store && !$order?->store?->self_delivery_system) || $parcel_order)))
+
+                                <div class="w-100 text-center mt-3">
                                         <button type="button" class="btn btn--primary w-100" data-toggle="modal"
                                             data-target="#myModal" data-lat='21.03' data-lng='105.85'>
                                             {{ translate('messages.assign_delivery_mam_manually') }}
                                         </button>
                                     </div>
-                                @endif
+                                @endif --}}
+                                <div class="w-100 text-center mt-3">
+                                    <button type="button" class="btn btn--primary w-100" data-toggle="modal"
+                                        data-target="#myModal" data-lat='21.03' data-lng='105.85'>
+                                        {{ translate('messages.assign_delivery_mam_manually') }}
+                                    </button>
+                                </div>
                             @endif
                         </div>
                     </div>
                 @endif
+                {{-- {{ dd($order->delivery_man ) }} --}}
                 @if ($parcel_order || ($order['order_type'] != 'take_away' && $order->store ))
                     @if ($order->delivery_man)
                         <div class="card mt-2">
@@ -1842,6 +1851,7 @@
                     <div class="row">
                         <div class="col-md-5 my-2">
                             <ul class="list-group overflow-auto initial--23">
+
                                 @foreach ($deliveryMen as $dm)
                                     <li class="list-group-item">
                                         <span class="dm_list" role='button' data-id="{{ $dm['id'] }}">
