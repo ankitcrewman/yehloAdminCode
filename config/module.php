@@ -106,10 +106,10 @@ return [
     ],
 
     'services'=>[
-        'order_status'=>['accepted'=>false],
-        'order_place_to_schedule_interval'=>false,
+        'booking_status'=>['accepted'=>false],
+        'booking_place_to_schedule_interval'=>false,
         'add_on'=>false,
-        'order_attachment'=>false,
+        'booking_attachment'=>false,
         'always_open'=>true,
         'all_zone_service'=>false,
         'item_available_time'=>false,
