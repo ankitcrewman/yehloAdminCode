@@ -336,6 +336,11 @@ class ConfigController extends Controller
 
         $serive_module_type = config('module.module_type');
 
+        $service_module_type = config('module.module_type');
+
+        $module_config = [
+            'module_type' => [$service_module_type[5]] // Fetching the "services" module (6th element)
+        ];
 
 
 
@@ -415,7 +420,7 @@ class ConfigController extends Controller
             'refund_active_status' => (bool)$settings['refund_active_status'],
             'schedule_order_slot_duration' => (int)$settings['schedule_order_slot_duration'],
             'digit_after_decimal_point' => (int)config('round_up_to_digit'),
-            'module_config' => $serive_module_type[5],
+            'module_config' => $module_config,
 
             'module' => $module,
             'parcel_per_km_shipping_charge' => (float)$settings['parcel_per_km_shipping_charge'],

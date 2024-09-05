@@ -195,9 +195,22 @@ class ServicemanController extends Controller
         } elseif ($tab === "conversation") {
 
             return view('admin-views.serviceman.view.conversations');
-        } elseif ($tab === "disbursement") {
+        } else if ($tab == 'disbursement') {
+            $key = explode(' ', $request['search']);
+            $disbursements=DisbursementDetails::where('delivery_man_id', $deliveryMan->id)
+                ->when(isset($key), function ($q) use ($key){
+                    $q->where(function ($q) use ($key) {
+                        foreach ($key as $value) {
+                            $q->orWhere('disbursement_id', 'like', "%{$value}%")
+                                ->orWhere('status', 'like', "%{$value}%");
+                        }
+                    });
+                })
+                ->latest()->paginate(config('default_pagination'));
 
-            return view('admin-views.serviceman.view.disbursement');
+                return view('admin-views.serviceman.view.disbursement',compact('deliveryMan','disbursements'));
+            // return view('admin-views.delivery-man.view.disbursement', compact('deliveryMan','disbursements'));
         }
+
     }
 }
