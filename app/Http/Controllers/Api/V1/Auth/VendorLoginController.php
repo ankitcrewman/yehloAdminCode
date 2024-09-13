@@ -435,8 +435,6 @@ class VendorLoginController extends Controller
         $data = [
             'redirect_link' => $redirect_link,
         ];
-
-
         return response()->json($data, 200);
     }
 }

@@ -19,7 +19,7 @@ Route::group(['namespace' => 'Admin', 'as' => 'admin.'], function () {
             Route::delete('/service-man/sm-del/{id}', 'ServicemanController@delete')->name('delete');
             Route::get('/service-man/sm-edit/{id}', 'ServicemanController@edit')->name('edit');
             Route::post('/service-man/sm-update/{id}', 'ServicemanController@updateServiceman')->name('update');
-            Route::get('/service-man/preview/{id}', 'ServicemanController@preview')->name('preview');
+            Route::get('/service-man/preview/{id}/{tab?}', 'ServicemanController@preview')->name('preview');
         });
 
 

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Config;
 use App\Models\Store;
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Order;
 
 class ServicemanController extends Controller
 {
@@ -27,9 +28,6 @@ class ServicemanController extends Controller
         $servicemen = Serviceman::where('module_id', Config::get('module.current_module_id'))->paginate(10);
         return view('admin-views.serviceman.list', compact('servicemen'));
     }
-
-
-
 
     public function create()
     {
@@ -89,8 +87,6 @@ class ServicemanController extends Controller
 
         return redirect()->back()->with('success', 'Serviceman created successfully!');
     }
-
-
 
     public function delete(Request $request)
     {
@@ -175,31 +171,44 @@ class ServicemanController extends Controller
     }
 
 
-    public function preview(Request $request, int|string $id, string $tab='info')
+    public function preview(Request $request, int|string $id, string $tab = 'info')
     {
         $deliveryMan = Serviceman::find($id);
 
-        // Fetch reviews and calculate average rating
-        $reviews = $deliveryMan->reviews;
-        $averageRating = $reviews->avg('rating');
+        if ($tab === "info") {
+            $reviews = $deliveryMan->reviews;
+            $averageRating = $reviews->avg('rating');
+            return view('admin-views.serviceman.view.info', compact('deliveryMan', 'reviews', 'averageRating'));
+        } elseif ($tab === "transaction") {
+            $date = $request->query('date');
+            // dd($date);
+            return view('admin-views.serviceman.view.transaction', compact('deliveryMan','date'));
+        } elseif ($tab === "order_list") {
+            $order_lists = Order::where('delivery_man_id', $deliveryMan->id)->paginate(config('default_pagination'));
+            // dd($order_lists);
+            return view('admin-views.serviceman.view.order_list', compact('deliveryMan', 'order_lists'));
+        } elseif ($tab === "conversation") {
 
-        if($tab === "info"){
+            return view('admin-views.serviceman.view.conversations');
+        } elseif ($tab == 'disbursement') {
+            // $key = explode(' ', $request['search']);
+            // $disbursements=DisbursementDetails::where('delivery_man_id', $deliveryMan->id)
+            //     ->when(isset($key), function ($q) use ($key){
+            //         $q->where(function ($q) use ($key) {
+            //             foreach ($key as $value) {
+            //                 $q->orWhere('disbursement_id', 'like', "%{$value}%")
+            //                     ->orWhere('status', 'like', "%{$value}%");
+            //             }
+            //         });
+            //     })
+            //     ->latest()->paginate(config('default_pagination'));
+
+                // return view('admin-views.serviceman.view.disbursement',compact('deliveryMan','disbursements'));
+            return view('admin-views.delivery-man.view.disbursement');
+        }
+        elseif($tab == 'disbursement'){
 
         }
-        elseif($tab === "transaction"){
 
-        }
-        elseif ($tab === "order_list"){
-
-        }elseif($tab === "conversation"){
-
-        }
-        elseif($tab === "disbursement"){
-
-        }
-
-        return view('admin-views.serviceman.view.info', compact('deliveryMan', 'reviews', 'averageRating'));
     }
-
-
 }

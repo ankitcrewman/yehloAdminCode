@@ -114,10 +114,6 @@ class DeliveryManController extends Controller
         $dm->password = bcrypt($request->password);
         $dm->application_status= 'pending';
         $dm->save();
-
-
-
-        
         try{
             $admin= Admin::where('role_id', 1)->first();
             $mail_status = Helpers::get_mail_status('registration_mail_status_dm');

@@ -229,18 +229,20 @@ class OrderController extends Controller
         }])->where(['id' => $id])->first();
         if (isset($order)) {
             if (isset($order->store)) {
+               // $deliveryMen = DeliveryMan::where('zone_id', $order->store->zone_id)
+                // ->where(function($query)use($order){
+                //             $query->where('vehicle_id',$order->dm_vehicle_id)->orWhereNull('vehicle_id');
+                //     })->available()->active()->get();
+
                 $deliveryMen = DeliveryMan::where('zone_id', $order->store->zone_id)
-                ->where(function($query)use($order){
-                            $query->where('vehicle_id',$order->dm_vehicle_id)->orWhereNull('vehicle_id');
-                    })->available()->active()->get();
+                ->available()->active()->get();
             } else {
                 // $deliveryMen = isset($order->zone_id) ? DeliveryMan::where('zone_id', $order->zone_id)->zonewise()->available()->active()->get() : [];
 
                 if($order->store !== null){
                     $deliveryMen = isset($order->zone_id) ? DeliveryMan::where('zone_id', $order->store->zone_id)->where(function($query)use($order){
                             $query->where('vehicle_id',$order->dm_vehicle_id)->orWhereNull('vehicle_id');
-                    })
-                    ->available()->active()->get():[];
+                    })->available()->active()->get():[];
                 } else{
                     $deliveryMen = DeliveryMan::where('zone_id', '=', NULL)->where('vehicle_id',$order->dm_vehicle_id)->active()->get();
                 }
