@@ -88,8 +88,6 @@ class ServicemanController extends Controller
         return redirect()->back()->with('success', 'Serviceman created successfully!');
     }
 
-
-
     public function delete(Request $request)
     {
         $serviceman = Serviceman::find($request->id);
@@ -177,9 +175,6 @@ class ServicemanController extends Controller
     {
         $deliveryMan = Serviceman::find($id);
 
-        // Fetch reviews and calculate average rating
-
-
         if ($tab === "info") {
             $reviews = $deliveryMan->reviews;
             $averageRating = $reviews->avg('rating');
@@ -195,21 +190,24 @@ class ServicemanController extends Controller
         } elseif ($tab === "conversation") {
 
             return view('admin-views.serviceman.view.conversations');
-        } else if ($tab == 'disbursement') {
-            $key = explode(' ', $request['search']);
-            $disbursements=DisbursementDetails::where('delivery_man_id', $deliveryMan->id)
-                ->when(isset($key), function ($q) use ($key){
-                    $q->where(function ($q) use ($key) {
-                        foreach ($key as $value) {
-                            $q->orWhere('disbursement_id', 'like', "%{$value}%")
-                                ->orWhere('status', 'like', "%{$value}%");
-                        }
-                    });
-                })
-                ->latest()->paginate(config('default_pagination'));
+        } elseif ($tab == 'disbursement') {
+            // $key = explode(' ', $request['search']);
+            // $disbursements=DisbursementDetails::where('delivery_man_id', $deliveryMan->id)
+            //     ->when(isset($key), function ($q) use ($key){
+            //         $q->where(function ($q) use ($key) {
+            //             foreach ($key as $value) {
+            //                 $q->orWhere('disbursement_id', 'like', "%{$value}%")
+            //                     ->orWhere('status', 'like', "%{$value}%");
+            //             }
+            //         });
+            //     })
+            //     ->latest()->paginate(config('default_pagination'));
 
-                return view('admin-views.serviceman.view.disbursement',compact('deliveryMan','disbursements'));
-            // return view('admin-views.delivery-man.view.disbursement', compact('deliveryMan','disbursements'));
+                // return view('admin-views.serviceman.view.disbursement',compact('deliveryMan','disbursements'));
+            return view('admin-views.delivery-man.view.disbursement');
+        }
+        elseif($tab == 'disbursement'){
+
         }
 
     }

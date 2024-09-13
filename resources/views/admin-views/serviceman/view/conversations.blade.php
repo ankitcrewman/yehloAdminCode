@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title',translate('messages.Delivery Man Preview'))
+@section('title',translate('messages.Service Man Preview'))
 
 @section('content')
     <div class="content container-fluid">
@@ -13,7 +13,7 @@
                 <span>{{$deliveryMan['f_name'].' '.$deliveryMan['l_name']}}</span>
             </h1>
             <div class="">
-                @include('admin-views.delivery-man.partials._tab_menu')
+                @include('admin-views.serviceman.partials._tab_menu')
             </div>
         </div>
         <!-- End Page Header -->
